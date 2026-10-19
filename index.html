@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luyện đề AWS SAA-C03 (có giải thích)</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --bg-card: #1e293b;
+    --bg-card-2: #263349;
+    --border: #334155;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --accent: #3b82f6;
+    --accent-dim: #1d4ed8;
+    --green: #22c55e;
+    --green-bg: #14532d;
+    --red: #ef4444;
+    --red-bg: #450a0a;
+    --amber: #f59e0b;
+    --purple: #a78bfa;
+    --purple-bg: #2e1065;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .wrap {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 24px 16px 80px;
+  }
+  h1 {
+    font-size: 20px;
+    margin: 0 0 4px;
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Start screen */
+  .mode-grid {
+    display: grid;
+    gap: 12px;
+  }
+  .mode-btn {
+    text-align: left;
+    background: var(--bg-card-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 15px;
+    transition: border-color .15s, background .15s;
+  }
+  .mode-btn:hover { border-color: var(--accent); background: #2a3a54; }
+  .mode-btn .mode-title { font-weight: 600; margin-bottom: 4px; }
+  .mode-btn .mode-desc { color: var(--text-dim); font-size: 13px; }
+
+  select, input[type=number] {
+    background: var(--bg-card-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+  .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .row + .row { margin-top: 10px; }
+
+  button.primary {
+    background: var(--accent);
+    border: none;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  button.primary:hover { background: var(--accent-dim); }
+  button.primary:disabled { opacity: .4; cursor: not-allowed; }
+  button.secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  button.secondary:hover { border-color: var(--accent); }
+  button.ghost-purple {
+    background: var(--purple-bg);
+    border: 1px solid var(--purple);
+    color: #e9d5ff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  button.ghost-purple:hover { background: #3b0f8f; }
+
+  .stats-bar {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  .stats-bar b { color: var(--text); }
+
+  /* Quiz screen */
+  .quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width .2s;
+  }
+  .q-meta {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .q-text {
+    font-size: 16px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    margin-bottom: 18px;
+  }
+  .hint-choose {
+    display: inline-block;
+    background: var(--bg-card-2);
+    border: 1px solid var(--border);
+    color: var(--amber);
+    font-size: 12px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .options { display: grid; gap: 10px; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--bg-card-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .option:hover { border-color: var(--accent); }
+  .option.selected { border-color: var(--accent); background: #233350; }
+  .option.correct { border-color: var(--green); background: var(--green-bg); }
+  .option.incorrect { border-color: var(--red); background: var(--red-bg); }
+  .option.disabled { cursor: default; }
+  .option-key {
+    flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .option.correct .option-key { background: var(--green); color: #052e13; }
+  .option.incorrect .option-key { background: var(--red); color: #450a0a; }
+  .option-text { font-size: 14.5px; line-height: 1.5; padding-top: 3px; }
+
+  .feedback {
+    margin-top: 16px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .feedback.correct { background: var(--green-bg); color: #86efac; border: 1px solid var(--green); }
+  .feedback.incorrect { background: var(--red-bg); color: #fca5a5; border: 1px solid var(--red); }
+
+  .actions { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; flex-wrap: wrap; }
+  .actions-right { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  /* Explanation panel */
+  .explain-panel {
+    margin-top: 16px;
+    border: 1px solid var(--purple);
+    background: #1a1035;
+    border-radius: 12px;
+    padding: 18px;
+    display: none;
+  }
+  .explain-panel.visible { display: block; }
+  .explain-intro {
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin-bottom: 14px;
+    color: #ddd6fe;
+  }
+  .explain-section-title {
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--purple);
+    font-weight: 700;
+    margin: 16px 0 8px;
+  }
+  .explain-section-title:first-of-type { margin-top: 0; }
+  .explain-translation {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    background: #130a28;
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .keyword-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .keyword-chip {
+    background: #2e1065;
+    border: 1px solid var(--purple);
+    color: #e9d5ff;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .explain-option {
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    border-left: 3px solid var(--border);
+  }
+  .explain-option.ok { border-left-color: var(--green); background: rgba(34,197,94,.08); }
+  .explain-option.no { border-left-color: var(--red); background: rgba(239,68,68,.06); }
+  .explain-option .eo-head { font-weight: 700; margin-bottom: 3px; }
+  .explain-option.ok .eo-head { color: #86efac; }
+  .explain-option.no .eo-head { color: #fca5a5; }
+  .explain-tip {
+    margin-top: 14px;
+    background: #1e1b4b;
+    border: 1px dashed var(--purple);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #ddd6fe;
+  }
+  .explain-missing {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* Result screen */
+  .score-big {
+    font-size: 42px;
+    font-weight: 700;
+    text-align: center;
+    margin: 10px 0 4px;
+  }
+  .score-sub {
+    text-align: center;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+  .missed-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .missed-item {
+    background: var(--bg-card-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+  .missed-item:hover { border-color: var(--accent); color: var(--text); }
+  .missed-item b { color: var(--text); }
+
+  .top-link {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .top-link:hover { color: var(--text); }
+
+  .small-note { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Luyện đề AWS Certified Solutions Architect – Associate (SAA-C03)</h1>
+  <div class="subtitle" id="subtitle">Đang tải dữ liệu câu hỏi...</div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <div class="card">
+      <div class="stats-bar" id="stats-bar"></div>
+      <div class="mode-grid">
+        <button class="mode-btn" id="mode-test">
+          <div class="mode-title">Luyện theo bộ đề (20 câu/bộ)</div>
+          <div class="mode-desc">Chọn 1 trong các Practice Test có sẵn, làm tuần tự 20 câu.</div>
+        </button>
+        <button class="mode-btn" id="mode-random">
+          <div class="mode-title">Luyện ngẫu nhiên</div>
+          <div class="mode-desc">Trộn ngẫu nhiên từ toàn bộ ngân hàng câu hỏi, tự chọn số lượng.</div>
+        </button>
+        <button class="mode-btn" id="mode-review">
+          <div class="mode-title">Ôn lại câu đã làm sai</div>
+          <div class="mode-desc">Chỉ luyện những câu bạn từng trả lời sai trước đây.</div>
+        </button>
+      </div>
+    </div>
+
+    <div class="card" id="panel-test" style="display:none;">
+      <div class="row">
+        <label>Chọn bộ đề:</label>
+        <select id="test-select"></select>
+        <button class="primary" id="start-test-btn">Bắt đầu</button>
+      </div>
+    </div>
+
+    <div class="card" id="panel-random" style="display:none;">
+      <div class="row">
+        <label>Số câu:</label>
+        <input type="number" id="random-count" min="5" max="1019" value="20" style="width:90px">
+        <button class="primary" id="start-random-btn">Bắt đầu</button>
+      </div>
+      <div class="small-note">Tối đa <span id="random-max"></span> câu.</div>
+    </div>
+
+    <div class="card" id="panel-review" style="display:none;">
+      <div class="row">
+        <span id="review-count-text"></span>
+        <button class="primary" id="start-review-btn">Bắt đầu ôn lại</button>
+        <button class="secondary" id="clear-review-btn">Xoá danh sách câu sai</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="screen" id="screen-quiz">
+    <div class="quiz-header">
+      <span id="quiz-session-label"></span>
+      <button class="top-link" id="quit-btn">Thoát về trang chính</button>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+    <div class="card">
+      <div class="q-meta" id="q-meta"></div>
+      <div class="hint-choose" id="hint-choose" style="display:none;"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback" style="display:none;"></div>
+
+      <div class="explain-panel" id="explain-panel">
+        <div class="explain-intro" id="explain-intro"></div>
+
+        <div class="explain-section-title">Phân tích yêu cầu bài toán</div>
+        <div class="explain-translation" id="explain-translation"></div>
+        <div class="keyword-chips" id="explain-keywords" style="margin-top:8px;"></div>
+
+        <div class="explain-section-title">Phân tích từng đáp án</div>
+        <div id="explain-options"></div>
+
+        <div class="explain-tip" id="explain-tip"></div>
+      </div>
+
+      <div class="actions">
+        <button class="secondary" id="prev-btn">&larr; Câu trước</button>
+        <div class="actions-right">
+          <button class="ghost-purple" id="explain-btn" style="display:none;">Xem giải thích chi tiết</button>
+          <button class="primary" id="check-btn">Kiểm tra</button>
+          <button class="primary" id="next-btn" style="display:none;">Câu tiếp theo &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div class="screen" id="screen-result">
+    <div class="card">
+      <div class="score-big" id="score-big"></div>
+      <div class="score-sub" id="score-sub"></div>
+      <div class="row" style="justify-content:center;">
+        <button class="primary" id="restart-btn">Làm lại bộ này</button>
+        <button class="secondary" id="home-btn">Về trang chính</button>
+      </div>
+    </div>
+    <div class="card" id="missed-card" style="display:none;">
+      <div class="q-meta">Những câu đã trả lời sai (bấm để xem lại):</div>
+      <div class="missed-list" id="missed-list"></div>
+    </div>
+  </div>
+</div>
+
+<script src="question-data.js"></script>
+<script src="explanations-data.js"></script>
+<script>
+(function () {
+  const DATA = window.QUESTION_DATA;
+  const EXPLANATIONS = window.EXPLANATIONS_DATA || {};
+  const ALL_QUESTIONS = DATA.tests.flatMap(t => t.questions);
+  const BY_ID = new Map(ALL_QUESTIONS.map(q => [q.id, q]));
+  const STORAGE_KEY = "saa03_wrong_ids_v1";
+
+  function loadWrongIds() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? new Set(JSON.parse(raw)) : new Set();
+    } catch (e) { return new Set(); }
+  }
+  function saveWrongIds(set) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify([...set])); } catch (e) {}
+  }
+  let wrongIds = loadWrongIds();
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // ---- Session state ----
+  let session = null;
+
+  function startSession(questions, label) {
+    session = {
+      questions,
+      index: 0,
+      selected: new Map(),
+      checked: new Map(),
+      explainOpen: new Set(),
+      label,
+    };
+    showScreen("quiz");
+    renderQuestion();
+  }
+
+  function currentQuestion() {
+    return session.questions[session.index];
+  }
+
+  function renderQuestion() {
+    const q = currentQuestion();
+    document.getElementById("quiz-session-label").textContent = session.label;
+    document.getElementById("q-meta").textContent = `Câu ${session.index + 1} / ${session.questions.length} — ID #${q.id}`;
+    document.getElementById("progress-fill").style.width = ((session.index) / session.questions.length * 100) + "%";
+
+    document.getElementById("q-text").textContent = q.question;
+
+    const needCount = q.correctAnswer.length;
+    const hintEl = document.getElementById("hint-choose");
+    if (q.multiple) {
+      hintEl.style.display = "inline-block";
+      hintEl.textContent = `Chọn ${needCount} đáp án`;
+    } else {
+      hintEl.style.display = "none";
+    }
+
+    const optsEl = document.getElementById("options");
+    optsEl.innerHTML = "";
+    const alreadyChecked = session.checked.get(q.id) === true;
+    const selectedSet = session.selected.get(q.id) || new Set();
+
+    q.options.forEach(opt => {
+      const div = document.createElement("div");
+      div.className = "option";
+      div.dataset.key = opt.key;
+      if (selectedSet.has(opt.key)) div.classList.add("selected");
+      if (alreadyChecked) {
+        div.classList.add("disabled");
+        const isCorrect = q.correctAnswer.includes(opt.key);
+        const wasSelected = selectedSet.has(opt.key);
+        if (isCorrect) div.classList.add("correct");
+        else if (wasSelected) div.classList.add("incorrect");
+      }
+      div.innerHTML = `<div class="option-key">${opt.key}</div><div class="option-text"></div>`;
+      div.querySelector(".option-text").textContent = opt.text;
+      if (!alreadyChecked) {
+        div.addEventListener("click", () => toggleOption(q, opt.key));
+      }
+      optsEl.appendChild(div);
+    });
+
+    const feedbackEl = document.getElementById("feedback");
+    const checkBtn = document.getElementById("check-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const explainBtn = document.getElementById("explain-btn");
+
+    if (alreadyChecked) {
+      const correctSet = new Set(q.correctAnswer);
+      const isFullyCorrect = selectedSet.size === correctSet.size && [...selectedSet].every(k => correctSet.has(k));
+      feedbackEl.style.display = "block";
+      feedbackEl.className = "feedback " + (isFullyCorrect ? "correct" : "incorrect");
+      feedbackEl.textContent = isFullyCorrect
+        ? "Chính xác!"
+        : `Chưa đúng. Đáp án đúng: ${[...correctSet].sort().join(", ")}`;
+      checkBtn.style.display = "none";
+      nextBtn.style.display = "inline-block";
+      nextBtn.textContent = session.index === session.questions.length - 1 ? "Xem kết quả" : "Câu tiếp theo →";
+      explainBtn.style.display = "inline-block";
+    } else {
+      feedbackEl.style.display = "none";
+      checkBtn.style.display = "inline-block";
+      nextBtn.style.display = "none";
+      explainBtn.style.display = "none";
+    }
+
+    renderExplainPanel(q);
+
+    document.getElementById("prev-btn").disabled = session.index === 0;
+    document.getElementById("prev-btn").style.visibility = session.index === 0 ? "hidden" : "visible";
+  }
+
+  function renderExplainPanel(q) {
+    const panel = document.getElementById("explain-panel");
+    const isOpen = session.explainOpen.has(q.id);
+    panel.classList.toggle("visible", isOpen);
+    document.getElementById("explain-btn").textContent = isOpen ? "Ẩn giải thích" : "Xem giải thích chi tiết";
+    if (!isOpen) return;
+
+    const ex = EXPLANATIONS[q.id];
+    if (!ex) {
+      document.getElementById("explain-intro").textContent = "";
+      document.getElementById("explain-translation").innerHTML = '<span class="explain-missing">Chưa có giải thích cho câu này.</span>';
+      document.getElementById("explain-keywords").innerHTML = "";
+      document.getElementById("explain-options").innerHTML = "";
+      document.getElementById("explain-tip").style.display = "none";
+      return;
+    }
+
+    document.getElementById("explain-intro").textContent = ex.intro || "";
+    document.getElementById("explain-translation").textContent = ex.requirementTranslation || "";
+
+    const kwEl = document.getElementById("explain-keywords");
+    kwEl.innerHTML = "";
+    (ex.keywords || []).forEach(k => {
+      const chip = document.createElement("span");
+      chip.className = "keyword-chip";
+      chip.textContent = k;
+      kwEl.appendChild(chip);
+    });
+
+    const optsEl = document.getElementById("explain-options");
+    optsEl.innerHTML = "";
+    (ex.optionAnalysis || []).forEach(o => {
+      const div = document.createElement("div");
+      div.className = "explain-option " + (o.correct ? "ok" : "no");
+      const head = document.createElement("div");
+      head.className = "eo-head";
+      head.textContent = `${o.key}. ${o.correct ? "ĐÚNG" : "SAI"}`;
+      const body = document.createElement("div");
+      body.textContent = o.explanation || "";
+      div.appendChild(head);
+      div.appendChild(body);
+      optsEl.appendChild(div);
+    });
+
+    const tipEl = document.getElementById("explain-tip");
+    if (ex.tip) {
+      tipEl.style.display = "block";
+      tipEl.textContent = "Mẹo làm bài: " + ex.tip;
+    } else {
+      tipEl.style.display = "none";
+    }
+  }
+
+  function toggleExplain() {
+    const q = currentQuestion();
+    if (session.explainOpen.has(q.id)) session.explainOpen.delete(q.id);
+    else session.explainOpen.add(q.id);
+    renderExplainPanel(q);
+    document.getElementById("explain-btn").textContent =
+      session.explainOpen.has(q.id) ? "Ẩn giải thích" : "Xem giải thích chi tiết";
+  }
+
+  function toggleOption(q, key) {
+    if (!session.selected.has(q.id)) session.selected.set(q.id, new Set());
+    const sel = session.selected.get(q.id);
+    const maxAllowed = q.correctAnswer.length;
+    if (!q.multiple) {
+      sel.clear();
+      sel.add(key);
+    } else {
+      if (sel.has(key)) {
+        sel.delete(key);
+      } else {
+        if (sel.size >= maxAllowed) return;
+        sel.add(key);
+      }
+    }
+    renderQuestion();
+  }
+
+  function checkAnswer() {
+    const q = currentQuestion();
+    const sel = session.selected.get(q.id) || new Set();
+    if (sel.size === 0) return;
+    session.checked.set(q.id, true);
+
+    const correctSet = new Set(q.correctAnswer);
+    const isFullyCorrect = sel.size === correctSet.size && [...sel].every(k => correctSet.has(k));
+    if (!isFullyCorrect) {
+      wrongIds.add(q.id);
+      session.explainOpen.add(q.id); // auto-open explanation when wrong
+    } else {
+      wrongIds.delete(q.id);
+    }
+    saveWrongIds(wrongIds);
+
+    renderQuestion();
+  }
+
+  function goNext() {
+    if (session.index === session.questions.length - 1) {
+      finishSession();
+    } else {
+      session.index++;
+      renderQuestion();
+    }
+  }
+  function goPrev() {
+    if (session.index > 0) {
+      session.index--;
+      renderQuestion();
+    }
+  }
+
+  function finishSession() {
+    let correct = 0;
+    const missed = [];
+    session.questions.forEach(q => {
+      const sel = session.selected.get(q.id) || new Set();
+      const correctSet = new Set(q.correctAnswer);
+      const isFullyCorrect = session.checked.get(q.id) && sel.size === correctSet.size && [...sel].every(k => correctSet.has(k));
+      if (isFullyCorrect) correct++;
+      else if (session.checked.get(q.id)) missed.push(q);
+    });
+    const total = session.questions.length;
+    const answered = session.questions.filter(q => session.checked.get(q.id)).length;
+
+    showScreen("result");
+    document.getElementById("score-big").textContent = `${correct} / ${total}`;
+    document.getElementById("score-sub").textContent =
+      answered < total
+        ? `Đã trả lời ${answered}/${total} câu — ${Math.round(correct / Math.max(answered,1) * 100)}% đúng trong số đã trả lời`
+        : `${Math.round(correct / total * 100)}% chính xác`;
+
+    const missedCard = document.getElementById("missed-card");
+    const missedList = document.getElementById("missed-list");
+    missedList.innerHTML = "";
+    if (missed.length > 0) {
+      missedCard.style.display = "block";
+      missed.forEach(q => {
+        const div = document.createElement("div");
+        div.className = "missed-item";
+        div.innerHTML = `<b>#${q.id}</b> — ${escapeHtml(q.question.slice(0, 110))}${q.question.length > 110 ? "…" : ""}`;
+        div.addEventListener("click", () => {
+          startSession([q], `Xem lại câu #${q.id}`);
+        });
+        missedList.appendChild(div);
+      });
+    } else {
+      missedCard.style.display = "none";
+    }
+
+    renderStartStats();
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  function showScreen(name) {
+    ["start", "quiz", "result"].forEach(s => {
+      document.getElementById("screen-" + s).classList.toggle("active", s === name);
+    });
+  }
+
+  function renderStartStats() {
+    const explainCount = Object.keys(EXPLANATIONS).length;
+    document.getElementById("stats-bar").innerHTML =
+      `Tổng số câu: <b>${ALL_QUESTIONS.length}</b> &nbsp;·&nbsp; Số bộ đề: <b>${DATA.tests.length}</b> &nbsp;·&nbsp; Câu đang sai cần ôn lại: <b>${wrongIds.size}</b> &nbsp;·&nbsp; Câu có giải thích: <b>${explainCount}</b>`;
+    document.getElementById("review-count-text").textContent = `Hiện có ${wrongIds.size} câu trong danh sách cần ôn lại.`;
+    document.getElementById("start-review-btn").disabled = wrongIds.size === 0;
+    document.getElementById("random-max").textContent = ALL_QUESTIONS.length;
+  }
+
+  // ---- Wire up start screen ----
+  const testSelect = document.getElementById("test-select");
+  DATA.tests.forEach(t => {
+    const opt = document.createElement("option");
+    opt.value = t.id;
+    opt.textContent = `${t.title} (câu ${t.startQuestion}–${t.endQuestion})`;
+    testSelect.appendChild(opt);
+  });
+
+  function togglePanel(name) {
+    ["test", "random", "review"].forEach(n => {
+      document.getElementById("panel-" + n).style.display = n === name ? "block" : "none";
+    });
+  }
+  document.getElementById("mode-test").addEventListener("click", () => togglePanel("test"));
+  document.getElementById("mode-random").addEventListener("click", () => togglePanel("random"));
+  document.getElementById("mode-review").addEventListener("click", () => togglePanel("review"));
+
+  document.getElementById("start-test-btn").addEventListener("click", () => {
+    const test = DATA.tests.find(t => t.id === testSelect.value);
+    startSession(test.questions.slice(), test.title);
+  });
+
+  document.getElementById("start-random-btn").addEventListener("click", () => {
+    let n = parseInt(document.getElementById("random-count").value, 10) || 20;
+    n = Math.max(1, Math.min(n, ALL_QUESTIONS.length));
+    const picked = shuffle(ALL_QUESTIONS).slice(0, n);
+    startSession(picked, `Ngẫu nhiên (${n} câu)`);
+  });
+
+  document.getElementById("start-review-btn").addEventListener("click", () => {
+    const qs = [...wrongIds].map(id => BY_ID.get(id)).filter(Boolean);
+    startSession(shuffle(qs), `Ôn lại câu sai (${qs.length} câu)`);
+  });
+
+  document.getElementById("clear-review-btn").addEventListener("click", () => {
+    if (confirm("Xoá toàn bộ danh sách câu đã trả lời sai?")) {
+      wrongIds = new Set();
+      saveWrongIds(wrongIds);
+      renderStartStats();
+    }
+  });
+
+  // ---- Wire up quiz screen ----
+  document.getElementById("check-btn").addEventListener("click", checkAnswer);
+  document.getElementById("next-btn").addEventListener("click", goNext);
+  document.getElementById("prev-btn").addEventListener("click", goPrev);
+  document.getElementById("explain-btn").addEventListener("click", toggleExplain);
+  document.getElementById("quit-btn").addEventListener("click", () => {
+    if (confirm("Thoát về trang chính? Tiến trình bộ đề hiện tại sẽ không được lưu.")) {
+      showScreen("start");
+      renderStartStats();
+    }
+  });
+
+  // ---- Wire up result screen ----
+  document.getElementById("restart-btn").addEventListener("click", () => {
+    startSession(shuffle(session.questions).map(q => q), session.label);
+  });
+  document.getElementById("home-btn").addEventListener("click", () => {
+    showScreen("start");
+    renderStartStats();
+  });
+
+  // ---- Init ----
+  document.getElementById("subtitle").textContent =
+    `Ngân hàng ${ALL_QUESTIONS.length} câu hỏi · Có giải thích chi tiết từng câu`;
+  renderStartStats();
+})();
+</script>
+</body>
+</html>

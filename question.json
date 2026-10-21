@@ -503,7 +503,7 @@
         {
           "id": 19,
           "topic": 1,
-          "question": "A company has a three-tier web application that is deployed on AWS. The web servers are deployed in a public subnet in a VPC. The application servers and database servers are deployed in private subnets in the same VPC. The company has deployed a third- party virtual firewall appliance from AWS Marketplace in an inspection VPC. The appliance is configured with an IP interface that can accept IP packets. A solutions architect needs to integrate the web application with the appliance to inspect all traffic to the application before the traffic reaches the web server. Which solution will meet these requirements with the LEAST operational overhead?",
+          "question": "A company has a three-tier web application that is deployed on AWS. The web servers are deployed in a public subnet in a VPC. The application servers and database servers are deployed in private subnets in the same VPC. The company has deployed a third-party virtual firewall appliance from AWS Marketplace in an inspection VPC. The appliance is configured with an IP interface that can accept IP packets. A solutions architect needs to integrate the web application with the appliance to inspect all traffic to the application before the traffic reaches the web server. Which solution will meet these requirements with the LEAST operational overhead?",
           "options": [
             {
               "key": "A",
@@ -631,7 +631,7 @@
             },
             {
               "key": "C",
-              "text": "Create an S3 Lifecycle configuration to transition objects from S3 Standard to S3 Standard-Infrequent Access (S3 Standard- IA) after 1 month."
+              "text": "Create an S3 Lifecycle configuration to transition objects from S3 Standard to S3 Standard-Infrequent Access (S3 Standard-IA) after 1 month."
             },
             {
               "key": "D",
@@ -2477,7 +2477,7 @@
         {
           "id": 90,
           "topic": 1,
-          "question": "A company is using a SQL database to store movie data that is publicly accessible. The database runs on an Amazon RDS Single- AZ DB instance. A script runs queries at random intervals each day to record the number of new movies that have been added to the database. The script must report a final total during business hours. The company's development team notices that the database performance is inadequate for development tasks when the script is running. A solutions architect must recommend a solution to resolve this issue. Which solution will meet this requirement with the LEAST operational overhead?",
+          "question": "A company is using a SQL database to store movie data that is publicly accessible. The database runs on an Amazon RDS Single-AZ DB instance. A script runs queries at random intervals each day to record the number of new movies that have been added to the database. The script must report a final total during business hours. The company's development team notices that the database performance is inadequate for development tasks when the script is running. A solutions architect must recommend a solution to resolve this issue. Which solution will meet this requirement with the LEAST operational overhead?",
           "options": [
             {
               "key": "A",
@@ -3293,7 +3293,7 @@
         {
           "id": 119,
           "topic": 1,
-          "question": "A global company is using Amazon API Gateway to design REST APIs for its loyalty club users in the us-east-1 Region and the ap- southeast-2 Region. A solutions architect must design a solution to protect these API Gateway managed REST APIs across multiple accounts from SQL injection and cross-site scripting attacks. Which solution will meet these requirements with the LEAST amount of administrative effort?",
+          "question": "A global company is using Amazon API Gateway to design REST APIs for its loyalty club users in the us-east-1 Region and the ap-southeast-2 Region. A solutions architect must design a solution to protect these API Gateway managed REST APIs across multiple accounts from SQL injection and cross-site scripting attacks. Which solution will meet these requirements with the LEAST amount of administrative effort?",
           "options": [
             {
               "key": "A",
@@ -3475,7 +3475,7 @@
             },
             {
               "key": "C",
-              "text": "Use an Auto Scaling group to launch the EC2 instances in public subnets across two Availability Zones. Deploy an RDS Multi- AZ DB instance in private subnets."
+              "text": "Use an Auto Scaling group to launch the EC2 instances in public subnets across two Availability Zones. Deploy an RDS Multi-AZ DB instance in private subnets."
             },
             {
               "key": "D",
@@ -5511,7 +5511,7 @@
             },
             {
               "key": "E",
-              "text": "Use AWS Database Migration Service (AWS DMS) to migrate from the Oracle database to Oracle on Amazon RDS in a Multi- AZ deployment."
+              "text": "Use AWS Database Migration Service (AWS DMS) to migrate from the Oracle database to Oracle on Amazon RDS in a Multi-AZ deployment."
             }
           ],
           "correctAnswer": [
@@ -6052,7 +6052,7 @@
             },
             {
               "key": "B",
-              "text": "Host a scaled-down deployment of the application in a second AWS Region. Use Amazon Route 53 to configure active- active failover. Create an Aurora Replica in the second Region."
+              "text": "Host a scaled-down deployment of the application in a second AWS Region. Use Amazon Route 53 to configure active-active failover. Create an Aurora Replica in the second Region."
             },
             {
               "key": "C",
@@ -7256,7 +7256,7 @@
         {
           "id": 260,
           "topic": 1,
-          "question": "A company\u2019s compliance team needs to move its file shares to AWS. The shares run on a Windows Server SMB file share. A self- managed on-premises Active Directory controls access to the files and folders. The company wants to use Amazon FSx for Windows File Server as part of the solution. The company must ensure that the on- premises Active Directory groups restrict access to the FSx for Windows File Server SMB compliance shares, folders, and files after the move to AWS. The company has created an FSx for Windows File Server file system. Which solution will meet these requirements?",
+          "question": "A company\u2019s compliance team needs to move its file shares to AWS. The shares run on a Windows Server SMB file share. A self-managed on-premises Active Directory controls access to the files and folders. The company wants to use Amazon FSx for Windows File Server as part of the solution. The company must ensure that the on-premises Active Directory groups restrict access to the FSx for Windows File Server SMB compliance shares, folders, and files after the move to AWS. The company has created an FSx for Windows File Server file system. Which solution will meet these requirements?",
           "options": [
             {
               "key": "A",
@@ -7307,11 +7307,11 @@
             },
             {
               "key": "D",
-              "text": "Configure AWS Global Accelerator. Forward requests to a Network Load Balancer (NLB). Configure the NLB to set up host- based routing to different EC2 instances."
+              "text": "Configure AWS Global Accelerator. Forward requests to a Network Load Balancer (NLB). Configure the NLB to set up host-based routing to different EC2 instances."
             },
             {
               "key": "E",
-              "text": "Configure AWS Global Accelerator. Forward requests to a Network Load Balancer (NLB). Configure the NLB to set up path- based routing to different EC2 instances."
+              "text": "Configure AWS Global Accelerator. Forward requests to a Network Load Balancer (NLB). Configure the NLB to set up path-based routing to different EC2 instances."
             }
           ],
           "correctAnswer": [
@@ -7598,7 +7598,7 @@
         {
           "id": 272,
           "topic": 1,
-          "question": "A company serves a dynamic website from a fleet of Amazon EC2 instances behind an Application Load Balancer (ALB). The website needs to support multiple languages to serve customers around the world. The website\u2019s architecture is running in the us- west-1 Region and is exhibiting high request latency for users that are located in other parts of the world. The website needs to serve requests quickly and efficiently regardless of a user\u2019s location. However, the company does not want to recreate the existing architecture across multiple Regions. What should a solutions architect do to meet these requirements?",
+          "question": "A company serves a dynamic website from a fleet of Amazon EC2 instances behind an Application Load Balancer (ALB). The website needs to support multiple languages to serve customers around the world. The website\u2019s architecture is running in the us-west-1 Region and is exhibiting high request latency for users that are located in other parts of the world. The website needs to serve requests quickly and efficiently regardless of a user\u2019s location. However, the company does not want to recreate the existing architecture across multiple Regions. What should a solutions architect do to meet these requirements?",
           "options": [
             {
               "key": "A",
@@ -8390,7 +8390,7 @@
             },
             {
               "key": "B",
-              "text": "Migrate the application layer to Amazon EC2 Reserved Instances. Migrate the data storage layer to Amazon RDS On- Demand Instances."
+              "text": "Migrate the application layer to Amazon EC2 Reserved Instances. Migrate the data storage layer to Amazon RDS On-Demand Instances."
             },
             {
               "key": "C",
@@ -9147,7 +9147,7 @@
         {
           "id": 327,
           "topic": 1,
-          "question": "A solutions architect must secure a VPC network that hosts Amazon EC2 instances. The EC2 instances contain highly sensitive data and run in a private subnet. According to company policy, the EC2 instances that run in the VPC can access only approved third- party software repositories on the internet for software product updates that use the third party\u2019s URL. Other internet traffic must be blocked. Which solution meets these requirements?",
+          "question": "A solutions architect must secure a VPC network that hosts Amazon EC2 instances. The EC2 instances contain highly sensitive data and run in a private subnet. According to company policy, the EC2 instances that run in the VPC can access only approved third-party software repositories on the internet for software product updates that use the third party\u2019s URL. Other internet traffic must be blocked. Which solution meets these requirements?",
           "options": [
             {
               "key": "A",
@@ -9163,7 +9163,7 @@
             },
             {
               "key": "D",
-              "text": "Configure an Application Load Balancer (ALB) in front of the EC2 instances. Direct all outbound traffic to the ALB. Use a URL- based rule listener in the ALB\u2019s target group for outbound access to the internet."
+              "text": "Configure an Application Load Balancer (ALB) in front of the EC2 instances. Direct all outbound traffic to the ALB. Use a URL-based rule listener in the ALB\u2019s target group for outbound access to the internet."
             }
           ],
           "correctAnswer": [
@@ -9290,7 +9290,7 @@
             },
             {
               "key": "B",
-              "text": "Migrate the files to an Amazon FSx for Windows File Server file system. Integrate the Amazon FSx file system with the on- premises Active Directory. Configure AWS Client VPN."
+              "text": "Migrate the files to an Amazon FSx for Windows File Server file system. Integrate the Amazon FSx file system with the on-premises Active Directory. Configure AWS Client VPN."
             },
             {
               "key": "C",
@@ -9835,7 +9835,7 @@
         {
           "id": 352,
           "topic": 1,
-          "question": "A company is designing the network for an online multi-player game. The game uses the UDP networking protocol and will be deployed in eight AWS Regions. The network architecture needs to minimize latency and packet loss to give end users a high- quality gaming experience. Which solution will meet these requirements?",
+          "question": "A company is designing the network for an online multi-player game. The game uses the UDP networking protocol and will be deployed in eight AWS Regions. The network architecture needs to minimize latency and packet loss to give end users a high-quality gaming experience. Which solution will meet these requirements?",
           "options": [
             {
               "key": "A",
@@ -10743,7 +10743,7 @@
             },
             {
               "key": "B",
-              "text": "Use the Amazon S3 Standard storage class. Create an S3 Lifecycle policy to move infrequently accessed data to S3 Standard- Infrequent Access (S3 Standard-IA)."
+              "text": "Use the Amazon S3 Standard storage class. Create an S3 Lifecycle policy to move infrequently accessed data to S3 Standard-Infrequent Access (S3 Standard-IA)."
             },
             {
               "key": "C",
@@ -12292,7 +12292,7 @@
             },
             {
               "key": "D",
-              "text": "Create a second VPC. Create a Site-to-Site VPN connection between the first VPC and the second VPC by using a VPN- hosted solution on Amazon EC2 and a virtual private gateway. Update the route between VPCs to the traffic through the VPN. Create new resources in the subnets of the second VPC."
+              "text": "Create a second VPC. Create a Site-to-Site VPN connection between the first VPC and the second VPC by using a VPN-hosted solution on Amazon EC2 and a virtual private gateway. Update the route between VPCs to the traffic through the VPN. Create new resources in the subnets of the second VPC."
             }
           ],
           "correctAnswer": [
@@ -12428,7 +12428,7 @@
           "options": [
             {
               "key": "A",
-              "text": "Delete one EC2 instance and enable termination protection on the other EC2 instance. Update the DB instance to be Multi- AZ, and enable deletion protection."
+              "text": "Delete one EC2 instance and enable termination protection on the other EC2 instance. Update the DB instance to be Multi-AZ, and enable deletion protection."
             },
             {
               "key": "B",
@@ -12482,7 +12482,7 @@
           "options": [
             {
               "key": "A",
-              "text": "Turn on the S3 Versioning feature for the S3 bucket. Configure S3 Lifecycle to delete the data after 7 years. Configure multi- factor authentication (MFA) delete for all S3 objects."
+              "text": "Turn on the S3 Versioning feature for the S3 bucket. Configure S3 Lifecycle to delete the data after 7 years. Configure multi-factor authentication (MFA) delete for all S3 objects."
             },
             {
               "key": "B",
@@ -13894,7 +13894,7 @@
         {
           "id": 496,
           "topic": 1,
-          "question": "A company uses on-premises servers to host its applications. The company is running out of storage capacity. The applications use both block storage and NFS storage. The company needs a high-performing solution that supports local caching without re- architecting its existing applications. Which combination of actions should a solutions architect take to meet these requirements? (Choose two.)",
+          "question": "A company uses on-premises servers to host its applications. The company is running out of storage capacity. The applications use both block storage and NFS storage. The company needs a high-performing solution that supports local caching without re-architecting its existing applications. Which combination of actions should a solutions architect take to meet these requirements? (Choose two.)",
           "options": [
             {
               "key": "A",
@@ -15409,7 +15409,7 @@
         {
           "id": 549,
           "topic": 1,
-          "question": "A company has created a multi-tier application for its ecommerce website. The website uses an Application Load Balancer that resides in the public subnets, a web tier in the public subnets, and a MySQL cluster hosted on Amazon EC2 instances in the private subnets. The MySQL database needs to retrieve product catalog and pricing information that is hosted on the internet by a third- party provider. A solutions architect must devise a strategy that maximizes security without increasing operational overhead. What should the solutions architect do to meet these requirements?",
+          "question": "A company has created a multi-tier application for its ecommerce website. The website uses an Application Load Balancer that resides in the public subnets, a web tier in the public subnets, and a MySQL cluster hosted on Amazon EC2 instances in the private subnets. The MySQL database needs to retrieve product catalog and pricing information that is hosted on the internet by a third-party provider. A solutions architect must devise a strategy that maximizes security without increasing operational overhead. What should the solutions architect do to meet these requirements?",
           "options": [
             {
               "key": "A",
@@ -17511,7 +17511,7 @@
         {
           "id": 624,
           "topic": 1,
-          "question": "A company wants to provide users with access to AWS resources. The company has 1,500 users and manages their access to on- premises resources through Active Directory user groups on the corporate network. However, the company does not want users to have to maintain another identity to access the resources. A solutions architect must manage user access to the AWS resources while preserving access to the on-premises resources. What should the solutions architect do to meet these requirements?",
+          "question": "A company wants to provide users with access to AWS resources. The company has 1,500 users and manages their access to on-premises resources through Active Directory user groups on the corporate network. However, the company does not want users to have to maintain another identity to access the resources. A solutions architect must manage user access to the AWS resources while preserving access to the on-premises resources. What should the solutions architect do to meet these requirements?",
           "options": [
             {
               "key": "A",
@@ -20134,7 +20134,7 @@
         {
           "id": 717,
           "topic": 1,
-          "question": "A company wants to migrate an on-premises legacy application to AWS. The application ingests customer order files from an on- premises enterprise resource planning (ERP) system. The application then uploads the files to an SFTP server. The application uses a scheduled job that checks for order files every hour. The company already has an AWS account that has connectivity to the on-premises network. The new application on AWS must support integration with the existing ERP system. The new application must be secure and resilient and must use the SFTP protocol to process orders from the ERP system immediately. Which solution will meet these requirements?",
+          "question": "A company wants to migrate an on-premises legacy application to AWS. The application ingests customer order files from an on-premises enterprise resource planning (ERP) system. The application then uploads the files to an SFTP server. The application uses a scheduled job that checks for order files every hour. The company already has an AWS account that has connectivity to the on-premises network. The new application on AWS must support integration with the existing ERP system. The new application must be secure and resilient and must use the SFTP protocol to process orders from the ERP system immediately. Which solution will meet these requirements?",
           "options": [
             {
               "key": "A",
@@ -20698,11 +20698,11 @@
             },
             {
               "key": "D",
-              "text": "Create an S3 Multi-Region Access Point. Modify the application to use the Amazon Resource Name (ARN) of the Multi- Region Access Point for video streaming. Do not modify the application for video uploads."
+              "text": "Create an S3 Multi-Region Access Point. Modify the application to use the Amazon Resource Name (ARN) of the Multi-Region Access Point for video streaming. Do not modify the application for video uploads."
             },
             {
               "key": "E",
-              "text": "Create an S3 Multi-Region Access Point. Modify the application to use the Amazon Resource Name (ARN) of the Multi- Region Access Point for video streaming and uploads."
+              "text": "Create an S3 Multi-Region Access Point. Modify the application to use the Amazon Resource Name (ARN) of the Multi-Region Access Point for video streaming and uploads."
             }
           ],
           "correctAnswer": [
@@ -20776,7 +20776,7 @@
             },
             {
               "key": "B",
-              "text": "Use S3 Storage Lens metrics to identify unencrypted S3 buckets. Configure the S3 default encryption feature to use a server- side encryption with AWS KMS keys (SSE-KMS)."
+              "text": "Use S3 Storage Lens metrics to identify unencrypted S3 buckets. Configure the S3 default encryption feature to use a server-side encryption with AWS KMS keys (SSE-KMS)."
             },
             {
               "key": "C",
@@ -21105,7 +21105,7 @@
         {
           "id": 752,
           "topic": 1,
-          "question": "A company has a multi-tier payment processing application that is based on virtual machines (VMs). The communication between the tiers occurs asynchronously through a third-party middleware solution that guarantees exactly-once delivery. The company needs a solution that requires the least amount of infrastructure management. The solution must guarantee exactly- once delivery for application messaging. Which combination of actions will meet these requirements? (Choose two.)",
+          "question": "A company has a multi-tier payment processing application that is based on virtual machines (VMs). The communication between the tiers occurs asynchronously through a third-party middleware solution that guarantees exactly-once delivery. The company needs a solution that requires the least amount of infrastructure management. The solution must guarantee exactly-once delivery for application messaging. Which combination of actions will meet these requirements? (Choose two.)",
           "options": [
             {
               "key": "A",
@@ -21307,7 +21307,7 @@
             },
             {
               "key": "B",
-              "text": "Store newer movie video files in S3 Standard. Store older movie video files in S3 Standard-infrequent Access (S3 Standard- IA). When a user orders an older movie, retrieve the video file by using standard retrieval."
+              "text": "Store newer movie video files in S3 Standard. Store older movie video files in S3 Standard-infrequent Access (S3 Standard-IA). When a user orders an older movie, retrieve the video file by using standard retrieval."
             },
             {
               "key": "C",
@@ -21523,7 +21523,7 @@
         {
           "id": 767,
           "topic": 1,
-          "question": "A pharmaceutical company is developing a new drug. The volume of data that the company generates has grown exponentially over the past few months. The company's researchers regularly require a subset of the entire dataset to be immediately available with minimal lag. However, the entire dataset does not need to be accessed on a daily basis. All the data currently resides in on- premises storage arrays, and the company wants to reduce ongoing capital expenses. Which storage solution should a solutions architect recommend to meet these requirements?",
+          "question": "A pharmaceutical company is developing a new drug. The volume of data that the company generates has grown exponentially over the past few months. The company's researchers regularly require a subset of the entire dataset to be immediately available with minimal lag. However, the entire dataset does not need to be accessed on a daily basis. All the data currently resides in on-premises storage arrays, and the company wants to reduce ongoing capital expenses. Which storage solution should a solutions architect recommend to meet these requirements?",
           "options": [
             {
               "key": "A",
@@ -22062,7 +22062,7 @@
             },
             {
               "key": "B",
-              "text": "Set the home AWS Region in AWS Migration Hub. Use AWS Application Discovery Service to collect data about the on- premises servers."
+              "text": "Set the home AWS Region in AWS Migration Hub. Use AWS Application Discovery Service to collect data about the on-premises servers."
             },
             {
               "key": "C",
@@ -22882,7 +22882,7 @@
         {
           "id": 816,
           "topic": 1,
-          "question": "A company has an on-premises application that uses SFTP to collect financial data from multiple vendors. The company is migrating to the AWS Cloud. The company has created an application that uses Amazon S3 APIs to upload files from vendors. Some vendors run their systems on legacy applications that do not support S3 APIs. The vendors want to continue to use SFTP- based applications to upload data. The company wants to use managed services for the needs of the vendors that use legacy applications. Which solution will meet these requirements with the LEAST operational overhead?",
+          "question": "A company has an on-premises application that uses SFTP to collect financial data from multiple vendors. The company is migrating to the AWS Cloud. The company has created an application that uses Amazon S3 APIs to upload files from vendors. Some vendors run their systems on legacy applications that do not support S3 APIs. The vendors want to continue to use SFTP-based applications to upload data. The company wants to use managed services for the needs of the vendors that use legacy applications. Which solution will meet these requirements with the LEAST operational overhead?",
           "options": [
             {
               "key": "A",
@@ -23091,7 +23091,7 @@
             },
             {
               "key": "C",
-              "text": "Use an Application Load Balancer with a certificate attached from AWS Certificate Manager (ACM). Use query parameter- based routing."
+              "text": "Use an Application Load Balancer with a certificate attached from AWS Certificate Manager (ACM). Use query parameter-based routing."
             },
             {
               "key": "D",
@@ -23253,7 +23253,7 @@
             },
             {
               "key": "C",
-              "text": "Use data from S3 storage class analysis to create S3 Lifecycle rules to automatically transition objects to the S3 Standard- Infrequent Access (S3 Standard-IA) storage class."
+              "text": "Use data from S3 storage class analysis to create S3 Lifecycle rules to automatically transition objects to the S3 Standard-Infrequent Access (S3 Standard-IA) storage class."
             },
             {
               "key": "D",
@@ -23403,7 +23403,7 @@
         {
           "id": 835,
           "topic": 1,
-          "question": "A company is expanding a secure on-premises network to the AWS Cloud by using an AWS Direct Connect connection. The on- premises network has no direct internet access. An application that runs on the on-premises network needs to use an Amazon S3 bucket. Which solution will meet these requirements MOST cost-effectively?",
+          "question": "A company is expanding a secure on-premises network to the AWS Cloud by using an AWS Direct Connect connection. The on-premises network has no direct internet access. An application that runs on the on-premises network needs to use an Amazon S3 bucket. Which solution will meet these requirements MOST cost-effectively?",
           "options": [
             {
               "key": "A",
@@ -24005,7 +24005,7 @@
         {
           "id": 857,
           "topic": 1,
-          "question": "A company plans to run a high performance computing (HPC) workload on Amazon EC2 Instances. The workload requires low- latency network performance and high network throughput with tightly coupled node-to-node communication. Which solution will meet these requirements?",
+          "question": "A company plans to run a high performance computing (HPC) workload on Amazon EC2 Instances. The workload requires low-latency network performance and high network throughput with tightly coupled node-to-node communication. Which solution will meet these requirements?",
           "options": [
             {
               "key": "A",
@@ -24032,7 +24032,7 @@
         {
           "id": 858,
           "topic": 1,
-          "question": "A company has primary and secondary data centers that are 500 miles (804.7 km) apart and interconnected with high-speed fiber- optic cable. The company needs a highly available and secure network connection between its data centers and a VPC on AWS for a mission-critical workload. A solutions architect must choose a connection solution that provides maximum resiliency. Which solution meets these requirements?",
+          "question": "A company has primary and secondary data centers that are 500 miles (804.7 km) apart and interconnected with high-speed fiber-optic cable. The company needs a highly available and secure network connection between its data centers and a VPC on AWS for a mission-critical workload. A solutions architect must choose a connection solution that provides maximum resiliency. Which solution meets these requirements?",
           "options": [
             {
               "key": "A",
@@ -24219,7 +24219,7 @@
             },
             {
               "key": "C",
-              "text": "Create an Aurora read replica in the existing Aurora DB cluster. Update the application to use the replica endpoint for read- only queries and to use the cluster endpoint for write queries."
+              "text": "Create an Aurora read replica in the existing Aurora DB cluster. Update the application to use the replica endpoint for read-only queries and to use the cluster endpoint for write queries."
             },
             {
               "key": "D",
@@ -25243,7 +25243,7 @@
             },
             {
               "key": "D",
-              "text": "Set up an ECS cluster that uses the AWS Fargate launch type. Use Fargate for the cloud application containers and the on- premises application containers."
+              "text": "Set up an ECS cluster that uses the AWS Fargate launch type. Use Fargate for the cloud application containers and the on-premises application containers."
             },
             {
               "key": "E",
@@ -25375,7 +25375,7 @@
         {
           "id": 905,
           "topic": 1,
-          "question": "A company wants to improve the availability and performance of its hybrid application. The application consists of a stateful TCP- based workload hosted on Amazon EC2 instances in different AWS Regions and a stateless UDP-based workload hosted on premises. Which combination of actions should a solutions architect take to improve availability and performance? (Choose two.)",
+          "question": "A company wants to improve the availability and performance of its hybrid application. The application consists of a stateful TCP-based workload hosted on Amazon EC2 instances in different AWS Regions and a stateless UDP-based workload hosted on premises. Which combination of actions should a solutions architect take to improve availability and performance? (Choose two.)",
           "options": [
             {
               "key": "A",
@@ -26078,7 +26078,7 @@
         {
           "id": 930,
           "topic": 1,
-          "question": "A company has an employee web portal. Employees log in to the portal to view payroll details. The company is developing a new system to give employees the ability to upload scanned documents for reimbursement. The company runs a program to extract text-based data from the documents and attach the extracted information to each employee\u2019s reimbursement IDs for processing. The employee web portal requires 100% uptime. The document extract program runs infrequently throughout the day on an on- demand basis. The company wants to build a scalable and cost-effective new system that will require minimal changes to the existing web portal. The company does not want to make any code changes. Which solution will meet these requirements with the LEAST implementation effort?",
+          "question": "A company has an employee web portal. Employees log in to the portal to view payroll details. The company is developing a new system to give employees the ability to upload scanned documents for reimbursement. The company runs a program to extract text-based data from the documents and attach the extracted information to each employee\u2019s reimbursement IDs for processing. The employee web portal requires 100% uptime. The document extract program runs infrequently throughout the day on an on-demand basis. The company wants to build a scalable and cost-effective new system that will require minimal changes to the existing web portal. The company does not want to make any code changes. Which solution will meet these requirements with the LEAST implementation effort?",
           "options": [
             {
               "key": "A",
@@ -26646,7 +26646,7 @@
         {
           "id": 950,
           "topic": 1,
-          "question": "A solutions architect needs to connect a company's corporate network to its VPC to allow on-premises access to its AWS resources. The solution must provide encryption of all traffic between the corporate network and the VPC at the network layer and the session layer. The solution also must provide security controls to prevent unrestricted access between AWS and the on- premises systems. Which solution meets these requirements?",
+          "question": "A solutions architect needs to connect a company's corporate network to its VPC to allow on-premises access to its AWS resources. The solution must provide encryption of all traffic between the corporate network and the VPC at the network layer and the session layer. The solution also must provide security controls to prevent unrestricted access between AWS and the on-premises systems. Which solution meets these requirements?",
           "options": [
             {
               "key": "A",
@@ -26704,7 +26704,7 @@
           "options": [
             {
               "key": "A",
-              "text": "Create a new S3 bucket that uses server-side encryption with AWS KMS multi-Region keys (SSE-KMS). Configure Cross- Region Replication (CRR). Load the data into the new S3 bucket. Use Amazon Athena to query the data."
+              "text": "Create a new S3 bucket that uses server-side encryption with AWS KMS multi-Region keys (SSE-KMS). Configure Cross-Region Replication (CRR). Load the data into the new S3 bucket. Use Amazon Athena to query the data."
             },
             {
               "key": "B",
@@ -26716,7 +26716,7 @@
             },
             {
               "key": "D",
-              "text": "Configure S3 Cross-Region Replication (CRR) on the existing S3 bucket. Use server-side encryption with AWS KMS multi- Region keys (SSE-KMS). Use Amazon RDS to query the data."
+              "text": "Configure S3 Cross-Region Replication (CRR) on the existing S3 bucket. Use server-side encryption with AWS KMS multi-Region keys (SSE-KMS). Use Amazon RDS to query the data."
             }
           ],
           "correctAnswer": [
@@ -27457,7 +27457,7 @@
         {
           "id": 979,
           "topic": 1,
-          "question": "A company is developing a new application that uses a relational database to store user data and application configurations. The company expects the application to have steady user growth. The company expects the database usage to be variable and read- heavy, with occasional writes. The company wants to cost-optimize the database solution. The company wants to use an AWS managed database solution that will provide the necessary performance. Which solution will meet these requirements MOST cost-effectively?",
+          "question": "A company is developing a new application that uses a relational database to store user data and application configurations. The company expects the application to have steady user growth. The company expects the database usage to be variable and read-heavy, with occasional writes. The company wants to cost-optimize the database solution. The company wants to use an AWS managed database solution that will provide the necessary performance. Which solution will meet these requirements MOST cost-effectively?",
           "options": [
             {
               "key": "A",
@@ -27573,7 +27573,7 @@
         {
           "id": 983,
           "topic": 1,
-          "question": "A company hosts its core network services, including directory services and DNS, in its on-premises data center. The data center is connected to the AWS Cloud using AWS Direct Connect (DX). Additional AWS accounts are planned that will require quick, cost- effective, and consistent access to these network services. What should a solutions architect implement to meet these requirements with the LEAST amount of operational overhead?",
+          "question": "A company hosts its core network services, including directory services and DNS, in its on-premises data center. The data center is connected to the AWS Cloud using AWS Direct Connect (DX). Additional AWS accounts are planned that will require quick, cost-effective, and consistent access to these network services. What should a solutions architect implement to meet these requirements with the LEAST amount of operational overhead?",
           "options": [
             {
               "key": "A",
@@ -27589,7 +27589,7 @@
             },
             {
               "key": "D",
-              "text": "Configure AWS Transit Gateway between the accounts. Assign DX to the transit gateway and route network traffic to the on- premises servers."
+              "text": "Configure AWS Transit Gateway between the accounts. Assign DX to the transit gateway and route network traffic to the on-premises servers."
             }
           ],
           "correctAnswer": [
@@ -27772,7 +27772,7 @@
         {
           "id": 990,
           "topic": 1,
-          "question": "A company is planning to migrate a legacy application to AWS. The application currently uses NFS to communicate to an on- premises storage solution to store application data. The application cannot be modified to use any other communication protocols other than NFS for this purpose. Which storage solution should a solutions architect recommend for use after the migration?",
+          "question": "A company is planning to migrate a legacy application to AWS. The application currently uses NFS to communicate to an on-premises storage solution to store application data. The application cannot be modified to use any other communication protocols other than NFS for this purpose. Which storage solution should a solutions architect recommend for use after the migration?",
           "options": [
             {
               "key": "A",
@@ -28116,7 +28116,7 @@
             },
             {
               "key": "C",
-              "text": "Create DynamoDB tables in multiple AWS Regions. Use on-demand capacity mode. Use DynamoDB Streams for Cross- Region Replication between Regions."
+              "text": "Create DynamoDB tables in multiple AWS Regions. Use on-demand capacity mode. Use DynamoDB Streams for Cross-Region Replication between Regions."
             },
             {
               "key": "D",
@@ -28421,7 +28421,7 @@
         {
           "id": 1013,
           "topic": 1,
-          "question": "A company's production environment consists of Amazon EC2 On-Demand Instances that run constantly between Monday and Saturday. The instances must run for only 12 hours on Sunday and cannot tolerate interruptions. The company wants to cost- optimize the production environment. Which solution will meet these requirements MOST cost-effectively?",
+          "question": "A company's production environment consists of Amazon EC2 On-Demand Instances that run constantly between Monday and Saturday. The instances must run for only 12 hours on Sunday and cannot tolerate interruptions. The company wants to cost-optimize the production environment. Which solution will meet these requirements MOST cost-effectively?",
           "options": [
             {
               "key": "A",
@@ -28572,7 +28572,7 @@
             },
             {
               "key": "D",
-              "text": "Use Amazon Cognito to deploy an identity federation solution. Integrate the identity federation solution with the on- premises Active Directory. Use Amazon Cognito to provide access tokens for developers to access AWS accounts and resources."
+              "text": "Use Amazon Cognito to deploy an identity federation solution. Integrate the identity federation solution with the on-premises Active Directory. Use Amazon Cognito to provide access tokens for developers to access AWS accounts and resources."
             }
           ],
           "correctAnswer": [

@@ -3774,19 +3774,19 @@ window.QUESTION_DATA = {
           "options": [
             {
               "key": "A",
-              "text": "Create an ongoing replication task."
+              "text": "Create an ongoing replication task using AWS Database Migration Service (AWS DMS)."
             },
             {
               "key": "B",
-              "text": "Create a database backup of the on-premises database."
+              "text": "Create a database backup of the on-premises PostgreSQL database and restore it to Aurora."
             },
             {
               "key": "C",
-              "text": "Create an AWS Database Migration Service (AWS DMS) replication server."
+              "text": "Create an AWS DMS replication server to manage the migration process."
             },
             {
               "key": "D",
-              "text": "Convert the database schema by using the AWS Schema Conversion Tool (AWS SCT)."
+              "text": "Convert the database schema using the AWS Schema Conversion Tool (AWS SCT)."
             },
             {
               "key": "E",
@@ -4448,8 +4448,8 @@ window.QUESTION_DATA = {
             }
           ],
           "correctAnswer": [
-            "A",
-            "C"
+            "C",
+            "D"
           ],
           "multiple": true
         },
@@ -4788,7 +4788,7 @@ window.QUESTION_DATA = {
         {
           "id": 172,
           "topic": 1,
-          "question": "A solutions architect is creating a new Amazon CloudFront distribution for an application. Some of the information submitted by users is sensitive. The application uses HTTPS but needs another layer of security. The sensitive information should.be protected throughout the entire application stack, and access to the information should be restricted to certain applications. Which action should the solutions architect take?",
+          "question": "A solutions architect is creating a new Amazon CloudFront distribution for an application. Some of the information submitted by users is sensitive. The application uses HTTPS but needs another layer of security. The sensitive information should be protected throughout the entire application stack, and access to the information should be restricted to certain applications. Which action should the solutions architect take?",
           "options": [
             {
               "key": "A",
@@ -4815,7 +4815,7 @@ window.QUESTION_DATA = {
         {
           "id": 173,
           "topic": 1,
-          "question": "A gaming company hosts a browser-based application on AWS. The users of the application consume a large number of videos and images that are stored in Amazon S3. This content is the same for all users. The application has increased in popularity, and millions of users worldwide accessing these media files. The company wants to provide the files to the users while reducing the load on the origin. Which solution meets these requirements MOST cost-effectively?",
+          "question": "A gaming company hosts a browser-based application on AWS. The users of the application consume a large number of videos and images that are stored in Amazon S3. This content is the same for all users. The application has increased in popularity, and millions of users worldwide are accessing these media files. The company wants to provide the files to the users while reducing the load on the origin. Which solution meets these requirements MOST cost-effectively?",
           "options": [
             {
               "key": "A",

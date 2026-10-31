@@ -3795,7 +3795,7 @@ window.QUESTION_DATA = {
           ],
           "correctAnswer": [
             "A",
-            "C"
+            "D"
           ],
           "multiple": true
         },

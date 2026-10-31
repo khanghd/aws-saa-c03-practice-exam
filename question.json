@@ -4440,7 +4440,7 @@
             },
             {
               "key": "D",
-              "text": "Convert the existing public API to a private API. Update the DNS records to redirect users to the new API endpoint."
+              "text": "Convert the existing public API to a private API update the DNS records to redirect users to the new API endpoint."
             },
             {
               "key": "E",

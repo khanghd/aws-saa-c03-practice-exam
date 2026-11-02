@@ -211,6 +211,18 @@ function renderSummary(){
   let h = `<h2 style="margin-top:0">Kết quả</h2>
   <div class="score"><div><b>${pct}%</b><span>Tỉ lệ đúng</span></div><div><b>${ok.length}</b><span>Đúng</span></div><div><b>${bad.length+skip.length}</b><span>Sai / bỏ qua</span></div></div>
   <p style="color:var(--muted);font-size:.9rem">Đề thật cần khoảng 72% (720/1000) để đậu.</p>`;
+  const DOM_ORDER = ["sec","res","perf","cost"];
+  const byDom = {};
+  S.list.forEach(q => {
+    const d = byDom[q.domain] || (byDom[q.domain] = {total:0, ok:0});
+    d.total++;
+    if (S.done[q.id]?.ok) d.ok++;
+  });
+  const domRows = DOM_ORDER.filter(k => byDom[k]).map(k => {
+    const d = byDom[k], p = d.total ? Math.round(d.ok/d.total*100) : 0;
+    return `<tr><td>${esc(DOM[k])}</td><td>${d.ok}/${d.total}</td><td>${p}%</td></tr>`;
+  }).join("");
+  if (domRows) h += `<h3>Theo domain</h3><div class="tblwrap"><table><thead><tr><th>Domain</th><th>Đúng/Tổng</th><th>Tỉ lệ</th></tr></thead><tbody>${domRows}</tbody></table></div>`;
   if (bad.length || skip.length){
     h += `<h3>Câu cần xem lại</h3><ul class="result-list">` + [...bad,...skip].map(q => `<li><a data-id="${q.id}">Q${q.id}</a> — ${esc(q.topic)}${S.done[q.id]?"":" (bỏ qua)"}</li>`).join("") + `</ul>
     <div class="navrow"><button class="btn primary" id="b-retry">Làm lại các câu này</button><button class="btn" id="b-again">Làm lại toàn bộ</button></div>`;

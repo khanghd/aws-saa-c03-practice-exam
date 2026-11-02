@@ -370,6 +370,10 @@
           <div class="mode-title">Luyện theo bộ đề (20 câu/bộ)</div>
           <div class="mode-desc">Chọn 1 trong các Practice Test có sẵn, làm tuần tự 20 câu.</div>
         </button>
+        <button class="mode-btn" id="mode-fullexam">
+          <div class="mode-title">Luyện full đề thi (65 câu/đề)</div>
+          <div class="mode-desc">Các đề thi thử đầy đủ 65 câu (mô phỏng sát đề thi thật), xử lý và giải thích riêng từng đề.</div>
+        </button>
         <button class="mode-btn" id="mode-random">
           <div class="mode-title">Luyện ngẫu nhiên</div>
           <div class="mode-desc">Trộn ngẫu nhiên từ toàn bộ ngân hàng câu hỏi, tự chọn số lượng.</div>
@@ -387,6 +391,15 @@
         <select id="test-select"></select>
         <button class="primary" id="start-test-btn">Bắt đầu</button>
       </div>
+    </div>
+
+    <div class="card" id="panel-fullexam" style="display:none;">
+      <div class="row">
+        <label>Chọn đề:</label>
+        <select id="fullexam-select"></select>
+        <button class="primary" id="start-fullexam-btn">Bắt đầu</button>
+      </div>
+      <div class="small-note">Mỗi đề là một bộ 65 câu được xử lý và giải thích riêng, mở trong trang độc lập.</div>
     </div>
 
     <div class="card" id="panel-random" style="display:none;">
@@ -479,6 +492,11 @@
   const ALL_QUESTIONS = DATA.tests.flatMap(t => t.questions);
   const BY_ID = new Map(ALL_QUESTIONS.map(q => [q.id, q]));
   const STORAGE_KEY = "saa03_wrong_ids_v1";
+
+  // Each full exam is its own self-contained, independently processed 65-question page.
+  const FULL_EXAMS = [
+    { title: "Practice Test 6 (Udemy, 65 câu)", url: "full-exams/practice6.html" },
+  ];
 
   function loadWrongIds() {
     try {
@@ -760,7 +778,7 @@
   function renderStartStats() {
     const explainCount = Object.keys(EXPLANATIONS).length;
     document.getElementById("stats-bar").innerHTML =
-      `Tổng số câu: <b>${ALL_QUESTIONS.length}</b> &nbsp;·&nbsp; Số bộ đề: <b>${DATA.tests.length}</b> &nbsp;·&nbsp; Câu đang sai cần ôn lại: <b>${wrongIds.size}</b> &nbsp;·&nbsp; Câu có giải thích: <b>${explainCount}</b>`;
+      `Tổng số câu: <b>${ALL_QUESTIONS.length}</b> &nbsp;·&nbsp; Số bộ đề: <b>${DATA.tests.length}</b> &nbsp;·&nbsp; Số đề full (65 câu): <b>${FULL_EXAMS.length}</b> &nbsp;·&nbsp; Câu đang sai cần ôn lại: <b>${wrongIds.size}</b> &nbsp;·&nbsp; Câu có giải thích: <b>${explainCount}</b>`;
     document.getElementById("review-count-text").textContent = `Hiện có ${wrongIds.size} câu trong danh sách cần ôn lại.`;
     document.getElementById("start-review-btn").disabled = wrongIds.size === 0;
     document.getElementById("random-max").textContent = ALL_QUESTIONS.length;
@@ -775,14 +793,28 @@
     testSelect.appendChild(opt);
   });
 
+  const fullExamSelect = document.getElementById("fullexam-select");
+  FULL_EXAMS.forEach((ex, i) => {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = ex.title;
+    fullExamSelect.appendChild(opt);
+  });
+
   function togglePanel(name) {
-    ["test", "random", "review"].forEach(n => {
+    ["test", "fullexam", "random", "review"].forEach(n => {
       document.getElementById("panel-" + n).style.display = n === name ? "block" : "none";
     });
   }
   document.getElementById("mode-test").addEventListener("click", () => togglePanel("test"));
+  document.getElementById("mode-fullexam").addEventListener("click", () => togglePanel("fullexam"));
   document.getElementById("mode-random").addEventListener("click", () => togglePanel("random"));
   document.getElementById("mode-review").addEventListener("click", () => togglePanel("review"));
+
+  document.getElementById("start-fullexam-btn").addEventListener("click", () => {
+    const ex = FULL_EXAMS[fullExamSelect.value];
+    if (ex) window.location.href = ex.url;
+  });
 
   document.getElementById("start-test-btn").addEventListener("click", () => {
     const test = DATA.tests.find(t => t.id === testSelect.value);

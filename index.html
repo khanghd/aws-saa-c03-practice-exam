@@ -20,21 +20,22 @@
 <meta name="twitter:image" content="https://khanghd.github.io/aws-saa-c03-practice-exam/assets/og-image.jpg">
 <style>
   :root {
-    --bg: #0f172a;
-    --bg-card: #1e293b;
-    --bg-card-2: #263349;
-    --border: #334155;
-    --text: #e2e8f0;
-    --text-dim: #94a3b8;
-    --accent: #3b82f6;
-    --accent-dim: #1d4ed8;
-    --green: #22c55e;
-    --green-bg: #14532d;
-    --red: #ef4444;
-    --red-bg: #450a0a;
-    --amber: #f59e0b;
-    --purple: #a78bfa;
-    --purple-bg: #2e1065;
+    --bg: #f6f5f1;
+    --bg-card: #ffffff;
+    --bg-card-2: #f0eee8;
+    --border: #dedbd3;
+    --text: #1d1c1a;
+    --text-dim: #6b6862;
+    --accent: #2f5d8a;
+    --accent-dim: #24476b;
+    --green: #2e7d4f;
+    --green-bg: #e2f2e8;
+    --red: #b3412f;
+    --red-bg: #f8e4df;
+    --amber: #9a6a12;
+    --purple: #6d4aa8;
+    --purple-bg: #efe8fb;
+    --purple-text: #4a2f82;
   }
   * { box-sizing: border-box; }
   body {
@@ -84,7 +85,7 @@
     font-size: 15px;
     transition: border-color .15s, background .15s;
   }
-  .mode-btn:hover { border-color: var(--accent); background: #2a3a54; }
+  .mode-btn:hover { border-color: var(--accent); background: #e9e5db; }
   .mode-btn .mode-title { font-weight: 600; margin-bottom: 4px; }
   .mode-btn .mode-desc { color: var(--text-dim); font-size: 13px; }
 
@@ -124,14 +125,14 @@
   button.ghost-purple {
     background: var(--purple-bg);
     border: 1px solid var(--purple);
-    color: #e9d5ff;
+    color: var(--purple-text);
     padding: 10px 16px;
     border-radius: 8px;
     font-size: 14px;
     cursor: pointer;
     font-weight: 600;
   }
-  button.ghost-purple:hover { background: #3b0f8f; }
+  button.ghost-purple:hover { background: #e3d6f7; }
 
   .stats-bar {
     display: flex;
@@ -142,6 +143,8 @@
     margin-bottom: 16px;
   }
   .stats-bar b { color: var(--text); }
+  .stats-bar .stat { white-space: nowrap; }
+  .stats-bar .stat:not(:last-child)::after { content: "·"; margin-left: 16px; color: var(--border); }
 
   /* Quiz screen */
   .quiz-header {
@@ -198,7 +201,7 @@
     transition: border-color .15s, background .15s;
   }
   .option:hover { border-color: var(--accent); }
-  .option.selected { border-color: var(--accent); background: #233350; }
+  .option.selected { border-color: var(--accent); background: #e3ecf5; }
   .option.correct { border-color: var(--green); background: var(--green-bg); }
   .option.incorrect { border-color: var(--red); background: var(--red-bg); }
   .option.disabled { cursor: default; }
@@ -214,8 +217,8 @@
     font-weight: 700;
     font-size: 13px;
   }
-  .option.correct .option-key { background: var(--green); color: #052e13; }
-  .option.incorrect .option-key { background: var(--red); color: #450a0a; }
+  .option.correct .option-key { background: var(--green); color: #ffffff; }
+  .option.incorrect .option-key { background: var(--red); color: #ffffff; }
   .option-text { font-size: 14.5px; line-height: 1.5; padding-top: 3px; }
 
   .feedback {
@@ -225,8 +228,8 @@
     font-size: 14px;
     font-weight: 600;
   }
-  .feedback.correct { background: var(--green-bg); color: #86efac; border: 1px solid var(--green); }
-  .feedback.incorrect { background: var(--red-bg); color: #fca5a5; border: 1px solid var(--red); }
+  .feedback.correct { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+  .feedback.incorrect { background: var(--red-bg); color: var(--red); border: 1px solid var(--red); }
 
   .actions { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; flex-wrap: wrap; }
   .actions-right { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -235,7 +238,7 @@
   .explain-panel {
     margin-top: 16px;
     border: 1px solid var(--purple);
-    background: #1a1035;
+    background: var(--purple-bg);
     border-radius: 12px;
     padding: 18px;
     display: none;
@@ -245,7 +248,7 @@
     font-size: 14.5px;
     line-height: 1.6;
     margin-bottom: 14px;
-    color: #ddd6fe;
+    color: var(--purple-text);
   }
   .explain-section-title {
     font-size: 12.5px;
@@ -260,15 +263,15 @@
     font-size: 14px;
     line-height: 1.6;
     color: var(--text);
-    background: #130a28;
+    background: #f3eefb;
     border-radius: 8px;
     padding: 10px 12px;
   }
   .keyword-chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .keyword-chip {
-    background: #2e1065;
+    background: #ede3fb;
     border: 1px solid var(--purple);
-    color: #e9d5ff;
+    color: var(--purple-text);
     font-size: 12px;
     padding: 4px 10px;
     border-radius: 999px;
@@ -280,21 +283,22 @@
     font-size: 13.5px;
     line-height: 1.55;
     border-left: 3px solid var(--border);
+    background: var(--bg-card);
   }
-  .explain-option.ok { border-left-color: var(--green); background: rgba(34,197,94,.08); }
-  .explain-option.no { border-left-color: var(--red); background: rgba(239,68,68,.06); }
+  .explain-option.ok { border-left-color: var(--green); background: rgba(46,125,79,.08); }
+  .explain-option.no { border-left-color: var(--red); background: rgba(179,65,47,.07); }
   .explain-option .eo-head { font-weight: 700; margin-bottom: 3px; }
-  .explain-option.ok .eo-head { color: #86efac; }
-  .explain-option.no .eo-head { color: #fca5a5; }
+  .explain-option.ok .eo-head { color: var(--green); }
+  .explain-option.no .eo-head { color: var(--red); }
   .explain-tip {
     margin-top: 14px;
-    background: #1e1b4b;
+    background: #f3eefb;
     border: 1px dashed var(--purple);
     border-radius: 8px;
     padding: 10px 12px;
     font-size: 13.5px;
     line-height: 1.6;
-    color: #ddd6fe;
+    color: var(--purple-text);
   }
   .explain-missing {
     font-size: 13px;
@@ -778,7 +782,13 @@
   function renderStartStats() {
     const explainCount = Object.keys(EXPLANATIONS).length;
     document.getElementById("stats-bar").innerHTML =
-      `Tổng số câu: <b>${ALL_QUESTIONS.length}</b> &nbsp;·&nbsp; Số bộ đề: <b>${DATA.tests.length}</b> &nbsp;·&nbsp; Số đề full (65 câu): <b>${FULL_EXAMS.length}</b> &nbsp;·&nbsp; Câu đang sai cần ôn lại: <b>${wrongIds.size}</b> &nbsp;·&nbsp; Câu có giải thích: <b>${explainCount}</b>`;
+      [
+        ["Tổng số câu", ALL_QUESTIONS.length],
+        ["Số bộ đề", DATA.tests.length],
+        ["Số đề full (65 câu)", FULL_EXAMS.length],
+        ["Câu đang sai cần ôn lại", wrongIds.size],
+        ["Câu có giải thích", explainCount],
+      ].map(([label, val]) => `<span class="stat">${label}: <b>${val}</b></span>`).join("");
     document.getElementById("review-count-text").textContent = `Hiện có ${wrongIds.size} câu trong danh sách cần ôn lại.`;
     document.getElementById("start-review-btn").disabled = wrongIds.size === 0;
     document.getElementById("random-max").textContent = ALL_QUESTIONS.length;

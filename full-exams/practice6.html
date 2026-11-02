@@ -43,6 +43,7 @@ select,.btn{font:inherit;font-size:.9rem;border:1px solid var(--border);backgrou
 .opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
 .opt.wrong .k{background:var(--bad);color:#fff}
 .opt .note{display:block;font-size:.85rem;color:var(--muted);margin-top:4px}
+.code{display:block;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82rem;line-height:1.5;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin:6px 0 2px}
 .opt[disabled]{cursor:default}
 .verdict{font-weight:700;margin:14px 0 8px}
 .verdict.ok{color:var(--ok)}.verdict.bad{color:var(--bad)}
@@ -125,6 +126,26 @@ const L = "ABCDEFGH";
 const DOM = DATA.domains;
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const CODE_LINE = l => /^\s*[{}\[\]]/.test(l) || /^\s*"[^"]+"\s*:/.test(l) || /^\s*"[^"]*"\s*,?\s*$/.test(l) || /^\s*-\s/.test(l) || /^\s*[A-Za-z_][\w-]*:\s*(\S.*)?$/.test(l);
+function fmtBlock(s){
+  const lines = String(s).split("\n");
+  let out = "", i = 0;
+  while (i < lines.length){
+    if (CODE_LINE(lines[i])){
+      let j = i;
+      while (j < lines.length && (CODE_LINE(lines[j]) || lines[j].trim()==="")) j++;
+      while (j > i && lines[j-1].trim()==="") j--;
+      out += `<pre class="code">${esc(lines.slice(i,j).join("\n"))}</pre>`;
+      i = j;
+    } else {
+      let j = i;
+      while (j < lines.length && !CODE_LINE(lines[j])) j++;
+      out += lines.slice(i,j).map(esc).join("<br>");
+      i = j;
+    }
+  }
+  return out;
+}
 const same = (a,b) => a.length===b.length && [...a].sort().join()===[...b].sort().join();
 
 $("#sub").textContent = `Practice Test #6 · ${DATA.questions.length} câu (đánh số theo Attempt 44) · câu hỏi viết lại đầy đủ, thứ tự đáp án như đề gốc, giải thích tiếng Việt`;
@@ -169,14 +190,14 @@ function render(){
   let h = `<div class="meta"><span>Câu ${S.i+1}/${S.list.length} · Q${q.id}</span><span>Đã làm ${nDone} · Đúng ${nOk}</span></div>
   <div class="progress"><div style="width:${nDone/S.list.length*100}%"></div></div>
   <div><span class="chip">${esc(DOM[q.domain])}</span>${prev}</div>
-  <p class="qtext">${esc(q.q)}</p>
+  <div class="qtext">${fmtBlock(q.q)}</div>
   ${need>1 ? `<div class="hint">Chọn ${need} đáp án</div>` : ""}
   <div id="opts">`;
   order.forEach((k,pos) => {
     let cls = "opt";
     if (answered){ if (q.ans.includes(k)) cls += " right"; else if (d.sel.includes(k)) cls += " wrong"; }
     else if (S.sel.includes(k)) cls += " sel";
-    h += `<button class="${cls}" data-k="${k}" ${answered?"disabled":""}><span class="k">${L[pos]}</span><span>${esc(q.opts[k])}${answered?`<span class="note">${esc(q.notes[k])}</span>`:""}</span></button>`;
+    h += `<button class="${cls}" data-k="${k}" ${answered?"disabled":""}><span class="k">${L[pos]}</span><div>${fmtBlock(q.opts[k])}${answered?`<span class="note">${esc(q.notes[k])}</span>`:""}</div></button>`;
   });
   h += `</div>`;
   if (answered){

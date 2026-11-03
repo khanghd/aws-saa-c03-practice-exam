@@ -31,6 +31,7 @@ select,.btn{font:inherit;font-size:.9rem;border:1px solid var(--border);backgrou
 .chip{display:inline-block;font-size:.75rem;padding:2px 9px;border-radius:99px;background:var(--surface2);color:var(--muted);margin-right:4px}
 .chip.bad{background:var(--bad-soft);color:var(--bad)}
 .chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
 .qtext{font-size:1.05rem;margin:12px 0 4px;white-space:pre-line}
 .hint{font-size:.85rem;color:var(--warn);margin-bottom:10px}
 .opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;border:1.5px solid var(--border);background:var(--surface);color:var(--text);border-radius:10px;padding:11px 12px;margin:8px 0;cursor:pointer;font:inherit}
@@ -105,6 +106,7 @@ ol.method li{margin:8px 0}
     </label>
     <label><input type="checkbox" id="f-shq"> Trộn câu</label>
     <label><input type="checkbox" id="f-sho"> Trộn đáp án</label>
+    <label><input type="checkbox" id="f-timer" checked> ⏱️ Giới hạn thời gian</label>
     <button class="btn" id="b-start">Bắt đầu lại</button>
   </div>
   <div class="card" id="quiz"></div>
@@ -166,6 +168,33 @@ document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => {
 
 // ---- Quiz state
 let S = {list:[], i:0, sel:[], done:{}, order:{}};
+let timerHandle = null;
+function clearTimer(){ if (timerHandle){ clearInterval(timerHandle); timerHandle = null; } }
+function startTimer(n){
+  clearTimer();
+  const on = $("#f-timer") && $("#f-timer").checked;
+  if (!on || !n){ S.endAt = null; return; }
+  S.endAt = Date.now() + n*120000;
+  timerHandle = setInterval(tickTimer, 1000);
+  tickTimer();
+}
+function tickTimer(){
+  const el = $("#timer");
+  if (!el) return;
+  if (S.endAt == null){ el.style.display = "none"; return; }
+  el.style.display = "";
+  const remain = S.endAt - Date.now();
+  if (remain <= 0){
+    el.textContent = "Hết giờ!"; el.className = "chip bad";
+    clearTimer();
+    S.i = S.list.length;
+    render();
+    return;
+  }
+  const m = Math.floor(remain/60000), sec = Math.floor((remain%60000)/1000);
+  el.textContent = `⏱ ${m}:${String(sec).padStart(2,"0")}`;
+  el.className = "chip" + (remain<120000 ? " bad" : remain<600000 ? " warn" : "");
+}
 
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 
@@ -175,6 +204,7 @@ function start(){
   if ($("#f-shq").checked) qs = shuffle(qs);
   S = {list:qs, i:0, sel:[], done:{}, order:{}};
   qs.forEach(q => S.order[q.id] = $("#f-sho").checked ? shuffle(q.opts.map((_,k)=>k)) : q.opts.map((_,k)=>k));
+  startTimer(qs.length);
   render();
 }
 
@@ -189,7 +219,7 @@ function render(){
   const prev = chip("you1","Lần trước") + chip("you2","Attempt 44") + (q.old===null ? '<span class="chip">Câu mới</span>' : "");
   let h = `<div class="meta"><span>Câu ${S.i+1}/${S.list.length} · Q${q.id}</span><span>Đã làm ${nDone} · Đúng ${nOk}</span></div>
   <div class="progress"><div style="width:${nDone/S.list.length*100}%"></div></div>
-  <div><span class="chip">${esc(DOM[q.domain])}</span>${prev}</div>
+  <div><span class="chip">${esc(DOM[q.domain])}</span>${prev}<span class="chip" id="timer"></span></div>
   <div class="qtext">${fmtBlock(q.q)}</div>
   ${need>1 ? `<div class="hint">Chọn ${need} đáp án</div>` : ""}
   <div id="opts">`;
@@ -219,6 +249,7 @@ function render(){
   </div>
   <div class="grid">${S.list.map((x,j)=>{const r=S.done[x.id];return `<button data-j="${j}" class="${j===S.i?"cur":""} ${r?(r.ok?"ok":"bad"):""}">${x.id}</button>`}).join("")}</div>`;
   box.innerHTML = h;
+  tickTimer();
 
   box.querySelectorAll(".opt").forEach(b => b.onclick = () => {
     const k = +b.dataset.k;
@@ -233,6 +264,7 @@ function render(){
 }
 
 function renderSummary(){
+  clearTimer();
   const ok = S.list.filter(q => S.done[q.id]?.ok), bad = S.list.filter(q => S.done[q.id] && !S.done[q.id].ok), skip = S.list.filter(q => !S.done[q.id]);
   const pct = S.list.length ? Math.round(ok.length/S.list.length*100) : 0;
   let h = `<h2 style="margin-top:0">Kết quả</h2>
@@ -256,12 +288,12 @@ function renderSummary(){
   } else h += `<div class="navrow"><button class="btn primary" id="b-again">Làm lại</button></div>`;
   $("#quiz").innerHTML = h;
   $("#quiz").querySelectorAll(".result-list a").forEach(a => a.onclick = () => { S.i = S.list.findIndex(q=>q.id===+a.dataset.id); render(); });
-  const r = $("#b-retry"); if (r) r.onclick = () => { const ids = new Set([...bad,...skip].map(q=>q.id)); S.list = S.list.filter(q=>ids.has(q.id)); S.i=0; S.done={}; S.sel=[]; render(); };
+  const r = $("#b-retry"); if (r) r.onclick = () => { const ids = new Set([...bad,...skip].map(q=>q.id)); S.list = S.list.filter(q=>ids.has(q.id)); S.i=0; S.done={}; S.sel=[]; startTimer(S.list.length); render(); };
   $("#b-again").onclick = start;
 }
 
 $("#b-start").onclick = start;
-["#f-set","#f-shq","#f-sho"].forEach(s => $(s).onchange = start);
+["#f-set","#f-shq","#f-sho","#f-timer"].forEach(s => $(s).onchange = start);
 
 // ---- Cheat sheet
 function renderCheat(filter=""){

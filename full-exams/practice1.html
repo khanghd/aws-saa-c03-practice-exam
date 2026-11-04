@@ -209,9 +209,11 @@ function render(){
   const q = S.list[S.i], d = S.done[q.id], order = S.order[q.id];
   const answered = !!d, need = q.ans.length;
   const nDone = Object.keys(S.done).length, nOk = Object.values(S.done).filter(x=>x.ok).length;
+  const pctLive = nDone ? Math.round(nOk/nDone*100) : null;
+  const liveCls = pctLive===null ? "" : pctLive>=72 ? "ok" : pctLive>=50 ? "warn" : "bad";
   const chip = (k,name) => st(q,k)===null ? "" : (st(q,k) ? `<span class="chip ok">${name}: đúng</span>` : `<span class="chip bad">${name}: sai</span>`);
   const prev = chip("you1","Đã làm");
-  let h = `<div class="meta"><span>Câu ${S.i+1}/${S.list.length} · Q${q.id}</span><span>Đã làm ${nDone} · Đúng ${nOk}</span></div>
+  let h = `<div class="meta"><span>Câu ${S.i+1}/${S.list.length} · Q${q.id}</span><span>Đã làm ${nDone} · Đúng ${nOk}${pctLive===null?"":` <span class="chip ${liveCls}">${pctLive}%</span>`}</span></div>
   <div class="progress"><div style="width:${nDone/S.list.length*100}%"></div></div>
   <div><span class="chip">${esc(DOM[q.domain])}</span>${prev}<span class="chip" id="timer"></span></div>
   <div class="qtext">${fmtBlock(q.q)}</div>

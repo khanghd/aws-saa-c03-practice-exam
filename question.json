@@ -26469,7 +26469,7 @@
             },
             {
               "key": "C",
-              "text": "Tag all the AWS resources with a key for cost and a value of the application's name. Activate cost allocation tags. Use Cost Explorerto get the desired information."
+              "text": "Tag all the AWS resources with a key for cost and a value of the application's name. Activate cost allocation tags. Use Cost Explorer to get the desired information."
             },
             {
               "key": "D",

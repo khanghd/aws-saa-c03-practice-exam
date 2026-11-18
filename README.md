@@ -22,6 +22,13 @@ Trang web luyện đề nhiều chứng chỉ, chạy hoàn toàn offline (stati
 - Lọc theo Set, theo bộ 30 câu, theo trạng thái (chưa làm/làm sai/đã đánh dấu).
 - Cheat sheet tổng hợp 7 domain thi: [`ccao-f/cheatsheet.html`](ccao-f/cheatsheet.html)
 
+### Claude Certified Architect – Foundations (CCAR-F) — [`ccar-f/`](ccar-f/)
+
+- **Học theo chương**: 11 phần theo 6 chương (blueprint CCAR-F), mỗi phần có key takeaways + kiểm tra nhanh, theo dõi tiến độ qua `localStorage`.
+- **Luyện đề 60 câu** mô phỏng theo 6 scenario, bám sát format đề thi thật (120 phút, 720/1000 điểm đạt).
+- **Luyện đề mở rộng 210 câu** gộp/khử trùng lặp từ 6 bộ đề cộng đồng, lọc theo domain hoặc theo lượt 30 câu.
+- **Quick reference** tổng hợp ngay trong app — không cần file cheat sheet riêng.
+
 ## Cách dùng
 
 Mở trực tiếp `index.html` bằng trình duyệt — không cần cài đặt, không cần server. Chọn chứng chỉ muốn luyện, trang sẽ dẫn vào app riêng của chứng chỉ đó.
@@ -41,11 +48,13 @@ Nếu deploy qua GitHub Pages: bật Pages ở nhánh chứa `index.html`, trang
 | `saa-c03/full-exams/` | 10 full đề thi thử SAA-C03 (65 câu/đề) |
 | `ccao-f/index.html` | App luyện đề CCAO-F |
 | `ccao-f/cheatsheet.html` | Cheat sheet CCAO-F |
+| `ccar-f/index.html` | App học + luyện đề CCAR-F (học theo chương, luyện đề 60/210 câu, quick reference — tất cả trong 1 file) |
 
 ## Nguồn dữ liệu
 
 - **SAA-C03**: câu hỏi tổng hợp từ các bộ đề luyện thi SAA-C03 cộng đồng, đã qua xử lý: sửa lỗi OCR/transcription (text dính chữ, policy JSON bị thiếu do là ảnh trong PDF gốc), đối chiếu và sửa lại các đáp án sai so với phân tích kỹ thuật AWS, bổ sung giải thích.
 - **CCAO-F**: câu hỏi tổng hợp từ nguồn luyện thi cộng đồng (chỉ có câu hỏi + đáp án, không kèm đáp án chính thức) — đáp án đúng và giải thích do AI suy luận dựa trên nội dung chính thức của chứng chỉ, nên đối chiếu lại nếu có kết quả chính thức.
+- **CCAR-F**: nội dung học theo chương tự biên soạn bám theo blueprint CCAR-F; câu hỏi luyện đề gộp/khử trùng lặp từ 6 bộ đề luyện tập cộng đồng, tự phân loại theo domain — là câu hỏi mô phỏng tự biên soạn, không phải đề thi thật.
 
 Đây là tài liệu tự luyện tập cá nhân — không thay thế việc ôn tập bằng tài liệu chính thức của từng chứng chỉ.
 

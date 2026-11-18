@@ -398,6 +398,10 @@
           <div class="mode-title">Ôn lại câu đã làm sai</div>
           <div class="mode-desc">Chỉ luyện những câu bạn từng trả lời sai trước đây.</div>
         </button>
+        <button class="mode-btn" id="mode-cheatsheet">
+          <div class="mode-title">📋 Cheat Sheet</div>
+          <div class="mode-desc">Tổng hợp kiến thức trọng tâm theo 4 domain thi, bẫy thường gặp, bảng từ khóa → dịch vụ.</div>
+        </button>
       </div>
     </div>
 
@@ -522,6 +526,10 @@
     { title: "Practice Test 4 (65 câu)", url: "full-exams/practice4.html" },
     { title: "Practice Test 5 (65 câu)", url: "full-exams/practice5.html" },
     { title: "Practice Test 6 (65 câu)", url: "full-exams/practice6.html" },
+    { title: "Practice Test 7 (65 câu)", url: "full-exams/practice7.html" },
+    { title: "Practice Test 8 (65 câu)", url: "full-exams/practice8.html" },
+    { title: "Practice Test 9 (65 câu)", url: "full-exams/practice9.html" },
+    { title: "Practice Test 10 (65 câu)", url: "full-exams/practice10.html" },
   ];
 
   function loadWrongIds() {
@@ -874,6 +882,9 @@
   document.getElementById("mode-fullexam").addEventListener("click", () => togglePanel("fullexam"));
   document.getElementById("mode-random").addEventListener("click", () => togglePanel("random"));
   document.getElementById("mode-review").addEventListener("click", () => togglePanel("review"));
+  document.getElementById("mode-cheatsheet").addEventListener("click", () => {
+    window.location.href = "cheatsheet.html";
+  });
 
   document.getElementById("start-fullexam-btn").addEventListener("click", () => {
     const ex = FULL_EXAMS[fullExamSelect.value];

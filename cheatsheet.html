@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cheat Sheet SAA-C03 — Luyện đề AWS SAA-C03</title>
+<meta name="description" content="Tổng hợp kiến thức trọng tâm AWS SAA-C03 theo 4 domain thi, kèm các bẫy thường gặp và bảng từ khóa → dịch vụ.">
+<style>
+  :root {
+    --bg: #f6f5f1;
+    --bg-card: #ffffff;
+    --bg-card-2: #f0eee8;
+    --border: #dedbd3;
+    --text: #1d1c1a;
+    --text-dim: #6b6862;
+    --accent: #2f5d8a;
+    --accent-dim: #24476b;
+    --accent-bg: #e3ecf5;
+    --green: #2e7d4f;
+    --green-bg: #e2f2e8;
+    --red: #b3412f;
+    --red-bg: #f8e4df;
+    --amber: #9a6a12;
+    --amber-bg: #fdf0d5;
+    --purple: #6d4aa8;
+    --purple-bg: #efe8fb;
+    --purple-text: #4a2f82;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+    background: var(--bg-card-2);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+  }
+
+  .shell { display: grid; grid-template-columns: 220px minmax(0,1fr); max-width: 1180px; margin: 0 auto; }
+  @media (max-width: 860px) { .shell { grid-template-columns: 1fr; } }
+
+  nav.toc {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    padding: 24px 16px 24px 20px; border-right: 1px solid var(--border);
+  }
+  @media (max-width: 860px) { nav.toc { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); } }
+  nav.toc .back { display: inline-block; font-size: 13px; color: var(--text-dim); text-decoration: none; margin-bottom: 14px; }
+  nav.toc .back:hover { color: var(--text); }
+  nav.toc .brand { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
+  nav.toc .sub { font-size: 11.5px; color: var(--text-dim); margin-bottom: 18px; }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+  nav.toc li { counter-increment: toc; margin-bottom: 1px; }
+  nav.toc a.item {
+    display: flex; gap: 8px; align-items: baseline; text-decoration: none; color: var(--text-dim);
+    font-size: 13px; padding: 5px 8px; border-radius: 8px;
+  }
+  nav.toc a.item:hover { background: var(--bg-card-2); color: var(--text); }
+  nav.toc a.item::before { content: counter(toc, decimal-leading-zero); font-size: 10.5px; color: var(--border); font-weight: 700; }
+
+  main { padding: 24px 28px 90px; }
+  @media (max-width: 600px) { main { padding: 20px 14px 70px; } }
+
+  header.hero {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px;
+    padding-bottom: 18px; margin-bottom: 26px; border-bottom: 1px solid var(--border);
+  }
+  header.hero h1 { font-size: 22px; margin: 0 0 4px; }
+  header.hero .tagline { color: var(--text-dim); font-size: 13.5px; max-width: 48ch; }
+  .weights { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-start; }
+  .weight-pill {
+    display: flex; flex-direction: column; gap: 2px; padding: 7px 11px; border-radius: 10px;
+    font-size: 11.5px; min-width: 82px; border: 1px solid transparent;
+  }
+  .weight-pill b { font-size: 16px; }
+  .w-secure { background: var(--red-bg); color: var(--red); }
+  .w-resilient { background: var(--green-bg); color: var(--green); }
+  .w-perf { background: var(--accent-bg); color: var(--accent); }
+  .w-cost { background: var(--amber-bg); color: var(--amber); }
+
+  section { margin-bottom: 34px; scroll-margin-top: 14px; }
+  section > h2 {
+    display: flex; align-items: center; gap: 10px; font-size: 17px; margin: 0 0 12px;
+    padding-bottom: 7px; border-bottom: 2px solid var(--border);
+  }
+  section > h2 .tag {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 5px;
+  }
+  h3 { font-size: 14px; margin: 18px 0 7px; }
+  p { margin: 6px 0; font-size: 13.5px; line-height: 1.6; }
+  .lead { color: var(--text-dim); font-size: 13px; margin: -4px 0 12px; }
+
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-card); }
+  table { width: 100%; border-collapse: collapse; font-size: 12.8px; }
+  th, td { padding: 8px 11px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg-card-2); font-size: 11px; text-transform: uppercase; letter-spacing: .03em; color: var(--text-dim); font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child, th:first-child { font-weight: 600; white-space: nowrap; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 13px 15px; }
+  .card h4 { margin: 0 0 6px; font-size: 13px; }
+  .card ul { margin: 4px 0 0; padding-left: 18px; font-size: 12.8px; }
+  .card li { margin-bottom: 3px; }
+
+  .trap {
+    background: var(--purple-bg); border: 1px solid var(--purple); border-left: 3px solid var(--purple);
+    border-radius: 0 10px 10px 0; padding: 9px 13px; margin: 8px 0; font-size: 13px; color: var(--purple-text); line-height: 1.55;
+  }
+  .trap b { color: var(--purple-text); }
+
+  .kw { display: grid; grid-template-columns: repeat(auto-fill, minmax(225px,1fr)); gap: 8px; margin-top: 6px; }
+  .kw div { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; }
+  .kw div b { display: block; color: var(--accent); font-size: 11.8px; margin-bottom: 2px; }
+
+  footer.page-footer {
+    color: var(--text-dim); font-size: 12px; text-align: center; padding: 18px 0 0;
+    border-top: 1px solid var(--border); margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="toc">
+    <a class="back" href="index.html">&larr; Về trang chính</a>
+    <div class="brand">Cheat Sheet SAA-C03</div>
+    <div class="sub">Tổng hợp trọng tâm 4 domain thi</div>
+    <ol>
+      <li><a class="item" href="#storage">Lưu trữ (S3/EBS/EFS/FSx)</a></li>
+      <li><a class="item" href="#compute">Compute &amp; Auto Scaling</a></li>
+      <li><a class="item" href="#database">Cơ sở dữ liệu</a></li>
+      <li><a class="item" href="#network">Mạng &amp; phân phối</a></li>
+      <li><a class="item" href="#security">Bảo mật &amp; IAM</a></li>
+      <li><a class="item" href="#integration">Nhắn tin &amp; tích hợp</a></li>
+      <li><a class="item" href="#resilience">Resilience &amp; DR</a></li>
+      <li><a class="item" href="#cost">Tối ưu chi phí</a></li>
+      <li><a class="item" href="#ops">Giám sát &amp; vận hành</a></li>
+      <li><a class="item" href="#traps">Bẫy thường gặp</a></li>
+      <li><a class="item" href="#keywords">Từ khóa → Dịch vụ</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div>
+        <h1>AWS SAA-C03 — Cheat Sheet</h1>
+        <div class="tagline">Ôn nhanh trước giờ thi. Đọc lướt một lượt từ trên xuống, chỗ nào yếu thì bấm mục lục để nhảy tới.</div>
+      </div>
+      <div class="weights">
+        <div class="weight-pill w-secure"><b>30%</b>Secure Architectures</div>
+        <div class="weight-pill w-resilient"><b>26%</b>Resilient Architectures</div>
+        <div class="weight-pill w-perf"><b>24%</b>High-Performing</div>
+        <div class="weight-pill w-cost"><b>20%</b>Cost-Optimized</div>
+      </div>
+    </header>
+
+    <section id="storage">
+      <h2>Lưu trữ <span class="tag" style="background:var(--accent-bg);color:var(--accent)">Performing</span></h2>
+      <p class="lead">S3 là dịch vụ ra nhiều nhất trong đề. Phải thuộc storage class, và biết khi nào EBS/EFS/FSx thắng S3.</p>
+
+      <h3>Các storage class của S3</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Class</th><th>Tốc độ truy xuất</th><th>Thời gian lưu tối thiểu</th><th>Dùng khi nào</th></tr>
+        <tr><td>Standard</td><td>Tức thì</td><td>—</td><td>Truy cập thường xuyên</td></tr>
+        <tr><td>Intelligent-Tiering</td><td>Tức thì</td><td>—</td><td>Pattern truy cập không rõ/thay đổi, không phí retrieval</td></tr>
+        <tr><td>Standard-IA</td><td>Tức thì</td><td>30 ngày</td><td>Ít truy cập nhưng cần lấy nhanh</td></tr>
+        <tr><td>One Zone-IA</td><td>Tức thì</td><td>30 ngày</td><td>Dữ liệu có thể tạo lại, chỉ 1 AZ</td></tr>
+        <tr><td>Glacier Instant Retrieval</td><td>Tức thì (ms)</td><td>90 ngày</td><td>Archive, truy cập ~1 lần/quý</td></tr>
+        <tr><td>Glacier Flexible Retrieval</td><td>Vài phút–12 giờ (Expedited/Std/Bulk)</td><td>90 ngày</td><td>Archive, thỉnh thoảng cần lấy</td></tr>
+        <tr><td>Glacier Deep Archive</td><td>12–48 giờ</td><td>180 ngày</td><td>Rẻ nhất, lưu trữ dài hạn (compliance)</td></tr>
+      </table></div>
+
+      <h3>Block vs file vs object</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Dịch vụ</th><th>Loại</th><th>Phạm vi attach</th><th>Điểm cần nhớ</th></tr>
+        <tr><td>EBS</td><td>Block</td><td>1 EC2, cùng AZ</td><td>io2 Block Express latency sub-ms; gp3 tách IOPS/throughput khỏi size</td></tr>
+        <tr><td>Instance Store</td><td>Block</td><td>1 EC2, ephemeral</td><td>IOPS cao nhất, mất dữ liệu khi stop/terminate</td></tr>
+        <tr><td>EFS</td><td>File (NFS)</td><td>Nhiều EC2, multi-AZ</td><td>Chỉ Linux; tự scale; có Standard-IA để tiết kiệm</td></tr>
+        <tr><td>FSx for Windows</td><td>File (SMB)</td><td>Nhiều instance</td><td>Tích hợp sẵn Windows AD</td></tr>
+        <tr><td>FSx for Lustre</td><td>File</td><td>Nhiều instance</td><td>HPC/ML, liên kết trực tiếp với S3</td></tr>
+        <tr><td>S3</td><td>Object</td><td>Qua API</td><td>Không mount được như filesystem thông thường</td></tr>
+      </table></div>
+
+      <div class="grid2">
+        <div class="card"><h4>Mã hóa S3</h4><ul>
+          <li><b>SSE-S3</b> — AWS tự quản lý key, AES-256</li>
+          <li><b>SSE-KMS</b> — key do khách hàng quản lý, có audit trail qua CloudTrail, có quota request (dùng S3 Bucket Keys để giảm số lần gọi KMS)</li>
+          <li><b>SSE-C</b> — khách hàng tự cung cấp key, AWS không lưu key</li>
+          <li><b>Client-side</b> — mã hóa trước khi upload</li>
+        </ul></div>
+        <div class="card"><h4>Transfer / access S3</h4><ul>
+          <li>Transfer Acceleration → upload nhanh qua edge location cho khoảng cách xa</li>
+          <li>Multipart upload cho file &gt;100MB (bắt buộc khi &gt;5GB)</li>
+          <li>Pre-signed URL → cấp quyền truy cập tạm thời mà không đổi bucket policy</li>
+          <li>S3 Object Lambda → biến đổi dữ liệu ngay khi GET, không cần tạo bản sao</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="compute">
+      <h2>Compute &amp; Auto Scaling <span class="tag" style="background:var(--accent-bg);color:var(--accent)">Performing</span></h2>
+
+      <h3>Các hình thức mua EC2</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Loại</th><th>Mức giảm giá</th><th>Phù hợp khi</th></tr>
+        <tr><td>On-Demand</td><td>—</td><td>Ngắn hạn, khó dự đoán, không thể bị gián đoạn</td></tr>
+        <tr><td>Reserved (Standard/Convertible)</td><td>đến ~72%</td><td>Tải ổn định, cam kết 1–3 năm</td></tr>
+        <tr><td>Savings Plans</td><td>đến ~72%</td><td>Cam kết compute linh hoạt trên EC2/Fargate/Lambda</td></tr>
+        <tr><td>Spot</td><td>đến ~90%</td><td>Chịu được gián đoạn, batch/HPC không cần stateful</td></tr>
+        <tr><td>Dedicated Host/Instance</td><td>—</td><td>Cần license (BYOL) hoặc cách ly phần cứng vì compliance</td></tr>
+      </table></div>
+
+      <h3>Placement group</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Loại</th><th>Đặc điểm</th></tr>
+        <tr><td>Cluster</td><td>Cùng 1 AZ, latency thấp/throughput cao — HPC</td></tr>
+        <tr><td>Spread</td><td>Tối đa 7 instance/AZ, mỗi instance trên phần cứng riêng — instance nhỏ nhưng quan trọng</td></tr>
+        <tr><td>Partition</td><td>Nhóm instance trên các rack riêng biệt — hệ phân tán lớn (HDFS, Kafka, Cassandra)</td></tr>
+      </table></div>
+
+      <div class="trap"><b>Bẫy:</b> Spot instance bị thu hồi với cảnh báo trước 2 phút — phải thiết kế checkpoint hoặc dùng Spot Fleet đa dạng pool, không dùng cho workload stateful mà không có cơ chế lưu trạng thái.</div>
+    </section>
+
+    <section id="database">
+      <h2>Cơ sở dữ liệu <span class="tag" style="background:var(--accent-bg);color:var(--accent)">Performing</span></h2>
+
+      <h3>RDS Multi-AZ vs Read Replica</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th></th><th>Multi-AZ</th><th>Read Replica</th></tr>
+        <tr><td>Mục đích</td><td>High availability (standby đồng bộ)</td><td>Scale read (bất đồng bộ)</td></tr>
+        <tr><td>Failover</td><td>Tự động</td><td>Phải tự promote</td></tr>
+        <tr><td>Đọc được không?</td><td>Không (standby không dùng để đọc)</td><td>Có</td></tr>
+        <tr><td>Cross-region?</td><td>Không</td><td>Có (Aurora &amp; hầu hết engine)</td></tr>
+      </table></div>
+
+      <h3>DynamoDB — cần nhớ</h3>
+      <div class="grid2">
+        <div class="card"><ul>
+          <li>On-Demand → tải khó đoán, trả theo request</li>
+          <li>Provisioned + Auto Scaling → tải ổn định dự đoán được, rẻ hơn khi scale lớn</li>
+          <li>GSI → partition/sort key khác, chỉ eventually consistent</li>
+          <li>LSI → cùng partition key, sort key khác, phải tạo ngay lúc tạo bảng</li>
+        </ul></div>
+        <div class="card"><ul>
+          <li>DAX → cache in-memory, đọc ở mức microsecond, tương thích API</li>
+          <li>Global Tables → replicate multi-region active-active</li>
+          <li>TTL → tự xóa item hết hạn, miễn phí</li>
+          <li>Streams → bắt thay đổi dữ liệu → trigger Lambda</li>
+        </ul></div>
+      </div>
+
+      <h3>Caching &amp; các kho dữ liệu khác</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Dịch vụ</th><th>Điểm cần nhớ</th></tr>
+        <tr><td>ElastiCache Redis</td><td>Có persistence, Multi-AZ, replication, pub/sub, sorted set — dùng làm session store/leaderboard</td></tr>
+        <tr><td>ElastiCache Memcached</td><td>Đơn giản, multi-threaded, không persistence/replication — thuần object cache</td></tr>
+        <tr><td>Aurora</td><td>6 bản copy trên 3 AZ, storage tự scale tới 128TB, tối đa 15 read replica, Global Database cho DR cross-region (lag &lt;1s)</td></tr>
+        <tr><td>Redshift</td><td>Data warehouse OLAP, columnar, dùng Spectrum để query trực tiếp S3</td></tr>
+      </table></div>
+    </section>
+
+    <section id="network">
+      <h2>Mạng &amp; phân phối nội dung <span class="tag" style="background:var(--accent-bg);color:var(--accent)">Performing</span></h2>
+
+      <h3>Kết nối VPC/on-prem</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Phương án</th><th>Mô hình</th><th>Ghi chú</th></tr>
+        <tr><td>VPC Peering</td><td>1:1</td><td>Không routing transitive, CIDR không được trùng</td></tr>
+        <tr><td>Transit Gateway</td><td>Hub-and-spoke</td><td>Routing transitive giữa nhiều VPC/VPN, theo region (có thể peer cross-region)</td></tr>
+        <tr><td>PrivateLink</td><td>Service-to-VPC</td><td>Truy cập private tới service mà không cần peering/IGW/NAT, không lo CIDR trùng</td></tr>
+        <tr><td>Site-to-Site VPN</td><td>On-prem↔VPC</td><td>Qua internet, IPsec, setup nhanh</td></tr>
+        <tr><td>Direct Connect</td><td>On-prem↔AWS</td><td>Đường truyền riêng, độ trễ thấp ổn định, setup lâu hơn; kết hợp VPN để mã hóa</td></tr>
+      </table></div>
+
+      <h3>Security Group vs NACL</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th></th><th>Security Group</th><th>Network ACL</th></tr>
+        <tr><td>Phạm vi</td><td>Instance (ENI)</td><td>Subnet</td></tr>
+        <tr><td>Trạng thái</td><td>Stateful</td><td>Stateless (phải khai báo rõ cả inbound lẫn outbound)</td></tr>
+        <tr><td>Rule</td><td>Chỉ Allow</td><td>Allow &amp; Deny, đánh giá theo thứ tự số rule</td></tr>
+      </table></div>
+
+      <h3>Load balancer</h3>
+      <div class="grid2">
+        <div class="card"><h4>ALB</h4><ul><li>Layer 7, HTTP/HTTPS, routing theo path/host</li><li>WebSocket, target là container/Lambda</li></ul></div>
+        <div class="card"><h4>NLB</h4><ul><li>Layer 4, độ trễ cực thấp, hỗ trợ static IP/EIP</li><li>Hàng triệu request/giây, TCP/UDP</li></ul></div>
+      </div>
+
+      <h3>Route 53 — routing policy</h3>
+      <p><b>Simple</b> · <b>Weighted</b> (A/B, chia % traffic) · <b>Latency-based</b> (region độ trễ thấp nhất) · <b>Failover</b> (active-passive + health check) · <b>Geolocation</b> (theo vị trí user, compliance) · <b>Geoproximity</b> (thiên lệch theo khoảng cách, cần Traffic Flow) · <b>Multivalue</b> (LB đơn giản phía client + health check)</p>
+
+      <h3>CloudFront</h3>
+      <p>Dùng <b>Origin Access Control (OAC)</b> để chỉ cho CloudFront truy cập origin S3. Signed URL/Cookie cho nội dung private theo user/path. Field-level encryption cho field nhạy cảm trong form. Lambda@Edge / CloudFront Functions để xử lý request/response ngay tại edge.</p>
+    </section>
+
+    <section id="security">
+      <h2>Bảo mật &amp; IAM <span class="tag" style="background:var(--red-bg);color:var(--red)">Secure</span></h2>
+
+      <h3>Secrets &amp; key</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Dịch vụ</th><th>Điểm cần nhớ</th></tr>
+        <tr><td>Secrets Manager</td><td>Tự động rotate (có sẵn cho RDS/Redshift/DocumentDB), tốn phí hơn</td></tr>
+        <tr><td>SSM Parameter Store</td><td>Free tier (Standard), không tự rotate, phù hợp config + secret ít nhạy cảm</td></tr>
+        <tr><td>KMS</td><td>Envelope encryption, key policy kiểm soát quyền truy cập, CMK mã hóa trực tiếp ≤4KB; dùng data key cho payload lớn</td></tr>
+        <tr><td>CloudHSM</td><td>HSM single-tenant riêng, FIPS 140-2 Level 3, tự quản lý key hoàn toàn</td></tr>
+      </table></div>
+
+      <h3>Identity</h3>
+      <div class="grid2">
+        <div class="card"><h4>IAM Role vs User</h4><ul>
+          <li>Role → credential tạm thời (STS), được assume bởi service/app/federated user — không hardcode key trên EC2</li>
+          <li>Truy cập cross-account → dùng role + trust policy, không dùng chung IAM user</li>
+        </ul></div>
+        <div class="card"><h4>Cognito</h4><ul>
+          <li>User Pools → đăng ký/đăng nhập, directory người dùng</li>
+          <li>Identity Pools → cấp credential AWS tạm thời cho user của app (kể cả guest)</li>
+        </ul></div>
+      </div>
+
+      <h3>Guardrail toàn tổ chức</h3>
+      <p><b>SCP</b> (Organizations) giới hạn mức permission tối đa — SCP không bao giờ <i>cấp</i> quyền, chỉ hạn chế. <b>Permission boundary</b> giới hạn mức permission tối đa của 1 entity IAM. <b>WAF</b> = lọc Layer 7 (SQLi/XSS, rate-based rule) gắn vào ALB/CloudFront/API GW. <b>Shield Standard</b> = miễn phí, tự động chống DDoS; <b>Shield Advanced</b> = trả phí, chống DDoS L3/4 + bảo vệ chi phí + DRT 24/7.</p>
+
+      <div class="trap"><b>Bẫy:</b> "Policy khắt khe nhất thắng" — explicit Deny luôn override Allow, áp dụng cho mọi loại policy (IAM, SCP, resource policy, permission boundary).</div>
+    </section>
+
+    <section id="integration">
+      <h2>Nhắn tin &amp; tích hợp <span class="tag" style="background:var(--green-bg);color:var(--green)">Resilient</span></h2>
+      <div class="tbl-wrap"><table>
+        <tr><th>Dịch vụ</th><th>Mô hình</th><th>Điểm cần nhớ</th></tr>
+        <tr><td>SQS Standard</td><td>Queue (pull)</td><td>At-least-once, thứ tự best-effort, throughput gần như không giới hạn</td></tr>
+        <tr><td>SQS FIFO</td><td>Queue (pull)</td><td>Exactly-once, thứ tự nghiêm ngặt, 300/3000 (batch) msg/giây</td></tr>
+        <tr><td>SNS</td><td>Pub/Sub (push)</td><td>Fan-out tới SQS/Lambda/HTTP/email/SMS</td></tr>
+        <tr><td>Kinesis Data Streams</td><td>Streaming</td><td>Real-time, có thứ tự theo shard, replay trong retention, tự viết consumer</td></tr>
+        <tr><td>Kinesis Firehose</td><td>Streaming</td><td>Near-real-time, tự deliver tới S3/Redshift/OpenSearch, không cần code consumer</td></tr>
+        <tr><td>Step Functions</td><td>Orchestration</td><td>State machine trực quan cho workflow nhiều bước, có sẵn retry/catch</td></tr>
+        <tr><td>EventBridge</td><td>Event bus</td><td>Event từ SaaS/AWS service, schema registry, routing theo rule</td></tr>
+        <tr><td>SQS + ASG</td><td>Decoupling</td><td>Scale consumer theo <code>ApproximateNumberOfMessagesVisible</code>; dùng DLQ cho message lỗi</td></tr>
+      </table></div>
+    </section>
+
+    <section id="resilience">
+      <h2>Resilience &amp; DR <span class="tag" style="background:var(--green-bg);color:var(--green)">Resilient</span></h2>
+      <div class="tbl-wrap"><table>
+        <tr><th>Chiến lược</th><th>RPO/RTO</th><th>Chi phí</th><th>Mô tả</th></tr>
+        <tr><td>Backup &amp; Restore</td><td>Vài giờ</td><td>$</td><td>Snapshot/AMI sang region khác, restore khi có sự cố</td></tr>
+        <tr><td>Pilot Light</td><td>~10 phút</td><td>$$</td><td>Thành phần lõi (thường là DB) luôn chạy ở mức tối thiểu; scale phần còn lại khi failover</td></tr>
+        <tr><td>Warm Standby</td><td>Vài phút</td><td>$$$</td><td>Toàn bộ stack luôn chạy ở mức thu nhỏ; scale lên khi failover</td></tr>
+        <tr><td>Multi-Site Active-Active</td><td>~0 (vài giây)</td><td>$$$$</td><td>Stack đầy đủ chạy ở 2+ region, Route 53 route traffic tới cả hai</td></tr>
+      </table></div>
+      <p class="lead">RPO = chấp nhận mất tối đa bao nhiêu dữ liệu. RTO = phải phục hồi nhanh tới mức nào.</p>
+    </section>
+
+    <section id="cost">
+      <h2>Tối ưu chi phí <span class="tag" style="background:var(--amber-bg);color:var(--amber)">Cost</span></h2>
+      <div class="grid2">
+        <div class="card"><h4>Công cụ</h4><ul>
+          <li>Cost Explorer → trực quan hóa/dự báo chi phí</li>
+          <li>Trusted Advisor → tài nguyên idle, EBS dùng ít, kiểm tra bảo mật</li>
+          <li>Compute Optimizer → gợi ý rightsizing</li>
+          <li>AWS Budgets → cảnh báo theo ngưỡng</li>
+        </ul></div>
+        <div class="card"><h4>Quy tắc cần nhớ</h4><ul>
+          <li>Tải ổn định 24/7 → Reserved/Savings Plan</li>
+          <li>Có thể gián đoạn/batch → Spot</li>
+          <li>Lifecycle rule S3 để tự transition/expire</li>
+          <li>NAT Gateway tính phí theo giờ + GB — gộp bớt nếu cần tiết kiệm (nhưng mất tính cách ly theo AZ)</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="ops">
+      <h2>Giám sát &amp; vận hành <span class="tag" style="background:var(--green-bg);color:var(--green)">Resilient</span></h2>
+      <p><b>CloudWatch</b> = metric, alarm, log, dashboard (hiệu năng/vận hành, "đang xảy ra gì"). <b>CloudTrail</b> = lịch sử gọi API/audit ("ai đã làm gì" — governance/compliance). <b>Config</b> = lịch sử cấu hình resource &amp; rule compliance theo thời gian ("cái gì đã thay đổi, có compliant không"). <b>X-Ray</b> = distributed tracing giữa các microservice.</p>
+    </section>
+
+    <section id="traps">
+      <h2>Bẫy thường gặp trong đề thi</h2>
+      <div class="trap"><b>"Tiết kiệm chi phí nhất" + tải ổn định</b> → Reserved/Savings Plan, không phải Spot (Spot dành cho fault-tolerant/linh hoạt, không phải cứ rẻ là chọn).</div>
+      <div class="trap"><b>"Ít operational overhead nhất"</b> → luôn trỏ tới dịch vụ managed (Aurora Serverless, Fargate, DynamoDB) thay vì dịch vụ tự quản lý.</div>
+      <div class="trap"><b>Static website + HTTPS + custom domain</b> → S3 static hosting + CloudFront + ACM, không dùng S3 website endpoint đơn thuần cho HTTPS.</div>
+      <div class="trap"><b>"Cross-account" hoặc "cross-region" access</b> → nghĩ tới IAM role + STS AssumeRole hoặc Resource Policy, không phải chia sẻ credential.</div>
+      <div class="trap"><b>"Mã hóa volume EBS chưa mã hóa"</b> → không mã hóa in-place được: tạo snapshot → copy snapshot kèm mã hóa → tạo volume mới.</div>
+      <div class="trap"><b>Lambda trong VPC cần internet</b> → vẫn cần NAT Gateway ở private subnet; nằm trong VPC không tự nhiên có internet.</div>
+      <div class="trap"><b>Failover DB dưới 1 giây</b> → Aurora Global Database / Multi-AZ, không phải read replica (replica async + phải promote thủ công).</div>
+      <div class="trap"><b>"Session phải sống sót khi instance chết" / tầng ASG stateless</b> → đẩy session ra ElastiCache/DynamoDB, không chỉ dựa vào sticky session.</div>
+    </section>
+
+    <section id="keywords">
+      <h2>Từ khóa → Dịch vụ</h2>
+      <p class="lead">Khi đề bài dùng một trong các cụm từ này, thường là đang gợi ý tới dịch vụ đi kèm.</p>
+      <div class="kw">
+        <div><b>"Serverless, event-driven"</b>Lambda + EventBridge/S3 events</div>
+        <div><b>"Hàng triệu file nhỏ, độ bền cao"</b>S3</div>
+        <div><b>"Key-value, độ trễ mili-giây"</b>DynamoDB</div>
+        <div><b>"Cache đọc mức microsecond"</b>DAX</div>
+        <div><b>"Shared filesystem POSIX, Linux, multi-AZ"</b>EFS</div>
+        <div><b>"Scratch storage cho HPC/ML từ S3"</b>FSx for Lustre</div>
+        <div><b>"Tách rời producer/consumer"</b>SQS</div>
+        <div><b>"Fan-out tới nhiều subscriber"</b>SNS</div>
+        <div><b>"Clickstream real-time / replay có thứ tự"</b>Kinesis Data Streams</div>
+        <div><b>"Orchestrate nhiều bước có retry"</b>Step Functions</div>
+        <div><b>"Kết nối private tới service, không NAT/IGW"</b>PrivateLink / VPC Endpoint</div>
+        <div><b>"Routing transitive nhiều VPC"</b>Transit Gateway</div>
+        <div><b>"Kết nối riêng, ổn định tới on-prem"</b>Direct Connect</div>
+        <div><b>"Chống SQLi/XSS ở edge"</b>WAF</div>
+        <div><b>"Quản lý policy tập trung multi-account"</b>Organizations + SCP</div>
+        <div><b>"Tự động xoay vòng DB credential"</b>Secrets Manager</div>
+        <div><b>"RPO gần như 0 giữa các region"</b>Aurora Global Database</div>
+        <div><b>"Archive dài hạn rẻ nhất, hiếm khi restore"</b>Glacier Deep Archive</div>
+        <div><b>"Gợi ý rightsizing / tài nguyên idle"</b>Trusted Advisor / Compute Optimizer</div>
+        <div><b>"Query dữ liệu S3 bằng SQL, không cần ETL"</b>Athena</div>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      Chúc thi tốt chiều nay — đọc kỹ từ khóa ràng buộc (chi phí, overhead, độ trễ, độ bền) trong đề trước khi chọn dịch vụ.
+    </footer>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cheat Sheet CCAO-F — Claude Certified Associate Foundations</title>
+<meta name="description" content="Tổng hợp kiến thức trọng tâm CCAO-F (Claude Certified Associate Foundations) theo 7 domain thi, kèm bẫy thường gặp và từ vựng hay gặp trong đề.">
+<style>
+  :root {
+    --bg: #f6f5f1;
+    --bg-card: #ffffff;
+    --bg-card-2: #f0eee8;
+    --border: #dedbd3;
+    --text: #1d1c1a;
+    --text-dim: #6b6862;
+    --accent: #2f5d8a;
+    --accent-dim: #24476b;
+    --accent-bg: #e3ecf5;
+    --green: #2e7d4f;
+    --green-bg: #e2f2e8;
+    --red: #b3412f;
+    --red-bg: #f8e4df;
+    --amber: #9a6a12;
+    --amber-bg: #fdf0d5;
+    --purple: #6d4aa8;
+    --purple-bg: #efe8fb;
+    --purple-text: #4a2f82;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+    background: var(--bg-card-2);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+  }
+
+  .shell { display: grid; grid-template-columns: 220px minmax(0,1fr); max-width: 1180px; margin: 0 auto; }
+  @media (max-width: 860px) { .shell { grid-template-columns: 1fr; } }
+
+  nav.toc {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    padding: 24px 16px 24px 20px; border-right: 1px solid var(--border);
+  }
+  @media (max-width: 860px) { nav.toc { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); } }
+  nav.toc .back { display: block; font-size: 13px; color: var(--text-dim); text-decoration: none; margin-bottom: 4px; }
+  nav.toc .back:hover { color: var(--text); }
+  nav.toc .brand { font-weight: 700; font-size: 15px; margin: 10px 0 2px; }
+  nav.toc .sub { font-size: 11.5px; color: var(--text-dim); margin-bottom: 18px; }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+  nav.toc li { counter-increment: toc; margin-bottom: 1px; }
+  nav.toc a.item {
+    display: flex; gap: 8px; align-items: baseline; text-decoration: none; color: var(--text-dim);
+    font-size: 13px; padding: 5px 8px; border-radius: 8px;
+  }
+  nav.toc a.item:hover { background: var(--bg-card-2); color: var(--text); }
+  nav.toc a.item::before { content: counter(toc, decimal-leading-zero); font-size: 10.5px; color: var(--border); font-weight: 700; }
+
+  main { padding: 24px 28px 90px; }
+  @media (max-width: 600px) { main { padding: 20px 14px 70px; } }
+
+  header.hero {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px;
+    padding-bottom: 18px; margin-bottom: 26px; border-bottom: 1px solid var(--border);
+  }
+  header.hero h1 { font-size: 22px; margin: 0 0 4px; }
+  header.hero .tagline { color: var(--text-dim); font-size: 13.5px; max-width: 48ch; }
+  .weights { display: flex; gap: 6px; flex-wrap: wrap; align-items: flex-start; max-width: 480px; }
+  .weight-pill {
+    display: flex; flex-direction: column; gap: 2px; padding: 6px 9px; border-radius: 10px;
+    font-size: 10.8px; min-width: 76px; border: 1px solid transparent;
+  }
+  .weight-pill b { font-size: 15px; }
+  .w-blue { background: var(--accent-bg); color: var(--accent); }
+  .w-red { background: var(--red-bg); color: var(--red); }
+  .w-amber { background: var(--amber-bg); color: var(--amber); }
+  .w-green { background: var(--green-bg); color: var(--green); }
+
+  section { margin-bottom: 34px; scroll-margin-top: 14px; }
+  section > h2 {
+    display: flex; align-items: center; gap: 10px; font-size: 17px; margin: 0 0 12px;
+    padding-bottom: 7px; border-bottom: 2px solid var(--border);
+  }
+  section > h2 .tag {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 5px;
+  }
+  h3 { font-size: 14px; margin: 18px 0 7px; }
+  p { margin: 6px 0; font-size: 13.5px; line-height: 1.6; }
+  .lead { color: var(--text-dim); font-size: 13px; margin: -4px 0 12px; }
+
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-card); }
+  table { width: 100%; border-collapse: collapse; font-size: 12.8px; }
+  th, td { padding: 8px 11px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg-card-2); font-size: 11px; text-transform: uppercase; letter-spacing: .03em; color: var(--text-dim); font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child, th:first-child { font-weight: 600; white-space: nowrap; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 13px 15px; }
+  .card h4 { margin: 0 0 6px; font-size: 13px; }
+  .card ul { margin: 4px 0 0; padding-left: 18px; font-size: 12.8px; }
+  .card li { margin-bottom: 3px; }
+
+  .trap {
+    background: var(--purple-bg); border: 1px solid var(--purple); border-left: 3px solid var(--purple);
+    border-radius: 0 10px 10px 0; padding: 9px 13px; margin: 8px 0; font-size: 13px; color: var(--purple-text); line-height: 1.55;
+  }
+  .trap b { color: var(--purple-text); }
+
+  .kw { display: grid; grid-template-columns: repeat(auto-fill, minmax(225px,1fr)); gap: 8px; margin-top: 6px; }
+  .kw div { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; }
+  .kw div b { display: block; color: var(--accent); font-size: 11.8px; margin-bottom: 2px; }
+
+  .seq { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12.8px; margin: 6px 0; }
+  .seq span.step { background: var(--bg-card-2); border: 1px solid var(--border); border-radius: 7px; padding: 4px 9px; font-weight: 600; }
+  .seq span.arrow { color: var(--text-dim); }
+
+  footer.page-footer {
+    color: var(--text-dim); font-size: 12px; text-align: center; padding: 18px 0 0;
+    border-top: 1px solid var(--border); margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="toc">
+    <a class="back" href="../index.html">&larr; Chọn chứng chỉ</a>
+    <a class="back" href="index.html">&larr; Về trang luyện đề</a>
+    <div class="brand">Cheat Sheet CCAO-F</div>
+    <div class="sub">Claude Certified Associate Foundations — 7 domain thi</div>
+    <ol>
+      <li><a class="item" href="#overview">Exam overview &amp; golden rules</a></li>
+      <li><a class="item" href="#d1">Prompting &amp; Task Execution</a></li>
+      <li><a class="item" href="#d2">Output Evaluation &amp; Validation</a></li>
+      <li><a class="item" href="#d3">Product &amp; Model Selection</a></li>
+      <li><a class="item" href="#d4">Workflow Integration &amp; Solution Design</a></li>
+      <li><a class="item" href="#d5">Configuration &amp; Knowledge Mgmt</a></li>
+      <li><a class="item" href="#d6">Governance, Risk &amp; Responsible Use</a></li>
+      <li><a class="item" href="#d7">Troubleshooting &amp; Optimization</a></li>
+      <li><a class="item" href="#examday">Exam-day cheat sheet</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div>
+        <h1>CCAO-F — Cheat Sheet</h1>
+        <div class="tagline">Claude Certified Associate Foundations. Keyword giữ nguyên tiếng Anh, nghĩa tiếng Việt trong ngoặc. Đọc lướt từ trên xuống, domain nào weight cao thì ôn kỹ hơn.</div>
+      </div>
+      <div class="weights">
+        <div class="weight-pill w-red"><b>21%</b>D2 Evaluation</div>
+        <div class="weight-pill w-green"><b>16%</b>D4 Workflow</div>
+        <div class="weight-pill w-red"><b>15%</b>D6 Governance</div>
+        <div class="weight-pill w-blue"><b>14%</b>D1 Prompting</div>
+        <div class="weight-pill w-amber"><b>12%</b>D3 Product</div>
+        <div class="weight-pill w-blue"><b>12%</b>D5 Config</div>
+        <div class="weight-pill w-amber"><b>10%</b>D7 Troubleshoot</div>
+      </div>
+    </header>
+
+    <section id="overview">
+      <h2>Exam overview</h2>
+      <div class="tbl-wrap"><table>
+        <tr><th>Mục</th><th>Thông tin</th></tr>
+        <tr><td>Format</td><td>60 questions, 120 phút (~2 phút/câu)</td></tr>
+        <tr><td>Question types</td><td><b>Multiple-choice</b> (1 đáp án), <b>multiple-response</b> ("Choose TWO"), <b>sequence/ordering</b> (sắp xếp thứ tự)</td></tr>
+        <tr><td>Passing score</td><td>720/1000 (scaled score)</td></tr>
+        <tr><td>Language</td><td>English hoặc Japanese, qua Pearson VUE</td></tr>
+      </table></div>
+      <p class="lead">Domain 2 + 4 + 6 = <b>52%</b> → ưu tiên ôn kỹ nhất.</p>
+
+      <h3>3 golden rules (ba nguyên tắc vàng)</h3>
+      <div class="grid2">
+        <div class="card"><ul>
+          <li><b>Process controls, not instructions to Claude</b> (kiểm soát bằng quy trình, không bằng lời dặn)</li>
+          <li><b>Independent verification against the source of truth</b>, never <b>self-verification</b> (Claude tự kiểm tra)</li>
+        </ul></div>
+        <div class="card"><ul>
+          <li><b>Proportional to risk</b> (tương xứng rủi ro): không quá lỏng, không quá cực đoan</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="d1">
+      <h2>1. Prompting &amp; Task Execution <span class="tag" style="background:var(--accent-bg);color:var(--accent)">14%</span></h2>
+      <div class="tbl-wrap"><table>
+        <tr><th>Technique</th><th>Dùng khi</th><th>Ghi nhớ</th></tr>
+        <tr><td>Role, Context, Goal, Constraints, Format</td><td>Mọi prompt</td><td>Thêm <b>audience</b> và <b>success criteria</b></td></tr>
+        <tr><td>Clear task statement</td><td>Prompt nhiều yêu cầu</td><td><b>Enumerate</b> từng câu hỏi, yêu cầu trả lời từng câu</td></tr>
+        <tr><td>XML tags / delimiters</td><td>Có reference documents</td><td><b>Separate instructions from data</b></td></tr>
+        <tr><td>Few-shot examples</td><td>Format/style khó mô tả, cần output nhất quán</td><td>Ví dụ sai → Claude chép cả lỗi</td></tr>
+        <tr><td>Task decomposition</td><td>Task có nhiều output riêng biệt</td><td>Chia theo <b>dependency</b>; tránh <b>over-decomposition</b></td></tr>
+        <tr><td>Iteration / steering</td><td>Sửa output</td><td>Mỗi lần sửa <b>one targeted change</b></td></tr>
+      </table></div>
+
+      <div class="grid2">
+        <div class="card"><h4>Prompting theo task type</h4><ul>
+          <li><b>Open exploratory prompting</b> → brainstorming, ideation</li>
+          <li><b>Rigid templated prompting</b> → compliance report, fixed schema</li>
+        </ul></div>
+        <div class="card"><h4>Symptom → fix</h4><ul>
+          <li>Sai tone/persona → thêm role, tone descriptor, audience</li>
+          <li>Vague/off-target → thiếu task, audience, output structure</li>
+          <li>Bỏ sót 1 trong 3 câu hỏi → task statement không enumerate</li>
+          <li>Inconsistent terminology → cung cấp glossary</li>
+          <li>Context drift chat dài → restate constraints, periodically summarize, hoặc fresh chat + summary</li>
+        </ul></div>
+      </div>
+
+      <h3>Long-chat → fresh session</h3>
+      <div class="seq">
+        <span class="step">Summarize goals/decisions/open questions</span><span class="arrow">→</span>
+        <span class="step">xác định reference cần giữ</span><span class="arrow">→</span>
+        <span class="step">đưa vào Project knowledge</span><span class="arrow">→</span>
+        <span class="step">new chat + paste summary</span><span class="arrow">→</span>
+        <span class="step">verify on-task</span>
+      </div>
+
+      <h3>Sticky-note request → structured prompt</h3>
+      <div class="seq">
+        <span class="step">Identify underlying task</span><span class="arrow">→</span>
+        <span class="step">confirm audience &amp; decision</span><span class="arrow">→</span>
+        <span class="step">add facts &amp; constraints</span><span class="arrow">→</span>
+        <span class="step">specify length/tone/format</span><span class="arrow">→</span>
+        <span class="step">submit</span>
+      </div>
+
+      <div class="trap"><b>Trap answers:</b> "please do better", "be thorough", increase temperature, resubmit the same prompt, one template for every task.</div>
+    </section>
+
+    <section id="d2">
+      <h2>2. Output Evaluation &amp; Validation <span class="tag" style="background:var(--red-bg);color:var(--red)">21%</span></h2>
+
+      <h3>Accuracy, Completeness, Relevance</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Pillar</th><th>Câu hỏi</th><th>Lỗi điển hình</th></tr>
+        <tr><td>Accuracy</td><td>Wrong facts? (sai)</td><td>Sai số liệu so với nguồn</td></tr>
+        <tr><td>Completeness</td><td>Missing requirements? (thiếu)</td><td>Thiếu phần; section <b>under-scoped</b>; vi phạm format/negative constraint</td></tr>
+        <tr><td>Relevance</td><td>Unrequested content? (thừa)</td><td>Filler, preamble, sycophancy, scope creep</td></tr>
+      </table></div>
+      <p class="lead">Đủ topic nhưng 1 section chỉ cover 1/3 chiều sâu → <b>meets topic-level requirements but under-scoped → expand before delivery</b>. Dùng nguồn chọn lọc, bỏ sót thông tin bất lợi → <b>selective use of sources</b> → re-prompt.</p>
+
+      <h3>Plausibility vs. verification</h3>
+      <p>Fluent / confident / "well-known" / "sounds authoritative" <b>≠</b> đã kiểm chứng. Câu hỏi chuẩn: <i>"Can each specific claim be traced to a credible source or the supplied input?"</i> <b>Unsourced claim</b> → treat as unverified → source nó từ nguồn uy tín hoặc xoá bỏ.</p>
+
+      <h3>Hallucination &amp; ungrounded extrapolation</h3>
+      <div class="grid2">
+        <div class="card"><h4>Dấu hiệu</h4><ul>
+          <li>Fabricated citations, non-existent URLs, invented API/method names, unsourced statistics</li>
+          <li>False premise (chiều theo tiền đề sai trong câu hỏi)</li>
+          <li>Thường do thông tin sau <b>training cutoff</b> mà không có tài liệu đi kèm</li>
+        </ul></div>
+        <div class="card"><h4>Extrapolation (suy diễn ngoài nguồn)</h4><ul>
+          <li><b>Causal leap</b> ("after" → "caused by")</li>
+          <li><b>Numerical anchoring</b> (thêm số)</li>
+          <li><b>Scope generalization</b> (mở rộng phạm vi)</li>
+          <li><b>Presumed intent</b> (gán động cơ)</li>
+          <li><b>Severity distortion</b> (sai mức nghiêm trọng)</li>
+        </ul></div>
+      </div>
+      <p class="lead">Suspected hallucination — bước đầu tiên luôn là <b>pinpoint the specific unsupported claim</b>.</p>
+
+      <h3>Prevent &amp; detect (4 bước)</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>#</th><th>Kỹ thuật</th><th>Cách làm</th></tr>
+        <tr><td>1</td><td>Grounding</td><td>XML tags + "use only the provided documents" + citations <code>[DocID: Section]</code></td></tr>
+        <tr><td>2</td><td>Ignorance licensing</td><td>Cho phép "the documents do not contain this information"</td></tr>
+        <tr><td>3</td><td>Claim decomposition</td><td>Atomic propositions → map từng claim với source → Fully Grounded / Partially Grounded / Extrapolated / Contradicted</td></tr>
+        <tr><td>4</td><td>Deterministic verification</td><td>Chạy code, link checker, tra DOI, tính lại bằng spreadsheet hoặc Code Execution</td></tr>
+      </table></div>
+
+      <h3>Conflicting sources</h3>
+      <p>Locate primary/authoritative source. Thứ tự ưu tiên: <b>hierarchy of authority → recency → scope specificity</b>. Vẫn không rõ → <b>explicit dissonance reporting + human escalation</b>. Không average, không silent synthesis, "nhiều bài báo lặp lại" (trade press) <b>≠</b> primary source.</p>
+
+      <h3>Logic &amp; math audit</h3>
+      <p>Kiểm tra <b>formulas, units, rounding</b> ở mọi bước; <b>reconcile table vs. text</b>; <b>trace backward</b>. Lỗi nghiêm trọng nhất về clarity: <b>conclusion contradicts the evidence</b>. Đúng nhờ hai lỗi <b>cancel out</b> → vẫn <b>fails the audit</b>.</p>
+
+      <h3>Bias &amp; fairness</h3>
+      <p>Generalization về nhóm nhân khẩu học → <b>focus on observed behaviors, validate against actual data</b>. Interview questions phải <b>apply equally to all candidates</b>, không giả định về background, chỉ dựa role requirements. "Disclaimer" hay "internal use nên không sao" đều <b>sai</b>.</p>
+
+      <h3>HITL (Human-in-the-Loop) &amp; escalation</h3>
+      <p><b>Quantitative triggers</b> (số tiền, số người ảnh hưởng) + <b>qualitative triggers</b> (external-facing, service-level commitment, legal, HR, sensitive data, uncertainty).</p>
+      <div class="seq">
+        <span class="step">audience &amp; impact</span><span class="arrow">→</span>
+        <span class="step">evaluate accuracy/completeness</span><span class="arrow">→</span>
+        <span class="step">compare với escalation criteria</span><span class="arrow">→</span>
+        <span class="step">decide (use/iterate/escalate)</span><span class="arrow">→</span>
+        <span class="step">document rationale</span>
+      </div>
+      <p class="lead">Evaluation checklist: <b>define criteria → set threshold → score → document → promote/forward</b>.</p>
+
+      <div class="trap"><b>Trap answers:</b> "Are you sure?", rate your own confidence, pick the more confident answer, ask again and take the majority, review only intro &amp; conclusion.</div>
+    </section>
+
+    <section id="d3">
+      <h2>3. Product &amp; Model Selection <span class="tag" style="background:var(--amber-bg);color:var(--amber)">12%</span></h2>
+
+      <h3>Model selection</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Model</th><th>Khi nào chọn</th></tr>
+        <tr><td>Haiku</td><td>High-volume, low-latency, light reasoning (FAQ, classification, keyword extraction)</td></tr>
+        <tr><td>Sonnet</td><td>Balanced default cho everyday work, moderate volume, không cần deep reasoning</td></tr>
+        <tr><td>Opus</td><td>Complex, multi-step reasoning, chấp nhận higher latency &amp; cost</td></tr>
+        <tr><td>Fable (tầng Mythos)</td><td>Suy luận khó nhất, long-horizon agentic work</td></tr>
+      </table></div>
+      <p class="lead">Trade-off: model mạnh hơn → slower, higher cost, more rate-limit consumption. Output kém do prompt → <b>fix the prompt, not the model</b>.</p>
+      <div class="seq">
+        <span class="step">define quality bar, latency tolerance, volume</span><span class="arrow">→</span>
+        <span class="step">choose candidate</span><span class="arrow">→</span>
+        <span class="step">test on representative sample</span><span class="arrow">→</span>
+        <span class="step">rollout</span>
+      </div>
+
+      <h3>Plans</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Tình huống</th><th>Plan</th></tr>
+        <tr><td>Individual use</td><td>Free, Pro, Max</td></tr>
+        <tr><td>Shared Projects, centralized billing, SSO</td><td>Team</td></tr>
+        <tr><td>Audit logs, SCIM, custom data retention, Compliance API, RBAC</td><td>Enterprise</td></tr>
+      </table></div>
+
+      <h3>Features</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Feature</th><th>Dùng cho</th></tr>
+        <tr><td>Projects</td><td>Persistent workspace: knowledge + custom instructions dùng chung nhiều chat/người</td></tr>
+        <tr><td>Artifacts</td><td>Nội dung substantial, standalone để reuse/edit/use outside the chat</td></tr>
+        <tr><td>Code Execution</td><td>Deterministic calculations, phân tích file, tạo chart; verify results against source</td></tr>
+        <tr><td>Research</td><td>Thu thập &amp; tổng hợp external sources</td></tr>
+        <tr><td>Memory</td><td>Giữ context qua các session; có thể import context từ AI service khác</td></tr>
+        <tr><td>Incognito</td><td>Chat không đóng góp vào Memory (dữ liệu confidential)</td></tr>
+        <tr><td>Connectors</td><td>Kết nối nguồn dữ liệu (Drive, PM tools...)</td></tr>
+        <tr><td>Skills</td><td>Packaged capability (quy trình đóng gói sẵn)</td></tr>
+      </table></div>
+      <p class="lead">Code Execution sandbox <b>≠</b> miễn trừ data classification policy.</p>
+    </section>
+
+    <section id="d4">
+      <h2>4. Workflow Integration &amp; Solution Design <span class="tag" style="background:var(--green-bg);color:var(--green)">16%</span></h2>
+
+      <h3>Business process mapping</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Category</th><th>Đặc điểm</th><th>Vai trò Claude</th></tr>
+        <tr><td>Automate</td><td>Low-risk, repetitive</td><td>Claude làm, người spot-check</td></tr>
+        <tr><td>Augment</td><td>Cần judgment, external-facing</td><td>Claude drafts, human decides</td></tr>
+        <tr><td>Human-Only</td><td>High-stakes: hiring, promotion, credit approval, binding legal</td><td>Người quyết định</td></tr>
+      </table></div>
+      <p class="lead">Greatest Claude leverage: <b>drafting and synthesizing across many sources for a downstream reviewer</b>. Claude không phải sole decision-maker cho quyết định ảnh hưởng con người/tài chính.</p>
+
+      <h3>AI Fluency Framework — 4D</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Competency</th><th>Ý nghĩa</th><th>Đáp án đúng thường là</th></tr>
+        <tr><td>Delegation</td><td>Việc gì giao AI, việc gì giữ lại</td><td>Dựa trên reversibility, consequence of error, nhu cầu human creativity/empathy/judgment</td></tr>
+        <tr><td>Description</td><td>Mô tả rõ cho AI &amp; stakeholder</td><td>Specify scope/format/audience/constraints; mô tả capabilities + limitations + human oversight chính xác</td></tr>
+        <tr><td>Discernment</td><td>Đánh giá output</td><td>Systematic check against requirements, sources, professional standards</td></tr>
+        <tr><td>Diligence</td><td>Trách nhiệm của con người</td><td>Human remains accountable: tự xác định phần cần verify</td></tr>
+      </table></div>
+
+      <div class="grid2">
+        <div class="card"><h4>Workflow design</h4><ul>
+          <li>Integration: document current workflow → identify where Claude augments/humans remain → define inputs/outputs/handoffs → pilot → deploy</li>
+          <li>Prompt chaining: structured intermediate outputs + checkpoints, vì errors propagate downstream</li>
+          <li>Reliable integration: standardize input format + output verification step</li>
+          <li>Material improvement = loại bỏ lặp lại (Project reference) + quality check before downstream; đổi tên/heading chỉ là cosmetic</li>
+        </ul></div>
+        <div class="card"><h4>Decomposition</h4><ul>
+          <li>Decompose khi có multiple distinct outputs</li>
+          <li>Thứ tự: define objective → major phases → chi tiết</li>
+          <li>Report nhiều phần: goals → inputs per section → draft từng section → synthesize executive summary last</li>
+          <li>Vendor evaluation: criteria → data → score &amp; rank</li>
+          <li>Research: define research questions first; Solution design: articulate problem &amp; constraints first</li>
+        </ul></div>
+      </div>
+
+      <h3>Requirements analysis</h3>
+      <p>Synthesize inputs thành requirements <b>with traceability to each source</b>. Conflicting requirements → flag, document each side's source, route back to stakeholders.</p>
+      <div class="seq">
+        <span class="step">gather &amp; label sources</span><span class="arrow">→</span>
+        <span class="step">structured extraction prompt</span><span class="arrow">→</span>
+        <span class="step">group &amp; flag conflicts</span><span class="arrow">→</span>
+        <span class="step">validate</span><span class="arrow">→</span>
+        <span class="step">document</span>
+      </div>
+
+      <h3>Optimization</h3>
+      <p>Bottleneck đo bằng <b>cycle time per step</b> và <b>queue length</b>.</p>
+      <div class="seq">
+        <span class="step">map workflow</span><span class="arrow">→</span>
+        <span class="step">identify bottleneck</span><span class="arrow">→</span>
+        <span class="step">targeted optimization</span><span class="arrow">→</span>
+        <span class="step">pilot &amp; measure vs. baseline</span><span class="arrow">→</span>
+        <span class="step">roll out</span>
+      </div>
+      <p class="lead">Before changing: measure current quality/time/cost + identify problem steps.</p>
+
+      <h3>Stakeholder expectation management</h3>
+      <p>Truyền đạt: probabilistic, non-deterministic, realistic gains, known limitations/failure modes. Rủi ro quan trọng nhất cho customer-facing: <b>confident-sounding output with unsupported claims → human review</b>. Executive nói "không cần review" → acknowledge gains + giải thích vì sao human review vẫn essential, kèm ví dụ. Before drafting messages: identify stakeholder groups + define key facts &amp; boundaries.</p>
+
+      <div class="trap"><b>Trap answers:</b> automate everything, sole decision-maker, one megaprompt, draft summary first, "AI is taking care of it", never makes errors.</div>
+    </section>
+
+    <section id="d5">
+      <h2>5. Configuration &amp; Knowledge Management <span class="tag" style="background:var(--accent-bg);color:var(--accent)">12%</span></h2>
+
+      <h3>Project setup</h3>
+      <div class="grid2">
+        <div class="card"><ul>
+          <li><b>First step:</b> define the purpose and recurring tasks (và boundaries)</li>
+          <li>Custom instructions gồm: role, standards/brand voice, standard structure &amp; length</li>
+          <li>Không đưa: sở thích cá nhân của một người, quy định không liên quan deliverable</li>
+        </ul></div>
+        <div class="card"><ul>
+          <li>Instructions phải specific: vd "formal, no contractions", "minimum length", "credit only when policy permits"</li>
+          <li>Skill + knowledge + instructions tham chiếu lẫn nhau</li>
+        </ul></div>
+      </div>
+
+      <h3>Project knowledge</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Issue</th><th>Fix</th></tr>
+        <tr><td>Prior versions / duplicate</td><td>Keep only current documents</td></tr>
+        <tr><td>Stale data</td><td>Periodic review dù output chưa degrade</td></tr>
+        <tr><td>Noise (email cũ, file khác workstream)</td><td>Chỉ upload relevant documents</td></tr>
+      </table></div>
+
+      <h3>Context bleed &amp; separation</h3>
+      <p>Separate Projects per client engagement, mỗi Project có memory/knowledge/instructions riêng, rồi verify no context bleed.</p>
+
+      <h3>Maintenance</h3>
+      <p>Output drift → review instructions &amp; reference materials trước tiên. Memory maintenance: edit/delete stale entries, add missing context, export backup before changes. "If it works once, it works forever" → <b>sai</b>, cần periodic review.</p>
+
+      <h3>Context window</h3>
+      <div class="grid2">
+        <div class="card"><h4>Nên làm</h4><ul>
+          <li>Trim irrelevant material, extract only relevant sections</li>
+          <li>Delimiters/section headers cho từng nguồn</li>
+          <li>Tài liệu quan trọng near the beginning or end of context</li>
+          <li>Reuse the same context block thay vì dựng lại</li>
+        </ul></div>
+        <div class="card"><h4>Tránh</h4><ul>
+          <li>Paste everything</li>
+          <li>Concatenate without separators</li>
+          <li>Mix sources in one block</li>
+        </ul></div>
+      </div>
+
+      <h3>Connectors</h3>
+      <p><b>Before authorizing:</b> approved-vendor list + data classification &amp; permission. Safe: approved scope, read-only public KB. Unsafe: personnel records, payroll, personal cloud storage.</p>
+    </section>
+
+    <section id="d6">
+      <h2>6. Governance, Risk &amp; Responsible Use <span class="tag" style="background:var(--red-bg);color:var(--red)">15%</span></h2>
+
+      <h3>Data handling</h3>
+      <div class="seq">
+        <span class="step">classify content &amp; identify sensitive fields</span><span class="arrow">→</span>
+        <span class="step">redact</span><span class="arrow">→</span>
+        <span class="step">peer review</span><span class="arrow">→</span>
+        <span class="step">submit</span>
+      </div>
+      <div class="grid2">
+        <div class="card"><h4>PII</h4><ul>
+          <li>Name, email, phone, home address, account number, government identifier, payment-card number</li>
+          <li>Kỹ thuật: redaction, pseudonymization, data minimization (chỉ fields necessary for the task)</li>
+        </ul></div>
+        <div class="card"><h4>Phù hợp vs không</h4><ul>
+          <li>Phù hợp: redacted job description, anonymized policy summary</li>
+          <li>Không phù hợp: accommodation notes, employee IDs, salary with names</li>
+        </ul></div>
+      </div>
+
+      <h3>Policy compliance</h3>
+      <p>Policy <b>expressly prohibits</b> → do not enter, consult leadership for an approved alternative. Không lách bằng: Incognito, paraphrase, chờ hết thời hạn, "internal use", sandbox. Confidential figure → Incognito hoặc disable Memory contribution.</p>
+
+      <h3>Governance framework</h3>
+      <p><b>Approved tools, allowed data, required reviews, reporting paths</b> → AI được dùng consistently and accountably.</p>
+
+      <h3>Use-case assessment</h3>
+      <div class="seq">
+        <span class="step">audience, impact, reversibility</span><span class="arrow">→</span>
+        <span class="step">data types / sensitive data</span><span class="arrow">→</span>
+        <span class="step">policies &amp; regulations</span><span class="arrow">→</span>
+        <span class="step">decide (proceed/modify/decline)</span><span class="arrow">→</span>
+        <span class="step">document rationale</span>
+      </div>
+
+      <h3>Ethics review</h3>
+      <div class="seq">
+        <span class="step">audience &amp; impact</span><span class="arrow">→</span>
+        <span class="step">review generalizations/fairness/accuracy</span><span class="arrow">→</span>
+        <span class="step">transparency requirements</span><span class="arrow">→</span>
+        <span class="step">revise or escalate</span><span class="arrow">→</span>
+        <span class="step">record</span>
+      </div>
+      <p class="lead">Greatest ethical concern (HR): quyết định ảnh hưởng việc làm without human accountability; output systematically disadvantage a protected group.</p>
+
+      <h3>Skills &amp; third-party trust / Prompt injection</h3>
+      <p>Skills: verify source against approved-Skill list + review requested permissions.</p>
+      <p>Prompt injection: <b>direct</b> (jailbreak) vs. <b>indirect</b> (lệnh ẩn trong web/email/document). Defense: separate instructions from data, treat external content as untrusted, least privilege, human approval before high-impact actions.</p>
+
+      <div class="trap"><b>Trap answers:</b> instruct Claude not to reference, upload then ask Claude to redact, replace PII with other PII, add PII "for context", sandbox removes the need for review.</div>
+    </section>
+
+    <section id="d7">
+      <h2>7. Troubleshooting &amp; Optimization <span class="tag" style="background:var(--amber-bg);color:var(--amber)">10%</span></h2>
+
+      <h3>Diagnostic sequence</h3>
+      <div class="seq">
+        <span class="step">read output</span><span class="arrow">→</span>
+        <span class="step">identify the specific deficiency</span><span class="arrow">→</span>
+        <span class="step">compare output with prompt</span><span class="arrow">→</span>
+        <span class="step">hypothesis</span><span class="arrow">→</span>
+        <span class="step">one targeted change</span><span class="arrow">→</span>
+        <span class="step">record root cause</span>
+      </div>
+
+      <div class="tbl-wrap"><table>
+        <tr><th>Symptom</th><th>Root cause</th><th>Fix</th></tr>
+        <tr><td>Vague, off-target</td><td>Thiếu task, audience, structure</td><td>Clear task + context</td></tr>
+        <tr><td>Bỏ sót câu hỏi</td><td>Task statement không enumerate</td><td>List each question</td></tr>
+        <tr><td>Inconsistent terminology</td><td>Thiếu glossary</td><td>Provide glossary</td></tr>
+        <tr><td>Outdated answers</td><td>Stale knowledge</td><td>Remove old versions</td></tr>
+        <tr><td>Missed details</td><td>Context overload</td><td>Narrow context</td></tr>
+        <tr><td>Drift over long chat</td><td>Context drift</td><td>Summary + fresh chat</td></tr>
+        <tr><td>Unsupported claims</td><td>Hallucination</td><td>Grounding + verification</td></tr>
+        <tr><td>Simple task slow/costly</td><td>Model quá lớn</td><td>Smaller model</td></tr>
+      </table></div>
+
+      <h3>Iteration rules</h3>
+      <div class="grid2">
+        <div class="card"><ul>
+          <li>One identifiable change per iteration, capture change and effect</li>
+          <li>Mỗi change nhắm vào specific diagnosed weakness; compare against original criteria</li>
+        </ul></div>
+        <div class="card"><ul>
+          <li>Output ngày càng lệch template → revert to the closest version và chỉnh từ baseline</li>
+          <li>Plateau → diminishing returns → human review hoặc different approach</li>
+          <li>Stakeholder nêu 2 concern → address only those two, giữ nguyên phần đã duyệt, document changes</li>
+        </ul></div>
+      </div>
+
+      <h3>Feedback loop</h3>
+      <div class="seq">
+        <span class="step">record specific feedback</span><span class="arrow">→</span>
+        <span class="step">1–2 focused adjustments</span><span class="arrow">→</span>
+        <span class="step">run &amp; compare</span><span class="arrow">→</span>
+        <span class="step">document</span><span class="arrow">→</span>
+        <span class="step">decide (iterate/change/escalate)</span>
+      </div>
+      <p class="lead">Feedback mơ hồ → ask clarifying questions; map each feedback to the change made.</p>
+
+      <div class="trap"><b>Trap answers:</b> rewrite from scratch, change everything at once, resubmit until it looks right, broad rewrites, aggregate score only.</div>
+    </section>
+
+    <section id="examday">
+      <h2>8. Exam-day cheat sheet</h2>
+
+      <h3>Trap patterns</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Answer pattern</th><th>Usually</th><th>Vì sao</th></tr>
+        <tr><td>Instruct Claude "don't store/mention/be careful"</td><td>Wrong</td><td>Lời dặn ≠ process control</td></tr>
+        <tr><td>Ask Claude "Are you sure?"</td><td>Wrong</td><td>Self-verification</td></tr>
+        <tr><td>Switch to most capable/expensive model</td><td>Wrong</td><td>Trừ khi task thực sự phức tạp</td></tr>
+        <tr><td>Automate everything / sole decision-maker / no review</td><td>Wrong</td><td>Không proportional</td></tr>
+        <tr><td>Ban AI entirely / remove the whole section</td><td>Wrong</td><td>Quá cực đoan</td></tr>
+        <tr><td>Average sources / take the majority / "3 articles agree"</td><td>Wrong</td><td>Không phải primary source</td></tr>
+        <tr><td>Add a disclaimer</td><td>Wrong</td><td>Không sửa được vấn đề</td></tr>
+        <tr><td>Incognito / paraphrase / sandbox để lách policy</td><td>Wrong</td><td>Policy vẫn áp dụng</td></tr>
+        <tr><td>Rewrite from scratch / change everything</td><td>Wrong</td><td>Mất baseline</td></tr>
+        <tr><td>Option "..., even though [principles] require..."</td><td>Wrong</td><td>Tự thừa nhận vi phạm nguyên tắc</td></tr>
+        <tr><td>Sanitize first, verify against source, human review proportional to risk</td><td>Right</td><td>Process control</td></tr>
+      </table></div>
+
+      <h3>Sequence questions — mẹo</h3>
+      <div class="grid2">
+        <div class="card"><ul>
+          <li>Bước đầu tiên gần như luôn là: define purpose/goal/criteria/research questions, hoặc identify audience &amp; impact</li>
+          <li>Bước cuối gần như luôn là: document/record rationale, hoặc roll out/deploy</li>
+        </ul></div>
+        <div class="card"><ul>
+          <li>Bước áp chót thường là: decide (use/iterate/escalate)</li>
+          <li>Pilot luôn đứng trước roll out; measure luôn đứng trước change</li>
+          <li>Executive summary viết sau cùng</li>
+        </ul></div>
+      </div>
+
+      <h3>"BEFORE" questions (Choose TWO)</h3>
+      <p>Chọn hai bước thuộc <b>giai đoạn chuẩn bị</b>: define, identify, classify, confirm, measure. Loại các bước <b>sau đó</b>: deploy, roll out, promote, archive, send, notify leadership.</p>
+
+      <h3>Exam vocabulary</h3>
+      <div class="kw">
+        <div><b>most appropriate / best / most effective</b>Giải quyết đủ yêu cầu, tương xứng rủi ro</div>
+        <div><b>first / next step</b>Thường là define, identify, diagnose</div>
+        <div><b>root cause</b>Nguyên nhân gốc, không phải triệu chứng</div>
+        <div><b>Choose TWO</b>Mỗi lựa chọn đánh giá như true/false</div>
+        <div><b>"Each correct answer provides a complete solution"</b>Hai đáp án độc lập, mỗi cái tự đúng</div>
+        <div><b>"Each correct answer represents part of the solution"</b>Hai đáp án bổ sung nhau</div>
+        <div><b>NOT / EXCEPT</b>Tìm đáp án sai</div>
+        <div><b>ALWAYS / NEVER / solely / regardless</b>Từ tuyệt đối, hiếm khi đúng</div>
+        <div><b>expressly prohibits</b>Cấm rõ ràng → không lách</div>
+        <div><b>external-facing / customer-facing</b>Cần human review</div>
+        <div><b>high-volume / tight latency</b>Model nhỏ (Haiku)</div>
+        <div><b>deterministic calculations</b>Code Execution</div>
+        <div><b>persistent / across many chats</b>Project</div>
+        <div><b>context bleed</b>Thông tin lẫn giữa các khách hàng → tách Project</div>
+        <div><b>traceability</b>Truy được về nguồn</div>
+        <div><b>under-scoped</b>Có nhưng chưa đủ chiều sâu</div>
+      </div>
+
+      <h3>Time management</h3>
+      <div class="card"><ul>
+        <li><b>First pass</b> ~90 phút; quá 3 phút/câu → chọn tạm, flag, đi tiếp</li>
+        <li>~30 phút quay lại câu đã flag</li>
+        <li>Chỉ đổi đáp án khi thấy <b>concrete fact you missed</b></li>
+      </ul></div>
+
+      <h3>Reading long scenarios</h3>
+      <div class="card"><ul>
+        <li>Read the question stem first, rồi mới đọc bối cảnh</li>
+        <li>Tìm constraints (sensitive data, policy, volume), goals (consistency, accuracy, speed), qualifiers (first, best, before)</li>
+        <li>Don't add facts mà đề không cho</li>
+        <li>Chọn đáp án addresses all requirements, không chọn đáp án partially correct</li>
+      </ul></div>
+
+      <h3>3 câu hỏi trước khi chốt đáp án</h3>
+      <div class="card"><ul>
+        <li>Does it address all requirements?</li>
+        <li>Is risk controlled by process, or only by instructions to Claude?</li>
+        <li>Is it proportional to the risk?</li>
+      </ul></div>
+    </section>
+
+    <footer class="page-footer">
+      Chúc thi tốt — ba nguyên tắc vàng: process controls, independent verification, proportional to risk.
+    </footer>
+  </main>
+</div>
+</body>
+</html>

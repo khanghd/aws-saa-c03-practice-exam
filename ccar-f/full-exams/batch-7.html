@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CCAR-F — Lượt 7/7</title>
+<style>
+:root{
+  --bg:#f6f7fb; --surface:#ffffff; --surface-2:#eef0f5; --text:#1a1d23; --muted:#646c78;
+  --border:#dfe3ea; --accent:#3a5bf0; --accent-hover:#2d49d6; --accent-soft:#e8edfe;
+  --ok:#1a8f55; --ok-soft:#e4f6ec; --bad:#d13b3b; --bad-soft:#fcebeb; --warn:#b4790a; --warn-soft:#fff3db;
+  --shadow:0 1px 2px rgba(16,24,40,.04),0 4px 14px rgba(16,24,40,.06);
+  --shadow-sm:0 1px 2px rgba(16,24,40,.05);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101217; --surface:#1a1d24; --surface-2:#22262f; --text:#e9ebef; --muted:#9aa2b1;
+    --border:#2e333d; --accent:#8aa6ff; --accent-hover:#a6bcff; --accent-soft:#1f2a44;
+    --ok:#53d591; --ok-soft:#163327; --bad:#ff8585; --bad-soft:#3a1d1f; --warn:#f2bb57; --warn-soft:#3a2d13;
+    --shadow:none; --shadow-sm:none;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101217; --surface:#1a1d24; --surface-2:#22262f; --text:#e9ebef; --muted:#9aa2b1;
+  --border:#2e333d; --accent:#8aa6ff; --accent-hover:#a6bcff; --accent-soft:#1f2a44;
+  --ok:#53d591; --ok-soft:#163327; --bad:#ff8585; --bad-soft:#3a1d1f; --warn:#f2bb57; --warn-soft:#3a2d13;
+  --shadow:none; --shadow-sm:none;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--bg);color:var(--text);
+  font:15px/1.65 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+button,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+a{color:var(--accent)}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 18px 60px}
+header.top{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:12px}
+header.top h1{font-size:21px;margin:0;letter-spacing:-.015em;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent-hover));-webkit-background-clip:text;background-clip:text;color:transparent}
+header.top .sub{color:var(--muted);font-size:13px;margin-top:2px}
+.callout{border-radius:12px;padding:13px 16px;margin:14px 0;font-size:14px;line-height:1.6;border:1px solid var(--border)}
+.callout.tip{background:var(--warn-soft);border-color:var(--warn)}
+.callout b{display:block;margin-bottom:4px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+.toolbar{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-bottom:16px}
+.toolbar label{display:flex;align-items:center;gap:6px;font-size:13.5px;color:var(--muted);cursor:pointer}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:7px 14px;min-width:76px;text-align:center;box-shadow:var(--shadow-sm)}
+.stat b{display:block;font-size:18px;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+.stat.ok b{color:var(--ok)} .stat.bad b{color:var(--bad)}
+.progress{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin:6px 0 16px}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-hover));width:0;transition:width .3s ease}
+.plyt{display:grid;grid-template-columns:230px 1fr;gap:18px;align-items:start}
+.side{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px;position:sticky;top:14px;box-shadow:var(--shadow);max-height:calc(100vh - 28px);overflow-y:auto}
+.side h2{font-size:12px;margin:4px 6px 8px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.cell{border:1px solid var(--border);background:var(--surface-2);border-radius:7px;height:32px;cursor:pointer;font-size:12.5px;font-variant-numeric:tabular-nums;position:relative;padding:0}
+.cell:hover{border-color:var(--accent)}
+.cell.ok{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.cell.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.cell.cur{outline:2px solid var(--accent);outline-offset:1px}
+.cell.flag::after{content:"";position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:var(--warn)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;font-size:11.5px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px;border:1px solid var(--border);background:var(--surface-2)}
+.legend .l-ok::before{background:var(--ok-soft);border-color:var(--ok)}
+.legend .l-bad::before{background:var(--bad-soft);border-color:var(--bad)}
+.legend .l-flag::before{background:var(--warn);border-radius:50%;border:none}
+.qhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.qnum{font-weight:700;font-size:17px}
+.flagbtn{margin-left:auto;background:none;border:1px solid var(--border);border-radius:9px;padding:5px 11px;cursor:pointer;font-size:13px}
+.flagbtn:hover{border-color:var(--warn);color:var(--warn)}
+.flagbtn.on{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+.chip{font-size:12px;padding:3px 11px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.chip.muted{background:var(--surface-2);color:var(--muted);font-weight:500}
+.opts{display:flex;flex-direction:column;gap:9px;margin:16px 0}
+.opt{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--border);border-radius:11px;padding:11px 13px;cursor:pointer;background:var(--surface);transition:border-color .15s,transform .15s}
+.opt:hover{border-color:var(--accent);transform:translateX(2px)}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt .key{flex:0 0 26px;height:26px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;background:var(--surface-2)}
+.opt.sel .key{background:var(--accent);border-color:var(--accent);color:#fff}
+.opt.multi .key{border-radius:7px}
+.opt .txt{flex:1;min-width:0}
+.locked .opt{cursor:default}
+.locked .opt:hover{transform:none}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right .key{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .key{background:var(--bad);border-color:var(--bad);color:#fff}
+.scenario-banner{background:var(--surface-2);border:1px solid var(--border);border-radius:11px;padding:12px 15px;margin-bottom:16px;font-size:13.5px;line-height:1.6}
+.scenario-banner b{color:var(--accent);display:block;font-size:12px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.typehint{font-size:11.5px;color:var(--warn);font-weight:700;background:var(--warn-soft);padding:3px 9px;border-radius:99px}
+.domainsum{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-bottom:16px}
+.dsum-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 12px;font-size:12.5px}
+.dsum-item .name{color:var(--muted);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dsum-item .bar{height:6px}
+.dsum-item .nums{display:flex;justify-content:space-between;margin-top:4px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.bar{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden;min-width:80px}
+.bar i{display:block;height:100%;background:var(--ok)}
+.verdict{margin:18px 0 6px;padding:11px 15px;border-radius:11px;font-weight:700}
+.verdict.ok{background:var(--ok-soft);color:var(--ok)}
+.verdict.bad{background:var(--bad-soft);color:var(--bad)}
+.why-box{border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 11px 11px 0;padding:12px 15px;margin-top:12px;font-size:14px;background:var(--surface)}
+.why-box b{color:var(--accent)}
+.why-box.rich{line-height:1.6}
+.why-intro{font-weight:600;color:var(--text);margin-bottom:2px}
+.why-sectiontitle{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:12px 0 6px}
+.why-translation{color:var(--text)}
+.why-keywords{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.kw-chip{font-size:11.5px;background:var(--accent-soft);color:var(--accent);padding:3px 10px;border-radius:99px;font-weight:600}
+.why-options{display:flex;flex-direction:column;gap:8px}
+.why-opt{border:1px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13.5px;background:var(--surface)}
+.why-opt b{display:block;margin-bottom:3px;font-size:12px;letter-spacing:.02em}
+.why-opt.ok{border-color:var(--ok);background:var(--ok-soft)}
+.why-opt.ok b{color:var(--ok)}
+.why-opt.no{border-color:var(--bad);background:var(--bad-soft)}
+.why-opt.no b{color:var(--bad)}
+.why-tip{margin-top:12px;padding:10px 13px;border-radius:9px;background:var(--warn-soft);border:1px solid var(--warn);font-size:13.5px}
+.why-tip b{color:var(--warn)}
+.btn{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:8px 14px;cursor:pointer;transition:border-color .15s,background .15s,transform .15s;font-size:13.5px;font-weight:600}
+.btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.actions .spacer{flex:1}
+.empty{color:var(--muted);text-align:center;padding:44px 10px}
+footer.legal{margin-top:34px;border-top:1px solid var(--border);padding-top:14px;font-size:11.5px;color:var(--muted);line-height:1.6}
+@media (max-width:860px){
+  .plyt{grid-template-columns:1fr}
+  .side{position:static;max-height:none}
+  .pgrid{grid-template-columns:repeat(10,1fr)}
+}
+@media (max-width:480px){
+  .wrap{padding:14px 14px 40px}
+  .card{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>CCAR-F — Lượt 7/7</h1>
+      <div class="sub">Câu 181–187 / 187 · <a href="../index.html">&larr; Về trang luyện đề chính</a></div>
+    </div>
+    <button class="btn" id="theme-toggle" title="Đổi giao diện sáng/tối"></button>
+  </header>
+
+  <div class="callout tip" style="margin-top:0"><b>Về đề này</b>Lượt 7 trong bộ 187 câu mở rộng (30 câu/lượt), trích từ <code>full-exams/</code> để luyện độc lập, không cần mở trang chính.</div>
+
+  <div class="toolbar">
+    <select id="p-filter"></select>
+    <label><input type="checkbox" id="p-shuffle"> Trộn thứ tự câu</label>
+    <button class="btn" id="p-restart">&#8635; Làm lại</button>
+    <div class="spacer" style="flex:1"></div>
+    <div class="stats">
+      <div class="stat"><b id="st-total">0</b><span>đã làm</span></div>
+      <div class="stat ok"><b id="st-ok">0</b><span>đúng</span></div>
+      <div class="stat bad"><b id="st-bad">0</b><span>sai</span></div>
+    </div>
+  </div>
+  <div class="progress"><i id="p-progress"></i></div>
+  <div id="p-domainsum"></div>
+
+  <div class="plyt">
+    <aside class="side">
+      <h2>Danh sách câu</h2>
+      <div class="pgrid" id="p-grid"></div>
+      <div class="legend">
+        <span class="l-ok">Đúng</span><span class="l-bad">Sai</span><span class="l-flag">Đã đánh dấu</span>
+      </div>
+    </aside>
+    <main class="card" id="p-card"></main>
+  </div>
+
+  <footer class="legal">Đây là tài liệu ôn tập cá nhân, tự biên soạn dựa trên outline công khai của kỳ thi, không liên kết hay được xác nhận bởi đơn vị tổ chức kỳ thi. Tên chứng chỉ/kỳ thi chỉ dùng để mô tả nội dung ôn tập, không hàm ý được tài trợ hay phê duyệt. Các câu hỏi luyện tập ở đây là mô phỏng tự biên soạn, không phải câu hỏi thật/được nhớ lại/do nhà tài trợ cung cấp. Độ phủ, định dạng và độ khó có thể khác đề thi thật. Vui lòng xác nhận lại thông tin lệ phí, điều kiện thi với đơn vị tổ chức chính thức.</footer>
+</div>
+
+<script>
+const DOMAINS = [{"id":1,"name":"Agentic Architecture &amp; Orchestration","weight":27,"chapter":2},{"id":2,"name":"Tool Design &amp; MCP Integration","weight":18,"chapter":4},{"id":3,"name":"Claude Code Configuration &amp; Workflows","weight":20,"chapter":3},{"id":4,"name":"Prompt Engineering &amp; Structured Output","weight":20,"chapter":5},{"id":5,"name":"Context Management &amp; Reliability","weight":15,"chapter":6}];
+const DOMAIN_BY_ID = {}; DOMAINS.forEach(d=>DOMAIN_BY_ID[d.id]=d);
+
+const QUESTIONS = [{"id":181,"domain":3,"origin":"Set 6 · Câu 224","q":"You are integrating Claude Code into your CI/CD pipeline for automated code reviews. Your review jobs take 18 seconds to initialize before Claude begins analyzing code. Profiling shows the delay comes from automatically discovering hooks, MCP servers, plugins, skills, and multiple nested CLAUDE.md files throughout the monorepo. You need to reduce startup time while ensuring reviews still enforce the coding standards documented in the root-level CLAUDE.md file. What is the most effective approach?","opts":{"A":"Replace the default prompt using --system-prompt-file ./CLAUDE.md, which bypasses default prompt assembly and loads only the project rules.","B":"Run in --bare mode and pass --append-system-prompt-file ./CLAUDE.md to load the required project standards explicitly while skipping automatic discovery.","C":"Run in --bare mode and repeat all review criteria directly in the -p prompt for every invocation.","D":"Keep the default initialization and add --exclude-dynamic-system-prompt-sections to improve prompt-cache reuse across CI runners."},"correct":["B"],"why":{"intro":"Câu kiểm tra cách giảm thời gian khởi động của Claude Code trong CI bằng cách bỏ qua bước tự động phát hiện hook/MCP/plugin/skill/CLAUDE.md lồng nhau, trong khi vẫn áp dụng đúng quy tắc coding standard cần thiết.","requirementTranslation":"Job review PR trong CI/CD mất 18 giây khởi động do tự động quét hook, MCP server, plugin, skill, và nhiều file CLAUDE.md lồng nhau trong monorepo. Cần giảm thời gian khởi động nhưng vẫn đảm bảo review tuân theo coding standard ở CLAUDE.md gốc.","keywords":["--bare mode","--append-system-prompt-file","Bỏ qua auto-discovery","Giữ lại system prompt mặc định + thêm rule riêng"],"optionAnalysis":[{"key":"A","correct":false,"explanation":"--system-prompt-file THAY THẾ HOÀN TOÀN system prompt mặc định (ghi đè, không phải nối thêm), nghĩa là mất đi toàn bộ khung hành vi mặc định của Claude Code — rủi ro làm thay đổi hành vi review cơ bản ngoài dự kiến, không chỉ đơn thuần tăng tốc khởi động."},{"key":"B","correct":true,"explanation":"--bare mode bỏ qua hoàn toàn bước tự động phát hiện hook/MCP/plugin/skill/CLAUDE.md lồng nhau trong monorepo (nguyên nhân chính gây chậm 18 giây), trong khi --append-system-prompt-file ./CLAUDE.md vẫn NỐI THÊM đúng nội dung coding standard cần thiết từ file gốc vào system prompt một cách tường minh, có chủ đích — giải quyết đúng cả hai yêu cầu: giảm thời gian khởi động VÀ vẫn áp dụng đúng rule cần thiết."},{"key":"C","correct":false,"explanation":"Lặp lại toàn bộ tiêu chí review trực tiếp trong -p cho mỗi lần gọi là cách làm dư thừa, khó bảo trì (phải sửa ở mọi nơi gọi khi tiêu chí thay đổi), và không tận dụng được cơ chế tham chiếu file có sẵn một cách bền vững."},{"key":"D","correct":false,"explanation":"Giữ nguyên chế độ khởi động mặc định vẫn phải trả toàn bộ chi phí quét tự động hook/MCP/plugin/skill/CLAUDE.md gây ra độ trễ 18 giây; việc cải thiện cache prompt không giải quyết được nguyên nhân gốc là quá trình discovery tốn thời gian."}],"tip":"Khi cần giảm chi phí khởi động CI do auto-discovery (hook, MCP, plugin, skill, CLAUDE.md lồng nhau), dùng --bare để bỏ qua discovery, kết hợp --append-system-prompt-file để nạp CÓ CHỦ ĐÍCH đúng phần cấu hình cần thiết — tránh dùng --system-prompt-file vì nó ghi đè toàn bộ thay vì nối thêm."}},{"id":182,"domain":4,"origin":"Set 6 · Câu 225","q":"Your CI pipeline includes a release-notes generation step that classifies and summarizes approximately 200 commits at the end of each weekly release cycle. Each commit is currently sent as a separate Messages API request using a Sonnet-tier Claude model. The release notes are not needed until the following morning, giving about 12 hours of acceptable latency. Your team must reduce the per-token API cost while keeping the same model, prompts, and output quality. Which approach satisfies all these constraints?","opts":{"A":"Issue the 200 Messages API requests concurrently because parallel execution reduces the per-token price.","B":"Submit the 200 requests through the Message Batches API with unique custom_id values and retrieve the results after the batch finishes.","C":"Concatenate all 200 commit messages into one Messages API request because reducing the number of requests always reduces token costs.","D":"Replace the Sonnet-tier model with a Haiku-tier model to obtain a lower per-token price."},"correct":["B"],"why":{"intro":"Câu kiểm tra việc chọn đúng công cụ (Message Batches API) để giảm chi phí xử lý số lượng lớn request khi có độ trễ chấp nhận được, mà không đổi model/prompt/chất lượng.","requirementTranslation":"Pipeline CI phân loại và tóm tắt khoảng 200 commit mỗi tuần, hiện gửi từng request riêng lẻ bằng model Sonnet. Kết quả chỉ cần sẵn sàng vào sáng hôm sau (có khoảng 12 giờ độ trễ chấp nhận được). Cần giảm chi phí mỗi token mà vẫn giữ nguyên model, prompt, và chất lượng output.","keywords":["Message Batches API","custom_id cho từng request","Giảm chi phí nhờ chấp nhận độ trễ","Không đổi model/prompt (ràng buộc đề bài)"],"optionAnalysis":[{"key":"A","correct":false,"explanation":"Chạy song song (concurrent) chỉ giúp giảm THỜI GIAN hoàn thành tổng thể (wall-clock time), hoàn toàn không làm giảm đơn giá trên mỗi token — đây là nhầm lẫn giữa tốc độ và chi phí."},{"key":"B","correct":true,"explanation":"Message Batches API cho phép gửi đồng thời nhiều request (mỗi request gắn một custom_id riêng để nhận diện), xử lý bất đồng bộ trong một cửa sổ thời gian (phù hợp với 12 giờ độ trễ chấp nhận được), và được tính giá rẻ hơn đáng kể so với gọi API đồng bộ từng request — đáp ứng đúng tất cả ràng buộc: giữ nguyên model, giữ nguyên prompt/chất lượng, chỉ thay đổi CÁCH GỬI để hưởng mức giá thấp hơn."},{"key":"C","correct":false,"explanation":"Gộp 200 commit vào một request duy nhất vi phạm ràng buộc \"giữ nguyên prompt\" (phải viết lại cấu trúc prompt hoàn toàn khác), có nguy cơ vượt giới hạn ngữ cảnh, và việc giảm số lượng request không đồng nghĩa giảm tổng số token cần xử lý."},{"key":"D","correct":false,"explanation":"Đổi sang model Haiku vi phạm trực tiếp ràng buộc \"keep the same model\" của đề bài, dù về mặt đơn giá đúng là rẻ hơn — đây không phải giải pháp hợp lệ theo yêu cầu."}],"tip":"Khi khối lượng lớn request có thể chấp nhận độ trễ hàng giờ (không cần real-time) và cần giảm chi phí mà không đổi model/prompt, hãy nghĩ ngay đến Message Batches API — đây là cơ chế duy nhất giảm chi phí mà không đánh đổi các ràng buộc khác."}},{"id":183,"domain":4,"origin":"Set 6 · Câu 226","q":"Your structured data extraction system validates output with JSON schemas. Testing reveals that when source documents are missing certain specifications, the model fabricates plausible-sounding values to satisfy the schema's required fields. For example, a document mentioning only dimensions receives a fabricated \"weight: 2.3 kg\" in the extraction output. What schema design change most effectively addresses this hallucination behavior?","opts":{"A":"Add explicit instructions to the prompt stating \"only extract information explicitly stated in the document; use placeholder text for missing values.\"","B":"Change fields that may not exist in source documents from required to optional, allowing the model to omit them.","C":"Add a \"confidence\" field alongside each specification where the model self-reports its certainty, then filter out low-confidence extractions.","D":"Implement semantic validation that verifies each extracted value appears in or can be inferred from the source document text."},"correct":["B"],"why":{"intro":"Câu kiểm tra cách sửa lỗi hallucination khi hệ thống trích xuất dữ liệu có cấu trúc buộc model phải điền giá trị cho field dù tài liệu nguồn không có thông tin đó.","requirementTranslation":"Hệ thống extraction xác thực output bằng JSON schema; khi tài liệu nguồn thiếu thông tin cho field bắt buộc (required), model bịa ra giá trị hợp lý để thỏa mãn schema (ví dụ bịa weight dù tài liệu chỉ nói về kích thước). Cần sửa thiết kế schema để chống hallucination này.","keywords":["Required vs optional field trong JSON schema","Hallucination do ràng buộc schema ép buộc","Loại bỏ động lực bịa dữ liệu tại nguồn","Semantic validation là phản ứng, không phải phòng ngừa"],"optionAnalysis":[{"key":"A","correct":false,"explanation":"Thêm instruction yêu cầu chỉ trích xuất thông tin có thật và dùng placeholder cho giá trị thiếu là ràng buộc ở tầng prompt (mềm), vẫn có thể bị model không tuân thủ nhất quán; hơn nữa field vẫn required trong schema nên model vẫn bị áp lực phải điền một giá trị nào đó (kể cả placeholder dễ bị hiểu nhầm là giá trị thật ở downstream)."},{"key":"B","correct":true,"explanation":"Đổi các field có thể không tồn tại trong tài liệu nguồn từ required sang optional loại bỏ chính xác NGUYÊN NHÂN GỐC của hallucination: khi field không còn bắt buộc, model không còn bị ràng buộc cấu trúc ép phải điền một giá trị nào đó để thỏa mãn schema validation — nó có thể hợp lệ bỏ qua field khi thông tin không có trong nguồn, thay vì phải bịa ra để hoàn thành object."},{"key":"C","correct":false,"explanation":"Thêm field confidence để model tự báo cáo độ chắc chắn không loại bỏ áp lực phải điền giá trị cho field weight (vẫn required) — model vẫn phải bịa ra một con số nào đó trước, rồi tự chấm độ tin cậy cho chính con số bịa đó; khả năng tự đánh giá độ tin cậy của model vốn không đáng tin cậy để làm cơ chế lọc chính."},{"key":"D","correct":false,"explanation":"Semantic validation kiểm tra sau khi đã có output là biện pháp PHÁT HIỆN (reactive) sau khi hallucination đã xảy ra, không phải biện pháp NGĂN CHẶN từ gốc (preventive) tại thời điểm sinh ra dữ liệu — tốn thêm một bước xử lý và vẫn phải xử lý trường hợp bị lọc ra như thế nào."}],"tip":"Khi model bịa dữ liệu để thỏa mãn field required trong schema dù nguồn không có thông tin, giải pháp đúng gốc rễ là đổi field đó thành optional — loại bỏ áp lực cấu trúc buộc phải điền giá trị, thay vì chỉ thêm hướng dẫn mềm hoặc kiểm tra sau khi đã sinh ra."}},{"id":184,"domain":4,"origin":"Set 6 · Câu 227","q":"Your extraction pipeline occasionally receives responses that cannot be parsed as valid JSON, causing downstream processing failures. The current implementation prompts Claude to return JSON in the response text and then parses it. What is the most reliable approach to ensure Claude returns valid, schema-compliant structured data?","opts":{"A":"Add explicit formatting instructions to the prompt with JSON examples, emphasizing that Claude must return only valid JSON with no surrounding text.","B":"Use regular expressions to locate and extract JSON from the response text, handling cases where Claude includes explanatory text around the JSON block.","C":"Define a tool with a JSON schema specifying the expected structure, using tool use to constrain Claude's output to schema-compliant JSON.","D":"Implement a retry loop that catches JSON parsing errors and re-prompts Claude with the error details, asking it to correct the malformed output."},"correct":["C"],"why":{"intro":"Câu kiểm tra cách đảm bảo độ tin cậy cao nhất cho output JSON có cấu trúc — dùng tool use với JSON schema thay vì prompt model trả JSON trong text rồi tự parse.","requirementTranslation":"Pipeline extraction đôi khi nhận response không parse được thành JSON hợp lệ, gây lỗi downstream, vì cách làm hiện tại là yêu cầu Claude trả JSON trong text rồi tự parse. Cần cách đảm bảo output luôn hợp lệ và đúng schema một cách đáng tin cậy nhất.","keywords":["Tool use để ràng buộc output","JSON schema qua tool definition","Structured output đáng tin cậy hơn text parsing","Tránh retry/regex như band-aid"],"optionAnalysis":[{"key":"A","correct":false,"explanation":"Thêm hướng dẫn định dạng và ví dụ JSON chỉ là ràng buộc mềm ở tầng prompt — model vẫn có xác suất lệch khỏi định dạng mong muốn (thêm text giải thích, thiếu dấu ngoặc...), không đảm bảo tuyệt đối tính hợp lệ."},{"key":"B","correct":false,"explanation":"Dùng regex để tìm và tách JSON khỏi văn bản xung quanh là một giải pháp vá víu (band-aid) xử lý triệu chứng — bản chất vẫn đang parse text tự do, dễ vỡ khi model thay đổi cách diễn đạt xung quanh khối JSON."},{"key":"C","correct":true,"explanation":"Định nghĩa một tool với JSON schema mô tả đúng cấu trúc mong muốn và dùng tool use để buộc model phải trả output tuân theo schema đó là cách đáng tin cậy nhất: cơ chế tool use ràng buộc output ở tầng API, loại bỏ hoàn toàn rủi ro model trả lẫn văn bản tự do với JSON hay sai cú pháp JSON. Lưu ý: để đảm bảo tuyệt đối cả các ràng buộc ngữ nghĩa sâu hơn (enum, required field không bị bỏ trống), nên khai báo tool với `strict: true`."},{"key":"D","correct":false,"explanation":"Thêm vòng lặp retry khi parse lỗi chỉ xử lý TRIỆU CHỨNG sau khi đã xảy ra lỗi (tốn thêm lượt gọi, tăng độ trễ và chi phí), không ngăn chặn được nguyên nhân gốc là cách yêu cầu output không đủ ràng buộc ngay từ đầu."}],"tip":"Khi cần output có cấu trúc JSON đáng tin cậy cao nhất từ Claude, luôn ưu tiên dùng tool use với JSON schema định nghĩa cấu trúc (kết hợp `strict: true` nếu cần đảm bảo tuyệt đối cả ràng buộc enum/required), thay vì yêu cầu model trả JSON dạng text rồi tự parse/regex/retry."}},{"id":185,"domain":3,"origin":"Set 6 · Câu 228","q":"Your organization has enabled Claude's managed Code Review through the Claude GitHub App, and reviews run automatically on every pull request. Reviews average 18 findings per pull request. Developer feedback reveals three categories of unwanted noise: (1) style and formatting issues already enforced by your CI linter, (2) findings on automatically generated template code under src/gen/*, and (3) rendering-helper patterns that are intentional project conventions but are flagged because they resemble common anti-patterns. Only about four findings per pull request are genuine logic bugs. What is the most effective way to reduce this noise while preserving the detection of real issues?","opts":{"A":"Create a REVIEW.md file at the repository root containing skip rules for CI-enforced checks and generated files, together with a verification requirement that rendering-related findings cite a specific line demonstrating incorrect behavior.","B":"Configure separate GitHub Actions workflow files for each code area: one for generated code with findings suppressed, one for rendering code with custom instructions, and one general workflow for everything else.","C":"Add custom review instructions to a GitHub Actions workflow file, using the action's prompt parameter to suppress duplicate lint findings, ignore generated template code, and impose stricter evidence requirements on rendering-related issues.","D":"Add detailed explanations to the project's CLAUDE.md describing intentional patterns, stating that CI handles linting, and identifying src/gen/ as automatically generated code."},"correct":["A"],"why":{"intro":"Câu kiểm tra cách cấu hình đúng tính năng managed Code Review của Claude qua GitHub App để giảm nhiễu review mà vẫn giữ khả năng phát hiện lỗi logic thật.","requirementTranslation":"Claude's managed Code Review (qua GitHub App) tạo trung bình 18 finding mỗi PR, nhưng chỉ khoảng 4 finding là lỗi logic thật; phần còn lại là nhiễu từ (1) lỗi style đã có linter CI xử lý, (2) code generated tự động, (3) pattern rendering cố ý bị nhầm là anti-pattern. Cần giảm nhiễu mà vẫn giữ phát hiện lỗi thật.","keywords":["REVIEW.md cho managed Code Review","Skip rule cho CI-enforced check và generated code","Yêu cầu bằng chứng cụ thể (line-level evidence)","Phân biệt với cấu hình GitHub Actions tùy chỉnh"],"optionAnalysis":[{"key":"A","correct":true,"explanation":"Claude's managed Code Review (qua GitHub App) đọc cấu hình từ file REVIEW.md ở gốc repo — tạo file này với các skip rule cho những gì CI linter đã enforce và cho thư mục code tự sinh (src/gen/*), cùng với yêu cầu xác minh (finding về rendering phải trích dẫn dòng cụ thể chứng minh hành vi sai) giải quyết đúng cả ba nguồn nhiễu đồng thời đặt ra tiêu chuẩn bằng chứng cao hơn cho loại finding hay bị báo nhầm, mà không ảnh hưởng tới khả năng phát hiện lỗi logic thật."},{"key":"B","correct":false,"explanation":"Tách thành nhiều workflow GitHub Actions riêng cho từng khu vực code là over-engineering và không khớp với cơ chế cấu hình của managed Code Review (vốn hoạt động qua GitHub App + REVIEW.md, không phải thiết lập nhiều workflow Actions song song)."},{"key":"C","correct":false,"explanation":"Thêm custom instructions qua tham số prompt của GitHub Actions giả định rằng việc review đang chạy qua GitHub Actions tùy chỉnh — nhưng đề bài nói rõ đây là \"Claude's managed Code Review through the Claude GitHub App\", vốn được cấu hình qua REVIEW.md chứ không phải tham số prompt trong file workflow Actions."},{"key":"D","correct":false,"explanation":"CLAUDE.md là ngữ cảnh cho các phiên làm việc phát triển với Claude Code, không phải cơ chế cấu hình dành riêng cho tính năng managed Code Review; đưa giải thích vào đó không có cơ chế đảm bảo được áp dụng vào logic giảm nhiễu của bước review tự động với các quy tắc skip/yêu cầu bằng chứng cụ thể."}],"tip":"Khi cấu hình Claude's managed Code Review (qua GitHub App) để giảm nhiễu, nhớ rằng công cụ cấu hình chính thức là file REVIEW.md ở gốc repo (skip rule + yêu cầu bằng chứng), không phải CLAUDE.md hay tham số prompt của GitHub Actions tùy chỉnh."}},{"id":186,"domain":2,"origin":"Set 6 · Câu 229","q":"Your team has connected a custom MCP server to Claude Code that provides DevOps workflow templates. The server exposes several MCP prompts (such as deploy_checklist and incident_response) in addition to tools. How do these MCP prompts become accessible within Claude Code?","opts":{"A":"They are automatically prepended to every conversation as additional system-level context, influencing Claude's behavior throughout the session.","B":"They are added to Claude Code's tool registry alongside the server's tools, invoked automatically by the model when relevant to the task.","C":"They are surfaced as @-mentionable resources alongside files, fetched and attached to your message when referenced.","D":"They appear as slash commands (e.g., /mcp__servername__deploy_checklist) that you can invoke, with arguments passed after the command name."},"correct":["D"],"why":{"intro":"Câu kiểm tra cách MCP prompts (khác với MCP tools và MCP resources) được bộc lộ và sử dụng trong giao diện Claude Code.","requirementTranslation":"Một MCP server cung cấp các MCP prompt được định nghĩa sẵn (deploy_checklist, incident_response) bên cạnh các tool thông thường. Cần xác định cách những prompt này thực sự trở nên khả dụng và được dùng trong Claude Code.","keywords":["MCP prompts","Slash command dạng /mcp__server__prompt","Phân biệt prompts vs tools vs resources","Tham số truyền sau tên lệnh"],"optionAnalysis":[{"key":"A","correct":false,"explanation":"Sai: MCP prompts không tự động được chèn vào mọi cuộc hội thoại như ngữ cảnh hệ thống nền — chúng chỉ được kích hoạt khi người dùng chủ động gọi, không âm thầm ảnh hưởng toàn bộ session."},{"key":"B","correct":false,"explanation":"Sai: MCP prompts không được đưa vào tool registry và không được model tự động gọi khi \"thấy liên quan\" — đó là mô tả hành vi của MCP tools, không phải MCP prompts."},{"key":"C","correct":false,"explanation":"Sai: cơ chế @-mention để đính kèm nội dung khi được tham chiếu là đặc trưng của MCP resources, không phải MCP prompts."},{"key":"D","correct":true,"explanation":"MCP prompts được Claude Code hiển thị dưới dạng slash command theo định dạng /mcp__servername__promptname, người dùng có thể gọi trực tiếp và truyền tham số ngay sau tên lệnh — đây là cơ chế chính thức để kích hoạt MCP prompt, khác hẳn với tools (model tự gọi) và resources (@-mention để đính kèm)."}],"tip":"Ghi nhớ ba loại thành phần MCP khác nhau và cách chúng xuất hiện trong Claude Code: tools (model tự gọi khi cần), resources (@-mention để đính kèm nội dung), prompts (slash command /mcp__server__name do người dùng chủ động gọi)."}},{"id":187,"domain":2,"origin":"Set 6 · Câu 230","q":"During testing, you find that when a customer says \"I need a refund for my recent purchase,\" the agent calls process_refund immediately, but populates the required order_id parameter with a plausible-looking but fabricated value instead of first calling lookup_order to retrieve the actual order ID. The refund call fails because the fabricated ID doesn't exist. Which change directly addresses the root cause of the agent fabricating the order_id value?","opts":{"A":"Switch tool_choice from \"auto\" to \"any\" to force the agent to make a tool call on every turn.","B":"Pre-parse incoming customer messages to extract any order IDs mentioned, and inject them into the conversation context before passing to Claude.","C":"Update the process_refund tool description to explicitly state that order_id must be obtained from a prior lookup_order call and must never be assumed or invented.","D":"Add server-side validation that checks whether the order_id exists in your database before executing, returning an error to the agent if not."},"correct":["C"],"why":{"intro":"Câu kiểm tra cách sửa đúng nguyên nhân gốc khi agent bịa ra tham số bắt buộc (order_id) thay vì lấy từ tool tra cứu trước đó.","requirementTranslation":"Khi khách hàng nói muốn hoàn tiền mà không cung cấp order_id cụ thể, agent gọi ngay process_refund với một order_id bịa ra thay vì gọi lookup_order trước để lấy ID thật, khiến lệnh hoàn tiền thất bại. Cần xác định thay đổi giải quyết đúng nguyên nhân gốc của việc bịa dữ liệu.","keywords":["Tool description làm rõ ràng buộc nguồn dữ liệu","Ngăn fabrication tại nguồn suy luận","Server-side validation là phản ứng, không phải phòng ngừa","Thứ tự gọi tool bắt buộc (lookup trước, action sau)"],"optionAnalysis":[{"key":"A","correct":false,"explanation":"Chuyển tool_choice sang \"any\" chỉ ép agent phải gọi MỘT tool nào đó ở mỗi lượt, không hề chỉ định hay đảm bảo đó là lookup_order trước process_refund — agent vẫn hoàn toàn có thể gọi process_refund trực tiếp với ID bịa như cũ."},{"key":"B","correct":false,"explanation":"Pre-parse tin nhắn để trích order ID không giải quyết được tình huống trong đề: khách hàng chỉ nói \"my recent purchase\" mà KHÔNG hề đề cập order ID nào trong tin nhắn, nên không có gì để trích xuất — giải pháp này nhắm sai vào một kịch bản khác (khi khách có cung cấp ID nhưng agent không nhận ra)."},{"key":"C","correct":true,"explanation":"Cập nhật mô tả tool process_refund để nói rõ ràng rằng order_id BẮT BUỘC phải lấy từ một lệnh gọi lookup_order trước đó, và không bao giờ được tự suy đoán/bịa ra, giải quyết đúng nguyên nhân gốc: agent hiện tại thiếu ràng buộc tường minh về NGUỒN GỐC hợp lệ của tham số, nên nó \"điền tạm\" một giá trị hợp lý thay vì biết rằng cần tra cứu trước. Làm rõ ràng buộc ngay trong description là cách trực tiếp nhất định hướng lại hành vi suy luận của model tại đúng điểm quyết định."},{"key":"D","correct":false,"explanation":"Validation phía server trước khi thực thi là biện pháp PHÁT HIỆN/PHẢN ỨNG sau khi agent đã bịa ra ID và gọi tool — nó ngăn được hậu quả xấu (hoàn tiền sai) nhưng không sửa được nguyên nhân khiến agent tiếp tục có xu hướng bịa ID ở những lần sau; agent vẫn phải thử-sai qua lỗi trả về thay vì hành xử đúng ngay từ đầu."}],"tip":"Khi agent bịa giá trị cho một tham số lẽ ra phải lấy từ một tool tra cứu khác, cách sửa đúng gốc rễ là làm rõ RÀNG BUỘC NGUỒN DỮ LIỆU ngay trong mô tả tool (phải lấy từ đâu, không được tự suy đoán) — các biện pháp validation phía sau chỉ chặn hậu quả chứ không sửa xu hướng hành vi của agent."}}];
+const NEEDS_DOMAIN_FILTER = true;
+
+if(NEEDS_DOMAIN_FILTER){
+  const sel = document.getElementById('p-filter');
+  sel.innerHTML = `<option value="all">Toàn bộ ${QUESTIONS.length} câu</option>`;
+  sel.innerHTML += DOMAINS.filter(d=>QUESTIONS.some(q=>q.domain===d.id)).map(d=>{
+    const count = QUESTIONS.filter(q=>q.domain===d.id).length;
+    return `<option value="${d.id}">Domain ${d.id}: ${d.name.replace(/&amp;/g,'&')} (${count} câu)</option>`;
+  }).join('');
+}
+function currentSet(){
+  if(!NEEDS_DOMAIN_FILTER) return QUESTIONS.map((_,i)=>i);
+  const f = document.getElementById('p-filter').value;
+  let idxs = QUESTIONS.map((_,i)=>i);
+  if(f!=='all'){
+    const did = parseInt(f);
+    idxs = idxs.filter(i=>QUESTIONS[i].domain===did);
+  }
+  return idxs;
+}
+
+function loadLS(key, fallback){ try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }catch(e){ return fallback; } }
+function saveLS(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+
+function getEffectiveTheme(){
+  const saved = loadLS('ccarf_theme', null);
+  if(saved==='light' || saved==='dark') return saved;
+  try{ return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }catch(e){ return 'light'; }
+}
+function updateThemeButton(theme){
+  const btn = document.getElementById('theme-toggle');
+  if(btn) btn.textContent = theme==='dark' ? '☀️ Sáng' : '🌙 Tối';
+}
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  saveLS('ccarf_theme', theme);
+  updateThemeButton(theme);
+}
+applyTheme(getEffectiveTheme());
+document.getElementById('theme-toggle').addEventListener('click', ()=>{
+  const cur = document.documentElement.getAttribute('data-theme')==='dark' ? 'dark' : 'light';
+  applyTheme(cur==='dark' ? 'light' : 'dark');
+});
+
+let practiceOrder = [];
+let practiceIdx = 0;
+let answers = {};
+let flags = {};
+let pendingPick = [];
+
+function arraysEqualAsSets(a,b){
+  if(a.length!==b.length) return false;
+  const sa=[...a].sort(), sb=[...b].sort();
+  return sa.every((v,i)=>v===sb[i]);
+}
+
+function renderWhy(why){
+  if(!why) return '';
+  if(typeof why === 'string') return `<div class="why-box"><b>Giải thích:</b> ${why}</div>`;
+  const kw = (why.keywords||[]).map(k=>`<span class="kw-chip">${k}</span>`).join('');
+  const opts = (why.optionAnalysis||[]).map(o=>`<div class="why-opt ${o.correct?'ok':'no'}"><b>${o.key}. ${o.correct?'ĐÚNG':'SAI'}</b><div>${o.explanation||''}</div></div>`).join('');
+  return `<div class="why-box rich">
+    ${why.intro?`<div class="why-intro">${why.intro}</div>`:''}
+    ${why.requirementTranslation?`<div class="why-sectiontitle">Phân tích yêu cầu</div><div class="why-translation">${why.requirementTranslation}</div>`:''}
+    ${kw?`<div class="why-keywords">${kw}</div>`:''}
+    ${opts?`<div class="why-sectiontitle">Phân tích từng đáp án</div><div class="why-options">${opts}</div>`:''}
+    ${why.tip?`<div class="why-tip"><b>Mẹo làm bài:</b> ${why.tip}</div>`:''}
+  </div>`;
+}
+
+function restartPractice(){
+  practiceOrder = currentSet();
+  if(document.getElementById('p-shuffle').checked){
+    for(let i=practiceOrder.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [practiceOrder[i],practiceOrder[j]] = [practiceOrder[j],practiceOrder[i]];
+    }
+  }
+  practiceIdx = 0; answers = {}; flags = {}; pendingPick = [];
+  renderPractice();
+}
+if(NEEDS_DOMAIN_FILTER) document.getElementById('p-filter').addEventListener('change', restartPractice);
+document.getElementById('p-shuffle').addEventListener('change', restartPractice);
+document.getElementById('p-restart').addEventListener('click', restartPractice);
+
+function renderPGrid(){
+  const grid = document.getElementById('p-grid');
+  grid.innerHTML = practiceOrder.map((qi,pos)=>{
+    const a = answers[qi];
+    let cls = '';
+    if(a) cls = a.correct ? 'ok' : 'bad';
+    if(pos===practiceIdx) cls += ' cur';
+    if(flags[qi]) cls += ' flag';
+    return `<button class="cell ${cls}" data-pos="${pos}" title="Câu ${QUESTIONS[qi].id}">${pos+1}</button>`;
+  }).join('');
+  grid.querySelectorAll('.cell').forEach(c=>{
+    c.addEventListener('click', ()=>{ practiceIdx = parseInt(c.dataset.pos); pendingPick=[]; renderPractice(); });
+  });
+}
+
+function renderStats(){
+  const total = Object.keys(answers).length;
+  const ok = Object.values(answers).filter(a=>a.correct).length;
+  const bad = total-ok;
+  document.getElementById('st-total').textContent = total;
+  document.getElementById('st-ok').textContent = ok;
+  document.getElementById('st-bad').textContent = bad;
+  document.getElementById('p-progress').style.width = (total/practiceOrder.length*100||0)+'%';
+
+  const dsum = document.getElementById('p-domainsum');
+  if(total===0){ dsum.innerHTML=''; return; }
+  const byDomain = {};
+  practiceOrder.forEach(qi=>{
+    const d = QUESTIONS[qi].domain;
+    byDomain[d] = byDomain[d] || {total:0, answered:0, ok:0};
+    byDomain[d].total++;
+    if(answers[qi]){ byDomain[d].answered++; if(answers[qi].correct) byDomain[d].ok++; }
+  });
+  dsum.innerHTML = '<div class="domainsum">' + DOMAINS.filter(d=>byDomain[d.id]).map(d=>{
+    const s = byDomain[d.id];
+    const pct = s.answered ? Math.round(s.ok/s.answered*100) : 0;
+    return `<div class="dsum-item"><div class="name">D${d.id} · ${d.name.replace(/&amp;/g,'&')}</div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <div class="nums"><span>${s.ok}/${s.answered} đúng</span><span>${s.answered}/${s.total} làm</span></div></div>`;
+  }).join('') + '</div>';
+}
+
+function renderPractice(){
+  renderPGrid();
+  renderStats();
+  const qi = practiceOrder[practiceIdx];
+  if(qi===undefined){
+    document.getElementById('p-card').innerHTML = '<div class="empty">Không có câu hỏi nào.</div>';
+    return;
+  }
+  const q = QUESTIONS[qi];
+  const dom = DOMAIN_BY_ID[q.domain];
+  const a = answers[qi];
+  const locked = !!a;
+  const isMulti = q.type===2;
+
+  const optsHtml = Object.keys(q.opts).map(k=>{
+    let cls = isMulti ? 'multi' : '';
+    let mark = isMulti ? '☐' : k;
+    if(locked){
+      if(q.correct.includes(k)) { cls+=' right'; mark='✓'; }
+      else if(a.picked.includes(k)) { cls+=' wrong'; mark='✗'; }
+    } else if(isMulti && pendingPick.includes(k)){
+      cls += ' sel'; mark = '☑';
+    }
+    return `<div class="opt ${cls}" data-k="${k}"><span class="key">${mark}</span><span class="txt">${q.opts[k]}</span></div>`;
+  }).join('');
+
+  const typeHint = isMulti
+    ? `<span class="typehint">Multiple response · select ${q.selectN}</span>`
+    : `<span class="typehint" style="color:var(--accent);background:var(--accent-soft)">Multiple choice · select ONE</span>`;
+
+  const scenarioBanner = (q.scenario !== undefined && typeof SCENARIO_BY_ID !== 'undefined')
+    ? `<div class="scenario-banner"><b>Scenario ${q.scenario}: ${SCENARIO_BY_ID[q.scenario].title}</b>${SCENARIO_BY_ID[q.scenario].desc}</div>`
+    : '';
+  const originChip = q.origin ? `<span class="chip muted">${q.origin}</span>` : '';
+
+  document.getElementById('p-card').innerHTML = `
+    <div class="qhead">
+      <span class="qnum">Câu ${practiceIdx+1} / ${practiceOrder.length}</span>
+      <span class="chip muted">${q.id}</span>
+      ${originChip}
+      <span class="chip muted">Domain ${dom.id} · ${dom.name.replace(/&amp;/g,'&')}</span>
+      ${typeHint}
+      <button class="flagbtn ${flags[qi]?'on':''}" id="flagbtn">${flags[qi]?'★ Đã đánh dấu':'☆ Đánh dấu'}</button>
+    </div>
+    <div class="actions" style="margin-bottom:14px">
+      <button class="btn" id="btn-pprev-top" ${practiceIdx===0?'disabled':''}>← Câu trước</button>
+      <div class="spacer" style="flex:1"></div>
+      <button class="btn primary" id="btn-pnext-top" ${practiceIdx===practiceOrder.length-1?'disabled':''}>Câu tiếp →</button>
+    </div>
+    ${scenarioBanner}
+    <div class="stem"><p>${q.q}</p></div>
+    <div class="opts ${locked?'locked':''}" id="opts">${optsHtml}</div>
+    ${isMulti && !locked ? `<button class="btn primary" id="btn-submit" style="margin-top:4px" ${pendingPick.length!==q.selectN?'disabled':''}>Nộp đáp án (${pendingPick.length}/${q.selectN} đã chọn)</button>` : ''}
+    ${locked? `<div class="verdict ${a.correct?'ok':'bad'}">${a.correct?'✓ Chính xác':'✗ Chưa đúng — đáp án đúng là '+q.correct.join(', ')}</div>
+    ${renderWhy(q.why)}` : ''}
+  `;
+
+  document.getElementById('flagbtn').addEventListener('click', ()=>{ flags[qi] = !flags[qi]; renderPractice(); });
+
+  if(!locked){
+    document.querySelectorAll('#opts .opt').forEach(opt=>{
+      opt.addEventListener('click', ()=>{
+        const k = opt.dataset.k;
+        if(isMulti){
+          const idx = pendingPick.indexOf(k);
+          if(idx>=0) pendingPick.splice(idx,1);
+          else if(pendingPick.length<q.selectN) pendingPick.push(k);
+          renderPractice();
+        } else {
+          answers[qi] = {picked:[k], correct:q.correct.includes(k)};
+          pendingPick = [];
+          renderPractice();
+        }
+      });
+    });
+    if(isMulti){
+      const sb = document.getElementById('btn-submit');
+      if(sb) sb.addEventListener('click', ()=>{
+        answers[qi] = {picked:[...pendingPick], correct:arraysEqualAsSets(pendingPick, q.correct)};
+        pendingPick = [];
+        renderPractice();
+      });
+    }
+  }
+
+  const goPrev = ()=>{ practiceIdx--; pendingPick=[]; renderPractice(); };
+  const goNext = ()=>{ practiceIdx++; pendingPick=[]; renderPractice(); };
+  if(practiceIdx>0){
+    document.getElementById('btn-pprev-top').addEventListener('click', goPrev);
+  }
+  if(practiceIdx<practiceOrder.length-1){
+    document.getElementById('btn-pnext-top').addEventListener('click', goNext);
+  }
+}
+
+restartPractice();
+</script>
+</body>
+</html>

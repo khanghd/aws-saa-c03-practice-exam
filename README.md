@@ -25,9 +25,11 @@ Trang web luyện đề nhiều chứng chỉ, chạy hoàn toàn offline (stati
 ### Claude Certified Architect – Foundations (CCAR-F) — [`ccar-f/`](ccar-f/)
 
 - **Học theo chương**: 11 phần theo 6 chương (blueprint CCAR-F), mỗi phần có key takeaways + kiểm tra nhanh, theo dõi tiến độ qua `localStorage`.
-- **Luyện đề 60 câu** mô phỏng theo 6 scenario, bám sát format đề thi thật (120 phút, 720/1000 điểm đạt).
-- **Luyện đề mở rộng 210 câu** gộp/khử trùng lặp từ 6 bộ đề cộng đồng, lọc theo domain hoặc theo lượt 30 câu.
+- **Luyện đề mở rộng 187 câu** gộp/khử trùng lặp (cả trùng nguyên văn lẫn trùng nội dung bị diễn đạt lại/đảo đáp án) từ 6 bộ đề cộng đồng, lọc theo domain hoặc theo lượt 30 câu.
+- **Đề mock 60 câu** mô phỏng theo 6 scenario, bám sát format đề thi thật (120 phút, 720/1000 điểm đạt) — xem ở bản đề lẻ tự chứa `full-exams/mock-exam.html`.
 - **Quick reference** tổng hợp ngay trong app — không cần file cheat sheet riêng.
+- Dữ liệu câu hỏi tách riêng khỏi app (`question.json`/`question-data.js` + `explanations.json`/`explanations-data.js`), có script `build.mjs` tái sinh toàn bộ file phát sinh sau khi sửa dữ liệu.
+- 13 đề lẻ, tự chứa (không cần mở `index.html`): [`ccar-f/full-exams/`](ccar-f/full-exams/) — 7 lượt 30 câu (bộ 187 câu, lượt cuối 7 câu), 1 đề mock đầy đủ 60 câu, 5 đề theo domain (gộp cả 2 bộ đề).
 
 ## Cách dùng
 
@@ -48,7 +50,13 @@ Nếu deploy qua GitHub Pages: bật Pages ở nhánh chứa `index.html`, trang
 | `saa-c03/full-exams/` | 10 full đề thi thử SAA-C03 (65 câu/đề) |
 | `ccao-f/index.html` | App luyện đề CCAO-F |
 | `ccao-f/cheatsheet.html` | Cheat sheet CCAO-F |
-| `ccar-f/index.html` | App học + luyện đề CCAR-F (học theo chương, luyện đề 60/210 câu, quick reference — tất cả trong 1 file) |
+| `ccar-f/index.html` | App học + luyện đề CCAR-F (học theo chương, luyện đề 60/187 câu, quick reference) |
+| `ccar-f/question-data.js` | Toàn bộ nội dung học (sections) + 247 câu hỏi CCAR-F (60+187, nhúng từ `question.json`) |
+| `ccar-f/explanations-data.js` | Giải thích ("why") cho từng câu/mini-quiz CCAR-F, theo id (nhúng từ `explanations.json`) |
+| `ccar-f/question.json` | Dữ liệu gốc dạng JSON — sửa câu hỏi ở đây rồi chạy `node build.mjs` |
+| `ccar-f/explanations.json` | Giải thích gốc dạng JSON — sửa ở đây rồi chạy `node build.mjs` |
+| `ccar-f/build.mjs` | Script tái sinh `question-data.js`, `explanations-data.js`, và toàn bộ `full-exams/*.html` từ 2 file JSON trên |
+| `ccar-f/full-exams/` | 13 đề lẻ CCAR-F tự chứa: 7 lượt 30 câu, 1 đề mock 60 câu, 5 đề theo domain |
 
 ## Nguồn dữ liệu
 

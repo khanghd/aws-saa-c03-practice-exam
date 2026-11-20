@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cheat Sheet CCAR-F — Claude Certified Architect Foundations</title>
+<meta name="description" content="Tổng hợp kiến thức trọng tâm CCAR-F (Claude Certified Architect – Foundations) theo 5 domain thi, kèm bẫy thường gặp và bảng quyết định nhanh.">
+<style>
+  :root {
+    --bg: #f6f5f1;
+    --bg-card: #ffffff;
+    --bg-card-2: #f0eee8;
+    --border: #dedbd3;
+    --text: #1d1c1a;
+    --text-dim: #6b6862;
+    --accent: #2f5d8a;
+    --accent-dim: #24476b;
+    --accent-bg: #e3ecf5;
+    --green: #2e7d4f;
+    --green-bg: #e2f2e8;
+    --red: #b3412f;
+    --red-bg: #f8e4df;
+    --amber: #9a6a12;
+    --amber-bg: #fdf0d5;
+    --purple: #6d4aa8;
+    --purple-bg: #efe8fb;
+    --purple-text: #4a2f82;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+    background: var(--bg-card-2);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+  }
+
+  .shell { display: grid; grid-template-columns: 220px minmax(0,1fr); max-width: 1180px; margin: 0 auto; }
+  @media (max-width: 860px) { .shell { grid-template-columns: 1fr; } }
+
+  nav.toc {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    padding: 24px 16px 24px 20px; border-right: 1px solid var(--border);
+  }
+  @media (max-width: 860px) { nav.toc { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); } }
+  nav.toc .back { display: block; font-size: 13px; color: var(--text-dim); text-decoration: none; margin-bottom: 4px; }
+  nav.toc .back:hover { color: var(--text); }
+  nav.toc .brand { font-weight: 700; font-size: 15px; margin: 10px 0 2px; }
+  nav.toc .sub { font-size: 11.5px; color: var(--text-dim); margin-bottom: 18px; }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+  nav.toc li { counter-increment: toc; margin-bottom: 1px; }
+  nav.toc a.item {
+    display: flex; gap: 8px; align-items: baseline; text-decoration: none; color: var(--text-dim);
+    font-size: 13px; padding: 5px 8px; border-radius: 8px;
+  }
+  nav.toc a.item:hover { background: var(--bg-card-2); color: var(--text); }
+  nav.toc a.item::before { content: counter(toc, decimal-leading-zero); font-size: 10.5px; color: var(--border); font-weight: 700; }
+
+  main { padding: 24px 28px 90px; }
+  @media (max-width: 600px) { main { padding: 20px 14px 70px; } }
+
+  header.hero {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px;
+    padding-bottom: 18px; margin-bottom: 26px; border-bottom: 1px solid var(--border);
+  }
+  header.hero h1 { font-size: 22px; margin: 0 0 4px; }
+  header.hero .tagline { color: var(--text-dim); font-size: 13.5px; max-width: 48ch; }
+  .weights { display: flex; gap: 6px; flex-wrap: wrap; align-items: flex-start; max-width: 420px; }
+  .weight-pill {
+    display: flex; flex-direction: column; gap: 2px; padding: 6px 9px; border-radius: 10px;
+    font-size: 10.8px; min-width: 76px; border: 1px solid transparent;
+  }
+  .weight-pill b { font-size: 15px; }
+  .w-blue { background: var(--accent-bg); color: var(--accent); }
+  .w-red { background: var(--red-bg); color: var(--red); }
+  .w-amber { background: var(--amber-bg); color: var(--amber); }
+  .w-green { background: var(--green-bg); color: var(--green); }
+
+  section { margin-bottom: 34px; scroll-margin-top: 14px; }
+  section > h2 {
+    display: flex; align-items: center; gap: 10px; font-size: 17px; margin: 0 0 12px;
+    padding-bottom: 7px; border-bottom: 2px solid var(--border);
+  }
+  section > h2 .tag {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 5px;
+  }
+  h3 { font-size: 14px; margin: 18px 0 7px; }
+  p { margin: 6px 0; font-size: 13.5px; line-height: 1.6; }
+  .lead { color: var(--text-dim); font-size: 13px; margin: -4px 0 12px; }
+
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-card); }
+  table { width: 100%; border-collapse: collapse; font-size: 12.8px; }
+  th, td { padding: 8px 11px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg-card-2); font-size: 11px; text-transform: uppercase; letter-spacing: .03em; color: var(--text-dim); font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child, th:first-child { font-weight: 600; white-space: nowrap; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 13px 15px; }
+  .card h4 { margin: 0 0 6px; font-size: 13px; }
+  .card ul, .card ol { margin: 4px 0 0; padding-left: 18px; font-size: 12.8px; }
+  .card li { margin-bottom: 3px; }
+
+  .trap {
+    background: var(--purple-bg); border: 1px solid var(--purple); border-left: 3px solid var(--purple);
+    border-radius: 0 10px 10px 0; padding: 9px 13px; margin: 8px 0; font-size: 13px; color: var(--purple-text); line-height: 1.55;
+  }
+  .trap b { color: var(--purple-text); }
+
+  .kw { display: grid; grid-template-columns: repeat(auto-fill, minmax(225px,1fr)); gap: 8px; margin-top: 6px; }
+  .kw div { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; }
+  .kw div b { display: block; color: var(--accent); font-size: 11.8px; margin-bottom: 2px; }
+
+  .seq { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12.8px; margin: 6px 0; }
+  .seq span.step { background: var(--bg-card-2); border: 1px solid var(--border); border-radius: 7px; padding: 4px 9px; font-weight: 600; }
+  .seq span.arrow { color: var(--text-dim); }
+
+  footer.page-footer {
+    color: var(--text-dim); font-size: 12px; line-height: 1.6; text-align: center; padding: 18px 0 0;
+    border-top: 1px solid var(--border); margin-top: 10px;
+  }
+  footer.page-footer a { color: var(--text-dim); text-decoration: underline; }
+  footer.page-footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="toc">
+    <a class="back" href="../index.html">&larr; Chọn chứng chỉ</a>
+    <a class="back" href="index.html">&larr; Về trang học &amp; luyện đề</a>
+    <div class="brand">Cheat Sheet CCAR-F</div>
+    <div class="sub">Claude Certified Architect – Foundations — 5 domain thi</div>
+    <ol>
+      <li><a class="item" href="#overview">Exam overview &amp; cách đọc đề</a></li>
+      <li><a class="item" href="#d1">Agentic Architecture &amp; Orchestration</a></li>
+      <li><a class="item" href="#d2">Tool Design &amp; MCP Integration</a></li>
+      <li><a class="item" href="#d3">Claude Code Configuration &amp; Workflows</a></li>
+      <li><a class="item" href="#d4">Prompt Engineering &amp; Structured Output</a></li>
+      <li><a class="item" href="#d5">Context Management &amp; Reliability</a></li>
+      <li><a class="item" href="#examday">Exam-day cheat sheet</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div>
+        <h1>CCAR-F — Cheat Sheet</h1>
+        <div class="tagline">Claude Certified Architect – Foundations. Đề thi là scenario-based, thưởng cho lý luận trade-off kiến trúc (reliability/cost/latency/safety), không phải học thuộc cú pháp API.</div>
+      </div>
+      <div class="weights">
+        <div class="weight-pill w-red"><b>27%</b>D1 Agentic Architecture</div>
+        <div class="weight-pill w-green"><b>20%</b>D3 Claude Code Config</div>
+        <div class="weight-pill w-green"><b>20%</b>D4 Prompt &amp; Structured Out</div>
+        <div class="weight-pill w-amber"><b>18%</b>D2 Tool Design &amp; MCP</div>
+        <div class="weight-pill w-blue"><b>15%</b>D5 Context &amp; Reliability</div>
+      </div>
+    </header>
+
+    <section id="overview">
+      <h2>Exam overview</h2>
+      <div class="tbl-wrap"><table>
+        <tr><th>Mục</th><th>Thông tin</th></tr>
+        <tr><td>Mã thi</td><td>CCAR-F (Pearson VUE, trước đây gọi CCA-F)</td></tr>
+        <tr><td>Số câu / thời gian</td><td>60 câu, 120 phút (~2 phút/câu)</td></tr>
+        <tr><td>Dạng câu</td><td>Multiple-choice &amp; multiple-response, scenario-driven</td></tr>
+        <tr><td>Thang điểm / điểm đạt</td><td>100–1000 (scaled, không công bố công thức) / <b>720</b></td></tr>
+        <tr><td>Lệ phí</td><td>$125 USD</td></tr>
+        <tr><td>Hiệu lực / số lượt thi</td><td>12 tháng / tối đa 4 lượt trong 12 tháng (chờ 14/30/90 ngày giữa các lần)</td></tr>
+        <tr><td>Điều kiện</td><td>Không bắt buộc tiên quyết, nhưng cần thuộc tổ chức Claude Partner Network (CPN)</td></tr>
+      </table></div>
+      <p class="lead">D1 + D3 + D4 = <b>67%</b> đề thi → ưu tiên ôn kỹ nhất, nhưng không domain nào áp đảo hẳn.</p>
+
+      <h3>Vì sao "Architecture" là từ khóa</h3>
+      <p>Developer hỏi "gọi API thế nào?". Architect hỏi "với volume, budget, latency SLA, risk profile này, tổ hợp model/pattern/retrieval/guardrail nào phục vụ user tốt nhất?". Đáp án nhiễu thường <b>chạy được về kỹ thuật</b> nhưng lệch ràng buộc đề bài — ví dụ đề xuất agent tự chủ hoàn toàn cho việc mà 1 prompt chain 2 bước xử lý rẻ và dự đoán được hơn.</p>
+
+      <h3>Phạm vi thi KHÔNG bao gồm</h3>
+      <div class="card"><p class="lead" style="margin:0">Fine-tuning · API auth/billing · deploy/host MCP server · chi tiết streaming · rate limit &amp; pricing cụ thể · metric so sánh model · embeddings/vector DB · computer use · vision · chi tiết sâu prompt caching (chỉ cần biết feature tồn tại).</p></div>
+
+      <h3>Cách đọc mỗi tình huống (architecture lens)</h3>
+      <div class="grid2">
+        <div class="card"><ul>
+          <li>User thực sự cần <b>outcome</b> gì — tách khỏi cách triển khai cụ thể</li>
+          <li><b>Chi phí khi sai</b> là bao nhiêu? (quy định/y tế khác hẳn gợi ý phim)</li>
+          <li>Luồng việc có <b>đoán trước được không</b>? Dự đoán được → workflow; mở, cần quyết định runtime → agent</li>
+        </ul></div>
+        <div class="card"><ul>
+          <li>Tool permission nào là <b>tối thiểu cần thiết</b> (least privilege)?</li>
+          <li>Làm sao biết hệ thống <b>vẫn đúng</b> sau khi đổi model/prompt/tool? → evaluation &amp; monitoring</li>
+          <li>Dữ liệu cần lấy từ đâu — ảnh hưởng thiết kế retrieval/tool</li>
+        </ul></div>
+      </div>
+      <div class="trap"><b>Bẫy thường gặp:</b> chọn phương án mạnh/tự chủ nhất "cho an toàn" (đề trừ điểm autonomy thừa); học thuộc tham số API thay vì lý luận trade-off; dùng thông tin logistics cũ về lệ phí/điều kiện thi.</div>
+    </section>
+
+    <section id="d1">
+      <h2>1. Agentic Architecture &amp; Orchestration <span class="tag" style="background:var(--red-bg);color:var(--red)">27%</span></h2>
+
+      <h3>Augmented LLM &amp; nguyên tắc chủ đạo</h3>
+      <p>Mọi thứ bắt đầu từ 1 đơn vị: <b>augmented LLM</b> — 1 model call tăng cường bằng retrieval, tool, memory. Nguyên tắc: <i>tìm giải pháp đơn giản nhất có thể, chỉ tăng độ phức tạp khi cần</i> — bắt đầu từ 1 lệnh gọi, rồi mới thêm retrieval → structured output → tool → agent khi use case thật sự cần.</p>
+
+      <h3>5 workflow pattern + Agent (phải thuộc)</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Pattern</th><th>Cơ chế</th><th>Dùng khi</th></tr>
+        <tr><td>Prompt chaining</td><td>Output bước trước feed input bước sau, theo đường cố định</td><td>Task phân rã thành chuỗi bước đã biết trước</td></tr>
+        <tr><td>Routing</td><td>1 call phân loại rồi dẫn tới model/prompt chuyên biệt</td><td>Input rơi vào các nhóm khác nhau cần xử lý riêng</td></tr>
+        <tr><td>Parallelization</td><td>Chạy song song (sectioning hoặc voting) rồi gộp</td><td>Subtask độc lập, hoặc cần nhiều "ý kiến" để tăng tin cậy</td></tr>
+        <tr><td>Orchestrator-workers</td><td>1 LLM trung tâm chia việc động, giao worker tại runtime</td><td>Số lượng/hình dạng subtask không biết trước</td></tr>
+        <tr><td>Evaluator-optimizer</td><td>1 model tạo, 1 model chấm/feedback, lặp lại</td><td>Có tiêu chí đánh giá rõ, lặp cải thiện đo được</td></tr>
+        <tr><td>Autonomous agent</td><td>Model lên kế hoạch, hành động qua tool, quan sát, lặp tới stop condition</td><td>Vấn đề mở, bước không hardcode được</td></tr>
+      </table></div>
+      <div class="trap"><b>Bẫy:</b> nhầm <b>routing</b> (cổng phân loại, 1 đường cố định) với <b>orchestrator-workers</b> (planner sinh nhiều subtask động); nhầm <b>parallelization</b> (subtask cố định, chạy song song) với orchestrator-workers (subtask khám phá lúc runtime); nhầm <b>evaluator-optimizer</b> (lặp theo feedback chất lượng) với routing (quyết định 1 lần).</div>
+
+      <h3>Workflow hay Agent?</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Tín hiệu trong tình huống</th><th>Nghiêng Workflow</th><th>Nghiêng Agent</th></tr>
+        <tr><td>Các bước đã biết trước</td><td>Có</td><td>Không</td></tr>
+        <tr><td>Số bước đổi theo input</td><td>Không</td><td>Có</td></tr>
+        <tr><td>Chi phí sai cao / bị quy định</td><td>Có (dễ bound &amp; audit)</td><td>Chỉ khi guardrail chặt</td></tr>
+        <tr><td>Cần cost/latency dự đoán được</td><td>Có</td><td>Không</td></tr>
+      </table></div>
+      <p class="lead">Agent đúng khi có đủ 3 guardrail: <b>stopping condition</b> (giới hạn turn/budget), <b>sandboxing</b> (cô lập action khỏi production), <b>human checkpoint</b> (duyệt plan/diff trước hành động không hoàn tác). Thiếu cả 3 → thường là distractor.</p>
+
+      <h3>Vòng lặp Agentic (3 giai đoạn)</h3>
+      <div class="seq">
+        <span class="step">1. Gather context</span><span class="arrow">→</span>
+        <span class="step">2. Take action (tool_use)</span><span class="arrow">→</span>
+        <span class="step">3. Verify the work</span><span class="arrow">→</span>
+        <span class="step">lặp lại tới stop condition</span>
+      </div>
+      <p>Dừng khi: task được verify xong, hết turn/token budget, tool lỗi terminal, hoặc human từ chối approval. <b>Verify</b> là giai đoạn hay bị bỏ quên nhất — agent báo thành công mà không kiểm tra gây "confident-but-wrong" / "hallucinate progress".</p>
+      <div class="grid2">
+        <div class="card"><h4>Verify đúng cách</h4><ul>
+          <li>Code agent: chạy test/linter sau mỗi edit (PostToolUse hook, tất định)</li>
+          <li>Retrieval/Q&amp;A: yêu cầu trích dẫn passage; cài eval question "không có đáp án" để test abstain</li>
+          <li>Agent rủi ro cao: reviewer fresh-context riêng (model tự phê bình transcript dài của chính nó dễ thiên vị)</li>
+        </ul></div>
+        <div class="card"><h4>Stopping conditions</h4><ul>
+          <li>Max turns / max tool calls</li>
+          <li>Token/cost budget (model "thấy" đếm ngược) — khác <code>max_tokens</code> (trần cứng 1 response, model không biết)</li>
+          <li>Success check lập trình (test pass, schema valid)</li>
+          <li>Timeout wall-clock</li>
+        </ul></div>
+      </div>
+
+      <h3>Claude Agent SDK cung cấp gì</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Khả năng</th><th>Làm gì</th></tr>
+        <tr><td>Agent loop</td><td>Tự chạy gather-act-verify, gọi API &amp; thực thi tool</td></tr>
+        <tr><td>Built-in toolset</td><td>File read/write/edit, bash, glob, grep, web fetch/search</td></tr>
+        <tr><td>Subagents</td><td>Agent con phạm vi riêng (context/tool/system prompt riêng)</td></tr>
+        <tr><td>Hooks</td><td>Code tất định tại lifecycle event (PreToolUse, PostToolUse...)</td></tr>
+        <tr><td>Session management</td><td>Lưu &amp; resume state qua các lần chạy</td></tr>
+        <tr><td>MCP integration</td><td>Gắn MCP server làm nguồn tool</td></tr>
+      </table></div>
+      <p class="lead"><b>Agent SDK</b> = client-side (loop chạy trong process của bạn, tool chạy trên hạ tầng của bạn). <b>Managed Agents</b> = server-side (Anthropic chạy loop &amp; host sandbox); bạn consume session stream event (<code>agent.message</code>, <code>agent.tool_use</code>, <code>session.status_idle/terminated</code>) — SSE không replay nên reconnect robust = fetch history trước rồi tail live, dedupe theo event ID.</p>
+
+      <h3>Multi-agent: khi nào hợp lý</h3>
+      <p><b>1 agent là mặc định.</b> Chỉ thêm agent thứ 2 khi ≥1 điều đúng: task phân rã thành subtask độc lập chạy song song được; subtask cần tool/quyền khác nhau; subtask sẽ làm ngập context chính; subtask cần context "sạch" không thiên vị (vd reviewer không thấy lý luận của author).</p>
+      <div class="card"><h4>Subagent = công cụ quản lý context, không chỉ song song hóa</h4><p style="margin:0">Ví dụ: tổng hợp 5 bản review × 8.000 token. Nạp hết vào 1 agent = 40.000 token loãng. Sinh 5 subagent, mỗi cái đọc 8.000 token riêng, trả tóm tắt 300 token → orchestrator chỉ giữ ~1.500 token chắt lọc.</p></div>
+      <p>Pattern phổ biến nhất: <b>orchestrator (hub-and-spoke)</b> — 1 lead chia task, giao subagent, tổng hợp kết quả gọn (không phải full transcript). Delegation thường chỉ sâu <b>1 cấp</b> — subagent tự sinh subagent khó bound hơn.</p>
+      <div class="trap"><b>Error propagation:</b> lỗi subagent phải nổi lên orchestrator dưới dạng kết quả có cấu trúc để retry/reassign/escalate — không được để subtask fail âm thầm, context ngập output thô, hay 2 subagent edit xung đột cùng resource (serialize write / chia phạm vi riêng).</div>
+
+      <h3>Session management</h3>
+      <p>Messages API tự nó <b>stateless</b>. Agent SDK sessions lưu/resume theo ID cho task dài nhiều ngày; memory qua các session (sở thích, fact đã học) nên lưu vào memory store riêng, không dựa in-context history.</p>
+    </section>
+
+    <section id="d2">
+      <h2>2. Tool Design &amp; MCP Integration <span class="tag" style="background:var(--amber-bg);color:var(--amber)">18%</span></h2>
+
+      <h3>Checklist thiết kế tool</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Tiêu chí</th><th>Vì sao</th><th>Bẫy</th></tr>
+        <tr><td>Tên rõ, theo động từ</td><td>Chọn đúng tool</td><td><code>do_stuff</code> → gọi sai tool</td></tr>
+        <tr><td>JSON Schema có kiểu</td><td>Giảm call không hợp lệ</td><td>Thiếu field required</td></tr>
+        <tr><td>Giá trị ràng buộc enum</td><td>Chặn drift sang free-text</td><td><code>status</code> là string bất kỳ</td></tr>
+        <tr><td>Phạm vi hẹp</td><td>Giới hạn blast radius</td><td>1 tool vừa đọc vừa xóa</td></tr>
+        <tr><td>Kiểm tra authorization</td><td>Bảo vệ truy cập dữ liệu</td><td>Tin vào "ý định" của model</td></tr>
+        <tr><td>Trả lỗi có cấu trúc</td><td>Cho phép recovery</td><td>Ném lỗi 500 mơ hồ</td></tr>
+        <tr><td>Description chỉ dẫn <i>khi nào</i> gọi</td><td>Cải thiện tỉ lệ gọi đúng</td><td>Chỉ mô tả tool làm gì</td></tr>
+      </table></div>
+
+      <h3>Luồng 1 tool call thực tế</h3>
+      <div class="seq">
+        <span class="step">Claude phát tool_use {name, input}</span><span class="arrow">→</span>
+        <span class="step">code validate schema + auth</span><span class="arrow">→</span>
+        <span class="step">thực thi, trả tool_result</span><span class="arrow">→</span>
+        <span class="step">Claude đọc kết quả, tiếp tục</span>
+      </div>
+      <p class="lead">Claude <b>không tự thực thi</b> tool — model đề xuất, code tin cậy của bạn thực hiện. 2 chi tiết hay hỏi: (1) nhiều <code>tool_use</code> song song trong 1 response phải trả về <b>cùng 1 user message</b> gồm các <code>tool_result</code> (tách message sẽ "dạy" Claude ngừng gọi song song); (2) tool lỗi trả <code>is_error: true</code>, không được bỏ qua.</p>
+
+      <h3>MCP: 3 primitive</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Primitive</th><th>Là gì</th><th>Side effect?</th><th>Ví dụ</th></tr>
+        <tr><td>Tools</td><td>Hành động model gọi</td><td>Có</td><td>Insert dòng, gửi mail, gọi API</td></tr>
+        <tr><td>Resources</td><td>Context chỉ đọc, theo URI</td><td>Không</td><td>Nội dung file, schema DB, log</td></tr>
+        <tr><td>Prompts</td><td>Template tái sử dụng, có tham số</td><td>Không</td><td>Prompt <code>code_review</code> nhận <code>language</code>, <code>file_path</code></td></tr>
+      </table></div>
+      <div class="trap"><b>Bẫy MCP phổ biến nhất:</b> nhầm resource (context chỉ đọc, không đổi state) với tool (hành động đổi state). Lấy schema/log cho context → resource; "làm gì đó" → tool.</div>
+
+      <h3>Transport = quyết định trust-boundary</h3>
+      <div class="grid2">
+        <div class="card"><h4>stdio</h4><p style="margin:0">Subprocess local, chạy quyền máy user. Ranh giới là máy local — dùng cho truy cập file/process local.</p></div>
+        <div class="card"><h4>Streamable HTTP</h4><p style="margin:0">Dịch vụ remote qua mạng — cần authentication &amp; scoping vì bề mặt tấn công lớn hơn.</p></div>
+      </div>
+
+      <h3>Least privilege &amp; confused-deputy</h3>
+      <p>Tách read/write thành 2 tool authorize riêng để 1 call lỗi không leo thang từ lookup thành phá hoại. Coi model như "planner" <b>không tin cậy</b> (có thể bị prompt-injection từ text retrieved) — <b>executor</b>, không phải prompt, là nơi áp luật ai-được-làm-gì. Không bao giờ đưa raw secret vào context window (tránh bị echo lại); credential MCP lưu ngoài tầm model (vault/env substitution), inject ở egress.</p>
+
+      <h3>Bảng quyết định nhanh</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Gợi ý trong tình huống</th><th>Hướng xử lý</th></tr>
+        <tr><td>1 tool vừa đọc vừa ghi</td><td>Tách thành 2 tool phạm vi hẹp</td></tr>
+        <tr><td>Lấy schema/log cho context</td><td>MCP resource, không phải tool</td></tr>
+        <tr><td>Tích hợp remote</td><td>MCP server qua streamable HTTP kèm auth</td></tr>
+        <tr><td>Truy cập file/process local</td><td>MCP server qua stdio, scoped roots</td></tr>
+        <tr><td>Tool có thể fail</td><td>Trả lỗi có cấu trúc, có kế hoạch recovery</td></tr>
+        <tr><td>Claude chọn sai tool</td><td>Đổi tên theo động từ rõ; thêm description chỉ-dẫn</td></tr>
+      </table></div>
+    </section>
+
+    <section id="d3">
+      <h2>3. Claude Code Configuration &amp; Workflows <span class="tag" style="background:var(--green-bg);color:var(--green)">20%</span></h2>
+
+      <h3>Các bề mặt cấu hình</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Bề mặt</th><th>Nằm ở đâu</th><th>Mục đích</th></tr>
+        <tr><td>CLAUDE.md</td><td>Project root (&amp; <code>~/.claude/CLAUDE.md</code> user-global)</td><td>Bộ nhớ dự án lâu dài, tự nạp context</td></tr>
+        <tr><td>settings.json</td><td><code>.claude/settings.json</code> hoặc <code>~/.claude/</code></td><td>Permission, env var, hook, chọn model</td></tr>
+        <tr><td>Permissions</td><td>block <code>permissions</code> trong settings.json</td><td>Rule allow/ask/deny theo tool, vd <code>Bash(git push:*)</code></td></tr>
+        <tr><td>Slash commands</td><td><code>.claude/commands/*.md</code></td><td>Công thức prompt tái sử dụng, gọi <code>/name</code></td></tr>
+        <tr><td>Subagents</td><td><code>.claude/agents/*.md</code></td><td>Chuyên gia phạm vi hẹp, tool &amp; system prompt riêng</td></tr>
+        <tr><td>Skills</td><td><code>.claude/skills/&lt;name&gt;/SKILL.md</code></td><td>Chuyên môn đóng gói, nạp theo yêu cầu</td></tr>
+        <tr><td>Hooks</td><td><code>hooks</code> trong settings.json</td><td>Lệnh shell tất định tại event (PreToolUse, PostToolUse, Stop)</td></tr>
+        <tr><td>MCP servers</td><td><code>.mcp.json</code> / settings</td><td>Kết nối tool/data/resource ngoài qua MCP</td></tr>
+      </table></div>
+
+      <h3>Hệ thống phân cấp CLAUDE.md</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Phạm vi</th><th>Vị trí</th><th>Dùng cho</th></tr>
+        <tr><td>User (global)</td><td><code>~/.claude/CLAUDE.md</code></td><td>Quy ước cá nhân, mọi project</td></tr>
+        <tr><td>Project (team)</td><td><code>&lt;repo&gt;/CLAUDE.md</code></td><td>Rule chung team, commit vào VCS</td></tr>
+        <tr><td>Subdirectory</td><td><code>&lt;repo&gt;/&lt;subdir&gt;/CLAUDE.md</code></td><td>Rule riêng chỉ trong thư mục đó</td></tr>
+      </table></div>
+      <p>Khi làm việc trong 1 subdirectory, bộ nhớ áp dụng là <b>kết hợp</b> user+project+subdirectory, rule cụ thể/gần nhất ưu tiên khi xung đột. <code>.claudeignore</code> loại trừ path khỏi context (như <code>.gitignore</code> với git).</p>
+      <div class="grid2">
+        <div class="card"><h4>Nên chứa</h4><ul><li>Package manager, lệnh test/build</li><li>Quy tắc đặt tên, thư mục cần tránh</li><li>Ràng buộc kiến trúc ổn định</li></ul></div>
+        <div class="card"><h4>Không nên chứa</h4><ul><li>Secret/credential (dùng env var / secrets manager)</li><li>Ghi chú tạm "nhớ cho việc này"</li><li>Nội dung phình to (tốn ngân sách context mỗi turn)</li></ul></div>
+      </div>
+
+      <h3>Permission &amp; Hook</h3>
+      <p>Permission khớp theo <b>blast radius</b>: tool read-only → allow thoải mái; hành động phá hoại (<code>rm -rf</code>, <code>git push --force</code>, deploy production) → <b>ask</b> hoặc <b>deny</b>. Hook thêm lớp tất định model không thể bỏ qua: PreToolUse chặn lệnh khớp pattern (exit code ≠ 0 → chặn hành động); PostToolUse tự chạy linter/test sau mỗi edit.</p>
+
+      <h3>Skills vs CLAUDE.md</h3>
+      <p>Skill = SKILL.md với frontmatter (tên + description = trigger) + file hỗ trợ. Description chi phí thấp nằm sẵn trong context; toàn bộ skill chỉ nạp khi task khớp trigger (<b>progressive disclosure</b>). Dùng <b>skill</b> cho kiến thức đặc thù-theo-task, nạp-theo-yêu-cầu; dùng <b>CLAUDE.md</b> cho rule luôn-bật, ổn định.</p>
+
+      <h3>Headless &amp; CI</h3>
+      <p>Chạy <code>claude -p "..."</code> trong CI cần: tiêu chí thành công rõ ràng, quyền hạn chế (không <code>--dangerously-skip-permissions</code> tràn lan ngoài sandbox), và validation tự động. Mỗi automation nên kết thúc bằng 1 bước validate cụ thể chứng minh thay đổi đúng.</p>
+
+      <h3>Ánh xạ tình huống ↔ cấu hình đúng</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Tình huống</th><th>Cấu hình đúng</th></tr>
+        <tr><td>Agent cứ phải tìm lại lệnh build</td><td>Thêm vào CLAUDE.md</td></tr>
+        <tr><td>Frontend &amp; backend cần rule khác nhau</td><td>CLAUDE.md theo subdirectory</td></tr>
+        <tr><td>Agent thử <code>git push --force</code> ngoài yêu cầu</td><td>Deny/ask pattern đó trong permissions</td></tr>
+        <tr><td>Test phải chạy sau mỗi edit, không ngoại lệ</td><td>PostToolUse hook chạy test</td></tr>
+        <tr><td>1 refactor nhiều bước lặp lại qua nhiều repo</td><td>Đóng gói slash command</td></tr>
+        <tr><td>1 house style chỉ nên nạp khi liên quan</td><td>Đóng gói skill với trigger rõ</td></tr>
+        <tr><td>CI tạo thay đổi chưa được kiểm chứng</td><td>Thêm tiêu chí thành công + validation gate</td></tr>
+        <tr><td>MCP server lộ write tool không dùng tới</td><td>Giới hạn về least-privilege read tool</td></tr>
+      </table></div>
+    </section>
+
+    <section id="d4">
+      <h2>4. Prompt Engineering &amp; Structured Output <span class="tag" style="background:var(--green-bg);color:var(--green)">20%</span></h2>
+
+      <h3>1 prompt production = hợp đồng (6 thành phần)</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Thành phần</th><th>Xác định</th></tr>
+        <tr><td>Role</td><td>Claude đóng vai gì</td></tr>
+        <tr><td>Task</td><td>Kết quả duy nhất cần đạt</td></tr>
+        <tr><td>Context</td><td>Dữ liệu để làm việc (trong tag XML)</td></tr>
+        <tr><td>Constraints</td><td>Độ dài, giọng văn, hành động cấm</td></tr>
+        <tr><td>Output shape</td><td>Schema/format rõ ràng</td></tr>
+        <tr><td>Success criteria</td><td>Grader sẽ chấm thế nào</td></tr>
+      </table></div>
+      <p class="lead">Thất bại prompt yếu phổ biến nhất: chỉ dẫn mơ hồ ("summarize this nicely") để ngỏ output shape &amp; hành vi khi lỗi → downstream không tin cậy được.</p>
+
+      <h3>Cấu trúc Claude phản hồi tốt</h3>
+      <div class="grid2">
+        <div class="card"><h4>XML delimiters</h4><p style="margin:0">Tag như <code>&lt;document&gt;</code>, <code>&lt;instructions&gt;</code> ngăn nhầm dữ liệu với chỉ dẫn — phòng prompt injection từ nội dung retrieved.</p></div>
+        <div class="card"><h4>Rule gần cuối prompt</h4><p style="margin:0">Hiệu ứng recency: rule ngắn gọn đặt gần cuối được tuân theo chắc hơn đặt giữa prompt.</p></div>
+      </div>
+      <p>Cho model <b>lối thoát</b> ("tôi không biết" / sentinel value) thay vì ép bịa. Đặt context: rule ổn định ở system prompt, task tức thời ở cuối; phần đổi theo mỗi request đặt muộn để không phá cache prefix ổn định (xem Domain 5).</p>
+
+      <h3>Few-shot example</h3>
+      <p><b>Đa dạng thắng số lượng</b> — 3-4 ví dụ đa dạng + 1 edge case khó thắng 10 ví dụ gần giống nhau. <b>Không thay thế validation</b> — model có thể viết văn xuôi thuyết phục mà vẫn vi phạm hợp đồng; code downstream vẫn phải validate object đã parse.</p>
+
+      <h3>Kỹ thuật nâng cao — dùng khi xứng đáng</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Kỹ thuật</th><th>Dùng khi</th></tr>
+        <tr><td>Chain-of-thought / thinking effort cao</td><td>Lý luận nhiều bước, toán, phân tích phức tạp</td></tr>
+        <tr><td>Role/persona prompting</td><td>Task hưởng lợi từ 1 giọng/chuyên môn cụ thể</td></tr>
+        <tr><td>Prompt chaining</td><td>1 mega-prompt không ổn định; tách giai đoạn rõ hơn</td></tr>
+        <tr><td>Multi-pass review</td><td>Chất lượng quan trọng, 1 pass chưa đủ</td></tr>
+      </table></div>
+      <div class="trap"><b>Bẫy:</b> 1 prompt rõ ràng, cấu trúc tốt thắng 1 chain phức tạp khi task đơn giản — đáp án prompting over-engineered là distractor kinh điển.</div>
+
+      <h3>Schema-first cho Structured Output</h3>
+      <p>Thiết kế <b>JSON schema trước prompt</b>: field bắt buộc, enum, object lồng, và điều gì xảy ra khi validation fail — rồi viết prompt xoay quanh hợp đồng đó. Ngăn thất bại "đọc hay nhưng phá parser". Ràng buộc số/độ dài/đệ quy nên enforce trong code validation sau khi parse, không nhét hết vào schema.</p>
+
+      <h3>Thực thi lập trình vs. hướng dẫn qua prompt</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Cách tiếp cận</th><th>Độ tin cậy</th></tr>
+        <tr><td>Hướng dẫn qua prompt ("please respond in JSON")</td><td>Yếu nhất — vẫn có thể drift</td></tr>
+        <tr><td>Few-shot format steering</td><td>Tốt hơn, không đảm bảo</td></tr>
+        <tr><td>Structured outputs / strict schema / <code>strict: true</code></td><td>Mạnh nhất — khớp đảm bảo</td></tr>
+        <tr><td>Validate-and-retry (parse + validate code, re-prompt khi fail)</td><td>Lưới an toàn bao quanh mọi cách trên</td></tr>
+      </table></div>
+      <p class="lead">Luôn định nghĩa đường lỗi sau N lần retry fail: default an toàn, escalate human, hoặc lỗi có kiểu — không bao giờ gửi output chưa validate xuống downstream.</p>
+
+      <h3>Eval phải phủ cả đường lỗi</h3>
+      <p>Bẫy phổ biến nhất: đáp án chỉ eval "happy path". Eval set thật cần: yêu cầu mơ hồ, tool lỗi/timeout, JSON không parse được, retrieval cũ/rỗng, prompt adversarial.</p>
+      <div class="tbl-wrap"><table>
+        <tr><th>Loại output</th><th>Phương pháp chấm</th></tr>
+        <tr><td>Giá trị chính xác (phân loại, field)</td><td>So khớp chính xác / assertion lập trình</td></tr>
+        <tr><td>Object có cấu trúc</td><td>Validate schema + kiểm từng field</td></tr>
+        <tr><td>Văn xuôi mở</td><td>Rubric, thường LLM-as-judge với context mới</td></tr>
+        <tr><td>Độ trung thực với nguồn</td><td>Kiểm trích dẫn; câu hỏi "không có đáp án" để xác nhận abstain</td></tr>
+      </table></div>
+      <p>Chạy eval như <b>regression gate</b>: version-controlled, chạy trước &amp; sau mỗi thay đổi ảnh hưởng chất lượng (nâng cấp model, sửa prompt, thêm tool/MCP, đổi retrieval). Điểm giảm → chặn/gắn cờ trước khi tới user. Ưu tiên regression eval hơn chỉ-thêm-retry hay đọc output bằng tay.</p>
+    </section>
+
+    <section id="d5">
+      <h2>5. Context Management &amp; Reliability <span class="tag" style="background:var(--accent-bg);color:var(--accent)">15%</span></h2>
+
+      <h3>Context là ngân sách</h3>
+      <p>Claude coi trọng chỉ dẫn gần đầu (system prompt) và gần cuối (turn gần nhất) hơn — đặt rule lâu dài ở system prompt, task tức thời ở cuối. Fact hay đổi (giá, tồn kho, policy) → lấy tại thời điểm request, ground kèm trích dẫn, đừng nướng cứng vào prompt tĩnh.</p>
+
+      <h3>Prompt Caching — cơ chế &amp; bẫy</h3>
+      <p>Cache key = byte <b>chính xác</b> của prefix tới điểm ngắt <code>cache_control</code>, theo thứ tự render tools → system → messages. Đổi 1 byte bất kỳ trong prefix → mất cache mọi thứ sau nó.</p>
+      <div class="grid2">
+        <div class="card"><h4>Giữ cache sống</h4><ul>
+          <li>Nội dung dễ đổi (timestamp, request ID) đặt <b>sau</b> điểm ngắt cuối</li>
+          <li>Không đổi tool list hay model giữa hội thoại</li>
+          <li>Xác nhận hoạt động: cache-read token &gt; 0 qua các request cùng prefix</li>
+        </ul></div>
+        <div class="card"><h4>Giới hạn</h4><ul>
+          <li>Chỉ giúp context tĩnh, lặp lại — không giúp nội dung đổi mỗi request</li>
+          <li>1 lần ghi cache tốn hơn đọc thường — chỉ đáng khi prefix tái dùng đủ nhiều</li>
+        </ul></div>
+      </div>
+
+      <h3>Compaction vs Progressive Summarization vs Context Editing</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Kỹ thuật</th><th>Làm gì</th></tr>
+        <tr><td>Compaction (server-side)</td><td>Tóm tắt turn cũ khi gần chạm limit; phải mang theo compaction block cho request sau</td></tr>
+        <tr><td>Progressive summarization</td><td>Giữ 1 summary "chạy", cập nhật sau mỗi cụm turn, bỏ turn thô cũ nhất</td></tr>
+        <tr><td>Context editing / clearing</td><td><b>Xóa hẳn</b> tool result/thinking block cũ không còn liên quan (khác tóm tắt)</td></tr>
+      </table></div>
+      <p class="lead">Phân biệt: compaction &amp; summarization <b>cô đọng</b>; context editing <b>xóa hẳn</b>; caching <b>tái dùng</b>.</p>
+
+      <h3>Chọn đúng kỹ thuật context</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Triệu chứng</th><th>Kỹ thuật đúng</th></tr>
+        <tr><td>Gửi lại tài liệu dài + tool def mỗi lần gọi</td><td>Prompt caching prefix ổn định</td></tr>
+        <tr><td>Chat nhiều giờ sắp vượt window</td><td>Compaction / progressive summarization</td></tr>
+        <tr><td>Tool output cũ làm rối context, không còn liên quan</td><td>Context editing / clearing</td></tr>
+        <tr><td>1 giá đã nướng cứng giờ sai</td><td>Retrieval tại thời điểm request</td></tr>
+        <tr><td>Cache hit rate = 0 dù prompt có vẻ ổn định</td><td>Tìm &amp; gỡ yếu tố phá cache (timestamp, JSON không sort, tool list đổi)</td></tr>
+      </table></div>
+
+      <h3>Model Selection = cost-latency-quality, không phải tối đa hóa</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Loại task</th><th>Nên chọn</th></tr>
+        <tr><td>Phân loại/routing khối lượng lớn</td><td>Model nhanh, rẻ</td></tr>
+        <tr><td>Trợ lý chung, lý luận vừa phải</td><td>Model mid-tier cân bằng</td></tr>
+        <tr><td>Lý luận đa bước phức tạp, agentic khó</td><td>Model mạnh nhất</td></tr>
+        <tr><td>Trả lời sai là thảm họa (quy định, y tế)</td><td>Model mạnh hơn + validation</td></tr>
+      </table></div>
+      <p>Pattern hiệu quả: <b>route theo độ khó</b> — model rẻ xử lý turn dễ phổ biến, escalate turn hiếm/khó lên model mạnh hơn (= pattern Routing ở Domain 1, áp dụng cho chọn model).</p>
+
+      <h3>Bộ control reliability</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Control</th><th>Dùng cho</th></tr>
+        <tr><td>Retry kèm exponential backoff</td><td>Lỗi <b>tạm thời</b> (429, 5xx)</td></tr>
+        <tr><td>Timeout</td><td>Giới hạn latency, tránh call treo kẹt user</td></tr>
+        <tr><td>Fallback</td><td>Giảm cấp nhẹ nhàng khi outage</td></tr>
+        <tr><td>Guardrail / classifier</td><td>Chặn output không an toàn/sai policy</td></tr>
+        <tr><td>Eval / regression set</td><td>Đo hành vi kỳ vọng, bắt regression</td></tr>
+        <tr><td>Monitoring</td><td>Quan sát outcome production, đóng vòng lặp</td></tr>
+      </table></div>
+      <div class="trap"><b>Nuance hay hỏi:</b> retry chỉ dành cho lỗi tạm thời. Retry 1 lỗi <b>tất định</b> (schema sai, credential sai, 400 invalid-request) chỉ tốn token — sửa nguyên nhân, đừng retry.</div>
+
+      <h3>Grounding vs Guardrail</h3>
+      <p><b>Grounding</b> giải quyết độ trung thực (câu trả lời có nguồn hỗ trợ không?) — retrieve context đáng tin, chỉ thị chỉ trả lời từ tài liệu cung cấp, cho phép "tôi không biết". <b>Guardrail</b> giải quyết an toàn &amp; policy (câu trả lời có được phép tồn tại không?) — classifier/rule check chặn response sai policy trước khi tới user. 1 câu trả lời grounded hoàn hảo vẫn có thể sai policy; 1 câu trả lời an toàn vẫn có thể là bịa đặt. Đề thi ưu tiên đáp án <b>nhiều lớp</b> (ground + guardrail + validate) hơn 1 "viên đạn bạc".</p>
+    </section>
+
+    <section id="examday">
+      <h2>6. Exam-day cheat sheet</h2>
+
+      <h3>Trap patterns</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Answer pattern</th><th>Usually</th><th>Vì sao</th></tr>
+        <tr><td>Agent tự chủ hoàn toàn cho task dự đoán trước được</td><td>Wrong</td><td>Over-engineering; workflow đủ dùng &amp; rẻ/an toàn hơn</td></tr>
+        <tr><td>Multi-agent cho task 1 agent xử lý đủ</td><td>Wrong</td><td>Thêm chi phí phối hợp, latency, failure mode không cần thiết</td></tr>
+        <tr><td>Tool vừa đọc vừa ghi / vừa đọc vừa xóa</td><td>Wrong</td><td>Vi phạm least privilege, mở confused-deputy</td></tr>
+        <tr><td>Retry 1 lỗi 400/validation/credential</td><td>Wrong</td><td>Lỗi tất định, sẽ fail giống hệt mỗi lần</td></tr>
+        <tr><td>"Please respond in JSON" làm toàn bộ đảm bảo</td><td>Wrong</td><td>Chỉ là hướng dẫn qua prompt — không có thực thi lập trình</td></tr>
+        <tr><td>Eval chỉ chạy trên happy path/demo sạch</td><td>Wrong</td><td>Bỏ sót failure mode thật của production</td></tr>
+        <tr><td>Luôn dùng model mạnh/đắt nhất</td><td>Wrong</td><td>Trả tiền cho khả năng task không cần</td></tr>
+        <tr><td>Nhét timestamp/request ID vào đầu system prompt</td><td>Wrong</td><td>Phá cache prefix mỗi request</td></tr>
+        <tr><td>"Thêm 1 disclaimer" hoặc "dặn Claude cẩn thận"</td><td>Wrong</td><td>Lời dặn ≠ process control / enforcement lập trình</td></tr>
+        <tr><td>Grounding + guardrail + validate kết hợp, proportional với risk</td><td>Right</td><td>Nhiều lớp, đúng loại kiểm soát cho đúng failure mode</td></tr>
+      </table></div>
+
+      <h3>Mẹo đọc scenario dài</h3>
+      <div class="grid2">
+        <div class="card"><ul>
+          <li>Đọc câu hỏi (yêu cầu) trước, rồi mới đọc bối cảnh scenario</li>
+          <li>Tìm: khối lượng (volume), ràng buộc latency/cost, chi phí-khi-sai, dữ liệu nhạy cảm</li>
+        </ul></div>
+        <div class="card"><ul>
+          <li>Không thêm giả định ngoài đề bài</li>
+          <li>Chọn đáp án giải quyết <b>đủ</b> ràng buộc đã nêu, không chọn đáp án chỉ đúng 1 phần</li>
+        </ul></div>
+      </div>
+
+      <h3>Exam vocabulary</h3>
+      <div class="kw">
+        <div><b>most effective / best</b>Trade-off cân bằng đúng ràng buộc đã nêu, không phải mạnh nhất</div>
+        <div><b>least privilege</b>Tool/quyền hẹp nhất đủ hoàn thành việc</div>
+        <div><b>stopping condition</b>Max turns/budget/success check/timeout — bắt buộc với mọi agent</div>
+        <div><b>blast radius</b>Mức thiệt hại nếu hành động sai/lạm quyền</div>
+        <div><b>confused-deputy</b>Model bị lừa dùng sai credential/quyền rộng nó đang giữ</div>
+        <div><b>grounding</b>Trả lời có căn cứ từ nguồn được cung cấp, chống hallucination</div>
+        <div><b>guardrail</b>Lớp chặn output sai policy/không an toàn, khác grounding</div>
+        <div><b>regression gate</b>Eval chạy trước/sau mỗi thay đổi để chặn giảm chất lượng</div>
+        <div><b>schema-first</b>Thiết kế JSON schema trước, viết prompt theo hợp đồng đó</div>
+        <div><b>transient error</b>Lỗi tạm thời (429/5xx) — đáng retry, khác lỗi tất định</div>
+        <div><b>cache prefix</b>Phải giống byte-for-byte để hit cache; đổi 1 byte là mất</div>
+        <div><b>orchestrator-workers</b>Subtask khám phá lúc runtime, khác routing (1 đường cố định)</div>
+      </div>
+
+      <h3>3 câu hỏi trước khi chốt đáp án</h3>
+      <div class="card"><ul>
+        <li>Đáp án có khớp đúng với ràng buộc <b>cụ thể</b> của tình huống (volume, latency, cost, risk), không phải "giải pháp mạnh nhất nói chung"?</li>
+        <li>Rủi ro được kiểm soát bằng <b>process/code tất định</b> (schema, hook, eval gate), hay chỉ bằng lời dặn Claude?</li>
+        <li>Mức độ phức tạp (agent, multi-agent, kỹ thuật nâng cao) có thật sự <b>xứng đáng</b> với task, hay đơn giản hơn đã đủ?</li>
+      </ul></div>
+    </section>
+
+    <footer class="page-footer">
+      Đây là tài liệu ôn tập cá nhân, tự biên soạn dựa trên outline công khai của kỳ thi, không liên kết hay được xác nhận bởi đơn vị tổ chức kỳ thi. Tên chứng chỉ/kỳ thi chỉ dùng để mô tả nội dung ôn tập, không hàm ý được tài trợ hay phê duyệt.<br>
+      Nội dung ở đây là tổng hợp tự biên soạn, không phải tài liệu thi thật/được nhớ lại/do nhà tài trợ cung cấp. Độ phủ, định dạng và độ khó có thể khác đề thi thật. Vui lòng xác nhận lại thông tin lệ phí, điều kiện thi với đơn vị tổ chức chính thức.<br>
+      Thấy hay thì cho mình xin cái sao ⭐ trên GitHub là vui rồi, còn nếu muốn ủng hộ thật thì xin hãy ủng hộ Mặt trận Tổ quốc Việt Nam
+      <svg aria-label="Cờ Việt Nam" role="img" width="18" height="12" viewBox="0 0 30 20" style="vertical-align:middle;margin-left:4px;">
+        <rect width="30" height="20" fill="#DA251D"/>
+        <polygon points="15,4 16.76,9.53 22.56,9.53 17.9,12.94 19.66,18.47 15,15.06 10.34,18.47 12.1,12.94 7.44,9.53 13.24,9.53" fill="#FFFF00"/>
+      </svg>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

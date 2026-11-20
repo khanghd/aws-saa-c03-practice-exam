@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cheat Sheet CCAR-P — Claude Certified Architect Professional</title>
+<meta name="description" content="Tổng hợp kiến thức trọng tâm CCAR-P (Claude Certified Architect Professional) theo chủ đề: config scopes, least privilege, kiến trúc, retrieval, cost, security, compliance, evaluation, HITL, documentation, discovery.">
+<style>
+  :root {
+    --bg: #f6f5f1;
+    --bg-card: #ffffff;
+    --bg-card-2: #f0eee8;
+    --border: #dedbd3;
+    --text: #1d1c1a;
+    --text-dim: #6b6862;
+    --accent: #2f5d8a;
+    --accent-dim: #24476b;
+    --accent-bg: #e3ecf5;
+    --green: #2e7d4f;
+    --green-bg: #e2f2e8;
+    --red: #b3412f;
+    --red-bg: #f8e4df;
+    --amber: #9a6a12;
+    --amber-bg: #fdf0d5;
+    --purple: #6d4aa8;
+    --purple-bg: #efe8fb;
+    --purple-text: #4a2f82;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+    font-size: 0.92em;
+    background: var(--bg-card-2);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+  }
+
+  .shell { display: grid; grid-template-columns: 220px minmax(0,1fr); max-width: 1180px; margin: 0 auto; }
+  @media (max-width: 860px) { .shell { grid-template-columns: 1fr; } }
+
+  nav.toc {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    padding: 24px 16px 24px 20px; border-right: 1px solid var(--border);
+  }
+  @media (max-width: 860px) { nav.toc { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); } }
+  nav.toc .back { display: block; font-size: 13px; color: var(--text-dim); text-decoration: none; margin-bottom: 4px; }
+  nav.toc .back:hover { color: var(--text); }
+  nav.toc .brand { font-weight: 700; font-size: 15px; margin: 10px 0 2px; }
+  nav.toc .sub { font-size: 11.5px; color: var(--text-dim); margin-bottom: 18px; }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+  nav.toc li { counter-increment: toc; margin-bottom: 1px; }
+  nav.toc a.item {
+    display: flex; gap: 8px; align-items: baseline; text-decoration: none; color: var(--text-dim);
+    font-size: 13px; padding: 5px 8px; border-radius: 8px;
+  }
+  nav.toc a.item:hover { background: var(--bg-card-2); color: var(--text); }
+  nav.toc a.item::before { content: counter(toc, decimal-leading-zero); font-size: 10.5px; color: var(--border); font-weight: 700; }
+
+  main { padding: 24px 28px 90px; }
+  @media (max-width: 600px) { main { padding: 20px 14px 70px; } }
+
+  header.hero {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px;
+    padding-bottom: 18px; margin-bottom: 26px; border-bottom: 1px solid var(--border);
+  }
+  header.hero h1 { font-size: 22px; margin: 0 0 4px; }
+  header.hero .tagline { color: var(--text-dim); font-size: 13.5px; max-width: 50ch; }
+  .weights { display: flex; gap: 6px; flex-wrap: wrap; align-items: flex-start; max-width: 480px; }
+  .weight-pill {
+    display: flex; flex-direction: column; gap: 2px; padding: 6px 9px; border-radius: 10px;
+    font-size: 10.8px; min-width: 76px; border: 1px solid transparent;
+  }
+  .weight-pill b { font-size: 15px; }
+  .w-blue { background: var(--accent-bg); color: var(--accent); }
+  .w-red { background: var(--red-bg); color: var(--red); }
+  .w-amber { background: var(--amber-bg); color: var(--amber); }
+  .w-green { background: var(--green-bg); color: var(--green); }
+
+  section { margin-bottom: 34px; scroll-margin-top: 14px; }
+  section > h2 {
+    display: flex; align-items: center; gap: 10px; font-size: 17px; margin: 0 0 12px;
+    padding-bottom: 7px; border-bottom: 2px solid var(--border);
+  }
+  section > h2 .tag {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 5px;
+  }
+  h3 { font-size: 14px; margin: 18px 0 7px; }
+  p { margin: 6px 0; font-size: 13.5px; line-height: 1.6; }
+  .lead { color: var(--text-dim); font-size: 13px; margin: -4px 0 12px; }
+
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-card); }
+  table { width: 100%; border-collapse: collapse; font-size: 12.8px; }
+  th, td { padding: 8px 11px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg-card-2); font-size: 11px; text-transform: uppercase; letter-spacing: .03em; color: var(--text-dim); font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child, th:first-child { font-weight: 600; white-space: nowrap; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 13px 15px; }
+  .card h4 { margin: 0 0 6px; font-size: 13px; }
+  .card ul { margin: 4px 0 0; padding-left: 18px; font-size: 12.8px; }
+  .card li { margin-bottom: 3px; }
+
+  .trap {
+    background: var(--purple-bg); border: 1px solid var(--purple); border-left: 3px solid var(--purple);
+    border-radius: 0 10px 10px 0; padding: 9px 13px; margin: 8px 0; font-size: 13px; color: var(--purple-text); line-height: 1.55;
+  }
+  .trap b { color: var(--purple-text); }
+
+  .kw { display: grid; grid-template-columns: repeat(auto-fill, minmax(225px,1fr)); gap: 8px; margin-top: 6px; }
+  .kw div { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; }
+  .kw div b { display: block; color: var(--accent); font-size: 11.8px; margin-bottom: 2px; }
+
+  .seq { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12.8px; margin: 6px 0; }
+  .seq span.step { background: var(--bg-card-2); border: 1px solid var(--border); border-radius: 7px; padding: 4px 9px; font-weight: 600; }
+  .seq span.arrow { color: var(--text-dim); }
+
+  footer.page-footer {
+    color: var(--text-dim); font-size: 12px; line-height: 1.6; text-align: center; padding: 18px 0 0;
+    border-top: 1px solid var(--border); margin-top: 10px;
+  }
+  footer.page-footer a { color: var(--text-dim); text-decoration: underline; }
+  footer.page-footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="toc">
+    <a class="back" href="../index.html">&larr; Chọn chứng chỉ</a>
+    <a class="back" href="index.html">&larr; Về trang luyện đề</a>
+    <div class="brand">Cheat Sheet CCAR-P</div>
+    <div class="sub">Claude Certified Architect Professional — gom theo chủ đề</div>
+    <ol>
+      <li><a class="item" href="#overview">Tổng quan &amp; nguyên tắc vàng</a></li>
+      <li><a class="item" href="#s1">Claude Code — scopes &amp; permissions</a></li>
+      <li><a class="item" href="#s2">Least privilege &amp; tool/agent design</a></li>
+      <li><a class="item" href="#s3">Kiến trúc &amp; pattern</a></li>
+      <li><a class="item" href="#s4">Retrieval &amp; chunking</a></li>
+      <li><a class="item" href="#s5">Cost &amp; latency optimization</a></li>
+      <li><a class="item" href="#s6">Security &amp; guardrails</a></li>
+      <li><a class="item" href="#s7">Compliance (HIPAA/GDPR)</a></li>
+      <li><a class="item" href="#s8">Evaluation, testing &amp; monitoring</a></li>
+      <li><a class="item" href="#s9">HITL &amp; risk governance</a></li>
+      <li><a class="item" href="#s10">Documentation &amp; communication</a></li>
+      <li><a class="item" href="#s11">Discovery &amp; requirements</a></li>
+      <li><a class="item" href="#s12">Lifecycle &amp; stakeholder</a></li>
+      <li><a class="item" href="#examday">Exam-day cheat sheet</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div>
+        <h1>CCAR-P — Cheat Sheet</h1>
+        <div class="tagline">Claude Certified Architect – Professional. Tổng hợp từ 126 câu dump bank theo chủ đề lặp lại nhiều nhất — <b>không phải domain weight chính thức</b> (dump không kèm blueprint). Keyword giữ nguyên tiếng Anh, nghĩa tiếng Việt trong ngoặc.</div>
+      </div>
+      <div class="weights">
+        <div class="weight-pill w-blue"><b>69</b>Single-choice</div>
+        <div class="weight-pill w-green"><b>48</b>Multi-select (2)</div>
+        <div class="weight-pill w-amber"><b>6</b>Yes/No</div>
+        <div class="weight-pill w-red"><b>3</b>Ghép nhóm</div>
+      </div>
+    </header>
+
+    <section id="overview">
+      <h2>Tổng quan dump &amp; nguyên tắc vàng</h2>
+      <div class="tbl-wrap"><table>
+        <tr><th>Mục</th><th>Thông tin</th></tr>
+        <tr><td>Tổng số câu</td><td>126 câu, 4 "Set" (không rõ mapping domain chính thức)</td></tr>
+        <tr><td>Dạng câu</td><td><b>Single-choice</b> (69), <b>Multi-select 2 đáp án</b> (48, "Select two"), <b>Yes/No theo từng statement</b> (6), <b>Match/ghép nhóm</b> (3)</td></tr>
+        <tr><td>Nguồn đáp án</td><td>Dump cộng đồng/AI-generated, kèm watermark ký tự ẩn — <b>đối chiếu lại nếu nghi ngờ sai</b></td></tr>
+      </table></div>
+
+      <h3>3 nguyên tắc lặp lại xuyên suốt bank</h3>
+      <div class="grid2">
+        <div class="card"><ul>
+          <li><b>Process control / enforced tại đúng layer</b> — không phải "dặn model" hay "tin model tự từ chối"</li>
+        </ul></div>
+        <div class="card"><ul>
+          <li><b>Đúng artifact, đúng scope, đúng audience</b> cho từng giai đoạn lifecycle — không có "one size fits all"</li>
+        </ul></div>
+      </div>
+      <div class="trap"><b>Lưu ý:</b> đáp án dùng từ tuyệt đối <i>all/every/entirely/disable everything/regardless</i> gần như luôn sai — "proportional, không tuyệt đối".</div>
+    </section>
+
+    <section id="s1">
+      <h2>1. Claude Code — configuration scopes &amp; permissions</h2>
+      <p class="lead">Precedence theo giải thích trong bank, cao → thấp: <b>Managed &gt; command-line arguments &gt; local &gt; project &gt; user</b>.</p>
+      <div class="tbl-wrap"><table>
+        <tr><th>Scope</th><th>Lưu ở đâu</th><th>Dùng cho</th></tr>
+        <tr><td>Managed</td><td>Policy tổ chức đẩy xuống, non-overridable</td><td>Security-hardening flag không ai được tắt, chính sách bắt buộc toàn công ty</td></tr>
+        <tr><td>Project</td><td><code>.claude/settings.json</code>, <code>.mcp.json</code> — commit vào VCS</td><td>MCP server &amp; permission rules dùng chung cả team, monorepo cần đồng nhất</td></tr>
+        <tr><td>User</td><td><code>~/.claude/settings.json</code> (máy cá nhân)</td><td>Sở thích cá nhân: theme, ngôn ngữ phản hồi — <b>không phải nơi để secrets/API key</b></td></tr>
+        <tr><td>Local</td><td>File cục bộ, tự sửa được</td><td><b>Không dùng cho security-critical rules</b> (mỗi người tự chỉnh → lỗ hổng)</td></tr>
+      </table></div>
+      <div class="grid2">
+        <div class="card"><h4>Debug permission denial</h4><ul>
+          <li>Inspect active rules <b>across all scopes</b> trước, xác định rule nào đang chặn</li>
+          <li>Không disable toàn bộ permission system, không lặp lại thao tác bị chặn, không cấp Bash không giới hạn để né lỗi</li>
+        </ul></div>
+        <div class="card"><h4>CLAUDE.md &amp; subagent</h4><ul>
+          <li><b>CLAUDE.md</b> (project-scoped, commit) = persistent context, tự load mỗi session → khỏi giải thích lại convention mỗi lần</li>
+          <li><b>Subagent riêng</b> chỉ hợp lý khi có recurring specialized task cần system prompt/tool permission/model riêng — không tạo cho việc ad-hoc một lần</li>
+        </ul></div>
+      </div>
+      <div class="trap"><b>Credential hygiene:</b> không bao giờ đặt API key/credential trong <code>.claude/settings.json</code> hay prompt context (leak qua log/trace) → resolve runtime từ secret store / per-user OAuth scoped token.</div>
+    </section>
+
+    <section id="s2">
+      <h2>2. Least privilege &amp; tool / agent design</h2>
+      <div class="grid2">
+        <div class="card"><h4>Per-role allow-list</h4><ul>
+          <li>Scoped đúng nhu cầu, <b>enforced ở orchestration layer</b></li>
+          <li>Sai khi: "allow all + để model tự decline", "allow every tool", hoặc "disable hết" (quá tay)</li>
+        </ul></div>
+        <div class="card"><h4>Production database guardrail chuẩn</h4><ul>
+          <li>Read-only credential mặc định</li>
+          <li>Subagent chỉ được gán tool read-only</li>
+          <li>Yêu cầu <b>human confirmation</b> trước mọi thao tác ghi/sửa dữ liệu</li>
+        </ul></div>
+      </div>
+      <h3>Context budget / tool sprawl</h3>
+      <div class="grid2">
+        <div class="card"><ul>
+          <li>Nhiều MCP server → tool definitions load hết upfront → nuốt context trước khi user gõ gì</li>
+          <li>Fix: <b>Tool Search / progressive tool discovery</b> (nạp theo nhu cầu) — không phải disable hết MCP hay thêm server mới</li>
+        </ul></div>
+        <div class="card"><ul>
+          <li>Tool catalog phình to theo thời gian (6 → 34 tools) → description overlap, accuracy giảm</li>
+          <li>Dấu hiệu cần <b>curate lại theo domain</b>, không phải thêm guardrail chung chung</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="s3">
+      <h2>3. Kiến trúc &amp; pattern lựa chọn</h2>
+      <div class="tbl-wrap"><table>
+        <tr><th>Tình huống</th><th>Pattern phù hợp</th></tr>
+        <tr><td>Các bước cố định, dự đoán được (extract→classify→summarize→persist)</td><td><b>Workflow pattern</b> — tối ưu cost/latency ổn định</td></tr>
+        <tr><td>Q&amp;A cần citation, latency/cost/audit predictability ưu tiên</td><td><b>Augmented LLM + RAG</b> trên corpus đã index</td></tr>
+        <tr><td>Single, stateless, low-latency call tới service đã có HTTP API ổn định</td><td><b>Direct API call</b> với scoped credential</td></tr>
+        <tr><td>Cần portable qua nhiều AI client khác nhau</td><td><b>MCP</b> (chuẩn giao tiếp chung, như "USB-C")</td></tr>
+        <tr><td>Tương tác stateful, nhiều bước, kéo dài</td><td><b>Agent-to-agent handoff</b></td></tr>
+      </table></div>
+      <div class="trap"><b>RBAC:</b> luôn enforce ở <b>retrieval layer</b>, TRƯỚC khi nội dung role-restricted vào prompt/model — sai nếu đặt trong system prompt (dễ bị injection vượt qua) hoặc post-filter sau khi model đã sinh ra (quá trễ, vẫn rò rỉ trong context).</div>
+    </section>
+
+    <section id="s4">
+      <h2>4. Retrieval &amp; chunking strategies</h2>
+      <h3>Retrieval strategy theo loại truy vấn</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Strategy</th><th>Phù hợp khi</th></tr>
+        <tr><td>Dense vector retrieval</td><td>Recall <b>paraphrased intent</b> trên unstructured text</td></tr>
+        <tr><td>Sparse term-matching</td><td>Match <b>exact terms</b> (identifier, rare token) đáng tin cậy hơn dense riêng lẻ</td></tr>
+        <tr><td>Structured query (SQL-like)</td><td><b>Filter-and-aggregate</b> trên relational store có schema/index</td></tr>
+        <tr><td>Hybrid</td><td><b>Không</b> giống/thay thế được dense-only</td></tr>
+        <tr><td>Random sampling</td><td><b>Không</b> phải retrieval strategy hợp lệ cho production Q&amp;A</td></tr>
+      </table></div>
+      <h3>Chunking theo loại corpus</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Corpus type</th><th>Chunking strategy</th></tr>
+        <tr><td>Code or Hierarchical Specs</td><td>Function/section-level chunking; tree-aware theo hierarchy</td></tr>
+        <tr><td>Heterogeneous Short Records</td><td>Per-record (mỗi record = 1 chunk); fixed-size + overlap</td></tr>
+        <tr><td>Long Structured Documents</td><td>Semantic chunking theo clause/paragraph; hierarchical theo section</td></tr>
+      </table></div>
+    </section>
+
+    <section id="s5">
+      <h2>5. Token / cost / latency optimization</h2>
+      <div class="grid2">
+        <div class="card"><h4>Nên làm</h4><ul>
+          <li><b>Prompt caching</b> cho static/repeated prefix (system prompt, policy preamble) → giảm cost mà <b>không đổi accuracy</b></li>
+          <li><b>Model routing</b>: query đơn giản → Haiku, case phức tạp → Opus → giảm đồng thời cost &amp; p95 latency</li>
+          <li>Giảm <b>retrieval depth</b> (top-k) khi latency là constraint chính</li>
+        </ul></div>
+        <div class="card"><h4>Không bao giờ đúng</h4><ul>
+          <li>Tăng <code>max_tokens</code> để giảm latency</li>
+          <li>Thêm few-shot examples tùy tiện vào mọi request</li>
+          <li>Chuyển toàn bộ traffic sang heaviest/flagship model "cho chắc"</li>
+          <li>Nạp full corpus vào context; tắt hẳn prompt caching</li>
+        </ul></div>
+      </div>
+      <h3>Token-management theo lifecycle request (hay ra dạng match)</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Giai đoạn</th><th>Tactic</th></tr>
+        <tr><td>Input Preparation</td><td>Trim retrieved passages còn span liên quan; summarize lịch sử hội thoại cũ</td></tr>
+        <tr><td>Prompt Construction</td><td>Sắp cacheable content lên trước per-request content; đưa nội dung tĩnh vào cacheable prefix</td></tr>
+        <tr><td>Output Handling</td><td>Validate structured output theo schema; persist output đã validate để audit</td></tr>
+      </table></div>
+    </section>
+
+    <section id="s6">
+      <h2>6. Security &amp; guardrails</h2>
+      <div class="card"><ul>
+        <li><b>Indirect prompt injection = data exfiltration điển hình:</b> adversarial content trong <b>retrieved document</b> chỉ đạo model gọi outbound tool gửi dữ liệu ra URL kẻ tấn công kiểm soát. Mitigation chuẩn: <b>treat mọi nội dung retrieved/external là untrusted input</b> + input classifier + output validation.</li>
+        <li><b>Combo chặn admin-bypass/jailbreak:</b> prompt-level "untrusted data" + runtime classifier phát hiện override + scoped permission không thể bị user content nâng quyền + audit logging — thiếu 1 trong 4 lớp là chưa đủ.</li>
+        <li><b>Credential hygiene:</b> không đặt trong prompt context; resolve từ secret store; per-user OAuth token scoped thay vì 1 API key dùng chung; tool-call log phải có <b>actor attribution</b>.</li>
+      </ul></div>
+      <div class="grid2">
+        <div class="card"><h4>Guardrail layering chuẩn (vd chặn tư vấn đầu tư)</h4><ul>
+          <li><b>Input guardrail:</b> out-of-scope category + fixed refusal trong system prompt</li>
+          <li><b>Output guardrail:</b> output classifier chặn response vi phạm</li>
+          <li>Sai: tăng temperature, giới hạn session length, chỉ log để review sau</li>
+        </ul></div>
+        <div class="card"><h4>Risk ↔ control matching</h4><ul>
+          <li>Outbound tool allowlist + per-call review → chặn <b>data exfiltration</b></li>
+          <li>Adversarial eval set chạy lại mỗi lần đổi model version → bắt <b>silent quality drift</b></li>
+        </ul></div>
+      </div>
+      <div class="trap"><b>Observability gap thật sự:</b> model identity/version không ghi theo turn; correlation ID không propagate xuyên agent &amp; tool calls. Trace span, latency/token metrics, redacted tool-call log là best practice — <b>không phải</b> gap.</div>
+      <p><b>Skill đã có đủ disclaimer/prohibited-language</b> → vẫn còn 2 trách nhiệm PHẢI giữ ở application layer: (1) xác thực user được phép dùng (authN/authZ), (2) audit logging — LLM/Skill không tự đảm bảo 2 việc này tin cậy 100%.</p>
+    </section>
+
+    <section id="s7">
+      <h2>7. Compliance (HIPAA / GDPR)</h2>
+      <div class="grid2">
+        <div class="card"><h4>HIPAA</h4><ul>
+          <li>Claude <b>Enterprise</b> + ký <b>BAA</b> + <b>Zero Data Retention</b> + audit logging</li>
+          <li>Free/cá nhân không đủ điều kiện dù có log hay không</li>
+          <li>Tắt hết logging <b>không đồng nghĩa</b> compliant (vẫn thiếu BAA)</li>
+        </ul></div>
+        <div class="card"><h4>GDPR (EU deployment)</h4><ul>
+          <li>Cần <b>Enterprise-tier</b> + ký <b>DPA</b></li>
+          <li>Xác định rõ data-residency/retention theo yêu cầu</li>
+        </ul></div>
+      </div>
+      <h3>Trình tự đánh giá tuân thủ một regulation cụ thể</h3>
+      <div class="seq">
+        <span class="step">Xác định regulation applicable (data type, jurisdiction, audience)</span><span class="arrow">→</span>
+        <span class="step">Inventory compliance tooling sẵn có</span><span class="arrow">→</span>
+        <span class="step">Map data flow → clause</span><span class="arrow">→</span>
+        <span class="step">Gap-analysis &amp; remediation</span><span class="arrow">→</span>
+        <span class="step">Document &amp; signoff</span>
+      </div>
+    </section>
+
+    <section id="s8">
+      <h2>8. Evaluation, testing &amp; monitoring</h2>
+      <h3>Trình tự xây evaluation pipeline</h3>
+      <div class="seq">
+        <span class="step">Define metrics &amp; slices (representative/edge/adversarial)</span><span class="arrow">→</span>
+        <span class="step">Curate &amp; label dataset theo slices</span><span class="arrow">→</span>
+        <span class="step">Chạy chấm điểm/score</span><span class="arrow">→</span>
+        <span class="step">Review failure case với SME</span><span class="arrow">→</span>
+        <span class="step">Publish dashboard &amp; gate release</span>
+      </div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Test type</th><th>Phát hiện gì</th></tr>
+        <tr><td>Regression</td><td>Thay đổi prompt/code làm hỏng case <b>đã pass trước đó</b> (so với stable reference set)</td></tr>
+        <tr><td>Adversarial</td><td>Lỗ hổng an toàn / prompt-injection</td></tr>
+        <tr><td>Integration</td><td>Hành vi end-to-end giữa các component</td></tr>
+        <tr><td>Smoke</td><td>Hệ thống chạy được sau deploy, không đánh giá chất lượng chi tiết</td></tr>
+      </table></div>
+      <div class="grid2">
+        <div class="card"><h4>Evaluation set bias</h4><ul>
+          <li>Set hẹp ở 1 region/tenure band → <b>expand coverage rồi re-score</b> trước khi release rộng — không giữ nguyên dù score cao</li>
+        </ul></div>
+        <div class="card"><h4>Metric phải match đúng requirement</h4><ul>
+          <li>An toàn dữ liệu + cost ceiling → dùng <b>RBAC enforcement rate</b> + <b>per-query token cost</b>, không dùng BLEU/throughput khi câu hỏi không hỏi performance</li>
+        </ul></div>
+      </div>
+      <h3>Trình tự khác hay gặp</h3>
+      <div class="seq">
+        <span class="step">A/B test: define hypothesis &amp; metric</span><span class="arrow">→</span>
+        <span class="step">xác định sample size cho power</span><span class="arrow">→</span>
+        <span class="step">chạy random-assignment experiment</span>
+      </div>
+      <div class="seq">
+        <span class="step">Model selection: define quality bar/latency/volume</span><span class="arrow">→</span>
+        <span class="step">chọn candidate theo requirement</span><span class="arrow">→</span>
+        <span class="step">test trên representative sample</span>
+      </div>
+      <div class="trap">
+        <b>Bias/fairness traps:</b> approval-rate parity ≠ error-rate parity giữa protected group · match-rate cao với human không chứng minh hết bias (có thể kế thừa bias con người) · acceptance rate cao (89–94%) không đủ nếu user đang override vì model bỏ sót tiêu chí → đó là <b>scope gap</b>, không phải bằng chứng "đủ tốt".
+      </div>
+      <p><b>Phát hiện 1 lần fabricated citation:</b> sample output gần đây đo fabrication frequency + review citation-grounding control trong pipeline — không tắt hệ thống ngay, không phủ nhận, không coi là ca đơn lẻ rồi bỏ qua.</p>
+    </section>
+
+    <section id="s9">
+      <h2>9. Human-in-the-loop (HITL) &amp; risk governance</h2>
+      <div class="grid2">
+        <div class="card"><h4>Risk-stratified sampling</h4><ul>
+          <li>Review 100% output low-confidence + high-impact</li>
+          <li>Cộng random sample nhỏ cho output routine/high-confidence</li>
+          <li>Không review 100%, không chỉ dựa vào complaint (passive/reactive)</li>
+        </ul></div>
+        <div class="card"><h4>Escalation criteria chuẩn</h4><ul>
+          <li>Confidence score dưới ngưỡng + high-impact category + ambiguity flag từ classifier + user's explicit request</li>
+          <li>Không escalate tùy hứng hay chỉ sau khi khách complain</li>
+        </ul></div>
+      </div>
+      <div class="seq">
+        <span class="step">Identify assets &amp; sensitivity</span><span class="arrow">→</span>
+        <span class="step">enumerate threat actors/vectors</span><span class="arrow">→</span>
+        <span class="step">assess likelihood/impact</span><span class="arrow">→</span>
+        <span class="step">recommend mitigation</span><span class="arrow">→</span>
+        <span class="step">document &amp; residual-risk signoff</span>
+      </div>
+      <p><b>Delegation scope</b> dựa theo loại rủi ro, <b>không dựa theo transaction size</b> (vd không tự miễn human review cho refund nhỏ chỉ vì số tiền thấp, nếu loại quyết định vẫn nhạy cảm).</p>
+    </section>
+
+    <section id="s10">
+      <h2>10. Documentation &amp; communication theo audience</h2>
+      <p class="lead">Handoff package đầy đủ: Architecture overview + ADRs + component-level diagrams + evaluation framework (kèm reference set) + runbooks + on-call playbook + known-limitations register.</p>
+      <div class="trap"><b>ADR phải có đủ:</b> context, decision, alternatives considered, trade-offs/consequences, date &amp; authors. Thiếu alternatives → <b>yêu cầu author bổ sung trước khi publish</b> — không approve nguyên trạng, không xoá ADR.</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Audience</th><th>Nội dung cần dẫn đầu</th></tr>
+        <tr><td>Executive sponsor</td><td>Business outcomes đạt được, trade-offs đã chấp nhận, risk tổng quan</td></tr>
+        <tr><td>Security &amp; compliance reviewer</td><td>Threat model, control mappings, residual-risk acceptance criteria, audit traceability</td></tr>
+        <tr><td>Product manager</td><td>Capabilities delivered, roadmap dependencies</td></tr>
+        <tr><td>Engineering / delivery team</td><td>Component responsibilities, interface contracts, sequence diagram, config defaults, runbooks</td></tr>
+        <tr><td>Mixed audience (exec + engineering)</td><td><b>Lead với decision &amp; business outcome trước</b>, rồi mới kỹ thuật</td></tr>
+      </table></div>
+      <p><b>Strong decision-communication có:</b> ownership + review cadence khi assumption thay đổi, VÀ alternatives considered kèm tiêu chí đánh giá — không lược bỏ alternatives để "gọn".</p>
+    </section>
+
+    <section id="s11">
+      <h2>11. Discovery &amp; requirements</h2>
+      <div class="card"><ul>
+        <li>Request mơ hồ ("AI để sửa customer escalation") → <b>decompose bằng targeted question</b>: ai escalate, trigger nào, resolution tốt là gì, constraint nào (latency/cost/audit/data sensitivity) — không thiết kế ngay, không hoãn vô thời hạn, không áp kinh nghiệm cũ chưa validate</li>
+        <li><b>Functional</b> = hành vi cụ thể (extract field, classify, draft); <b>non-functional</b> = ràng buộc đo lường được (vd p95 latency &lt; 800ms)</li>
+      </ul></div>
+      <div class="seq">
+        <span class="step">Xác định audience &amp; câu hỏi guide cần trả lời</span><span class="arrow">→</span>
+        <span class="step">outline sections</span>
+      </div>
+    </section>
+
+    <section id="s12">
+      <h2>12. Lifecycle &amp; stakeholder management</h2>
+      <div class="grid2">
+        <div class="card"><ul>
+          <li><b>Continuity:</b> mang evaluation framework + reference set qua các phase + ghi lại lessons learned cuối mỗi phase</li>
+          <li><b>Feedback session hiệu quả:</b> agenda rõ ràng + share artifact trước + ghi lại decision &amp; follow-up</li>
+        </ul></div>
+        <div class="card"><ul>
+          <li><b>Scope creep giữa chừng:</b> acknowledge request, nêu rõ ảnh hưởng scope/timeline minh bạch — không âm thầm nhận thêm, không từ chối cứng nhắc</li>
+          <li><b>Quay lại design</b> (không chỉ iterate) khi kiến trúc hiện tại không đáp ứng được requirement mới nếu không đổi nền tảng</li>
+        </ul></div>
+      </div>
+    </section>
+
+    <section id="examday">
+      <h2>13. Exam-day cheat sheet</h2>
+
+      <h3>Trap answer patterns</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Pattern</th><th>Thường là</th><th>Vì sao</th></tr>
+        <tr><td>"Rely on the model to decline / intrinsically recognize..."</td><td>Sai</td><td>Không phải process control</td></tr>
+        <tr><td>"Allow all / disable all / unrestricted Bash / grant any privilege asserted"</td><td>Sai</td><td>Tuyệt đối, vi phạm least privilege</td></tr>
+        <tr><td>Tự động chuyển sang heaviest/flagship model</td><td>Sai</td><td>Trừ khi workload thật sự cần reasoning sâu</td></tr>
+        <tr><td>Tắt hẳn logging/permission system để đơn giản hoá</td><td>Sai</td><td>Mất observability/kiểm soát</td></tr>
+        <tr><td>Bỏ alternatives/trade-offs trong ADR "cho gọn"</td><td>Sai</td><td>Đúng thứ ADR sinh ra để giữ lại</td></tr>
+        <tr><td>Chỉ dựa vào user complaint (reactive)</td><td>Sai</td><td>Cần risk-stratified sampling chủ động</td></tr>
+        <tr><td>Acceptance/match-rate cao = "đủ bằng chứng"</td><td>Sai</td><td>Chưa chứng minh error parity/root cause</td></tr>
+        <tr><td>Nhúng cứng công thức (thuế, giá) vào system prompt</td><td>Sai</td><td>Cần độ chính xác tuyệt đối → code</td></tr>
+        <tr><td>Option dùng từ tuyệt đối: all/every/entirely/regardless</td><td>Thường Sai</td><td>Bỏ qua kiểm soát theo ngữ cảnh</td></tr>
+      </table></div>
+
+      <h3>Trình tự ("step BEFORE/AFTER")</h3>
+      <div class="grid2">
+        <div class="card"><ul>
+          <li>Bước đầu hầu như luôn là: define/identify/enumerate/inventory</li>
+          <li>Bước cuối hầu như luôn là: document &amp; sign-off, hoặc roll out/publish dashboard</li>
+        </ul></div>
+        <div class="card"><ul>
+          <li>"Assess threats/impact" luôn SAU "identify assets + enumerate threat actors"</li>
+          <li>"Map data flow → clause" luôn SAU "xác định applicability + inventory tooling"</li>
+          <li>"Test model trên sample" luôn SAU "define quality bar + chọn candidate"</li>
+        </ul></div>
+      </div>
+
+      <h3>"Select TWO" — mẹo</h3>
+      <div class="card"><ul>
+        <li>Mỗi lựa chọn được chấm <b>độc lập như true/false</b> — không phải chọn cặp "nghe hợp nhau"</li>
+        <li><b>"...part of the solution"</b> → 2 đáp án bổ sung nhau, không cái nào tự đủ</li>
+        <li><b>"...complete solution"</b> → 2 đáp án độc lập, mỗi cái tự đúng riêng</li>
+      </ul></div>
+
+      <h3>Dạng Yes/No &amp; Match</h3>
+      <div class="grid2">
+        <div class="card"><h4>Yes/No</h4><ul>
+          <li>Chấm từng dòng độc lập — statement dùng từ tuyệt đối (always/identical/regardless) → No</li>
+          <li>Mô tả đúng đặc tính có điều kiện/ngữ cảnh → Yes; khái quát hoá/đánh đồng khái niệm → No</li>
+        </ul></div>
+        <div class="card"><h4>Match/ghép nhóm</h4><ul>
+          <li>Đọc hết option-group trước khi ghép dòng đầu tiên</li>
+          <li>Group thường chia theo layer/giai đoạn: Pre/Model/Post-Processing; Input Prep/Prompt Construction/Output Handling</li>
+        </ul></div>
+      </div>
+
+      <h3>Exam vocabulary</h3>
+      <div class="kw">
+        <div><b>least privilege</b>Scope quyền đúng-đủ, enforced tại layer kiểm soát được, không dựa model tự giác</div>
+        <div><b>managed / non-overridable</b>Cấu hình tổ chức áp đặt, cá nhân không sửa được</div>
+        <div><b>progressive tool discovery</b>Nạp tool definition theo nhu cầu thay vì load hết upfront</div>
+        <div><b>cacheable prefix</b>Phần prompt tĩnh đưa lên đầu để tận dụng prompt caching</div>
+        <div><b>p95 latency / SLO</b>Chỉ tiêu độ trễ ở percentile 95, gắn threshold + evaluation window</div>
+        <div><b>risk-stratified sampling</b>Review toàn bộ case rủi ro cao, sample nhỏ case rủi ro thấp</div>
+        <div><b>residual risk</b>Rủi ro còn lại sau control, cần được chấp nhận có ý thức</div>
+        <div><b>ADR</b>Architecture Decision Record — context, decision, alternatives, consequences</div>
+        <div><b>BAA / DPA / ZDR</b>Điều kiện hợp đồng cho HIPAA (BAA) và GDPR (DPA); ZDR giảm lưu trữ phía nhà cung cấp</div>
+        <div><b>correlation ID</b>Định danh xuyên suốt request để trace qua nhiều agent/tool</div>
+        <div><b>data exfiltration</b>Dữ liệu nhạy cảm bị gửi ra ngoài qua tool call, thường do indirect injection</div>
+        <div><b>silent quality drift</b>Chất lượng suy giảm âm thầm sau đổi model version</div>
+        <div><b>scope gap</b>Model thiếu tiêu chí quan trọng, khiến human override dù acceptance cao</div>
+      </div>
+
+      <h3>Ba câu hỏi tự kiểm trước khi chốt đáp án</h3>
+      <div class="card"><ul>
+        <li>Control này được enforce tại layer nào — có thể bị user/content vượt qua không?</li>
+        <li>Đáp án có đúng đủ (not too broad, not too narrow) với đúng giai đoạn lifecycle đang hỏi không?</li>
+        <li>Tài liệu/communication này có đúng đối tượng đang cần đọc nó không?</li>
+      </ul></div>
+    </section>
+
+    <footer class="page-footer">
+      Trang được xây dựng phục vụ mục đích học tập, luyện thi cá nhân — hoàn toàn miễn phí, không phục vụ mục đích kinh doanh thương mại.<br>
+      Câu hỏi được tổng hợp từ các nguồn luyện thi công khai, chỉ mang tính chất tham khảo, không đại diện cho Anthropic hay đề thi chính thức.<br>
+      Thấy hay thì cho mình xin cái sao ⭐ trên GitHub là vui rồi, còn nếu muốn ủng hộ thật thì xin hãy ủng hộ Mặt trận Tổ quốc Việt Nam
+      <svg aria-label="Cờ Việt Nam" role="img" width="18" height="12" viewBox="0 0 30 20" style="vertical-align:middle;margin-left:4px;">
+        <rect width="30" height="20" fill="#DA251D"/>
+        <polygon points="15,4 16.76,9.53 22.56,9.53 17.9,12.94 19.66,18.47 15,15.06 10.34,18.47 12.1,12.94 7.44,9.53 13.24,9.53" fill="#FFFF00"/>
+      </svg>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

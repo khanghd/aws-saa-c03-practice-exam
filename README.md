@@ -31,6 +31,13 @@ Trang web luyện đề nhiều chứng chỉ, chạy hoàn toàn offline (stati
 - Dữ liệu câu hỏi tách riêng khỏi app (`question.json`/`question-data.js` + `explanations.json`/`explanations-data.js`), có script `build.mjs` tái sinh toàn bộ file phát sinh sau khi sửa dữ liệu.
 - 13 đề lẻ, tự chứa (không cần mở `index.html`): [`ccar-f/full-exams/`](ccar-f/full-exams/) — 7 lượt 30 câu (bộ 187 câu, lượt cuối 7 câu), 1 đề mock đầy đủ 60 câu, 5 đề theo domain (gộp cả 2 bộ đề).
 
+### Claude Certified Architect – Professional (CCAR-P) — [`ccar-p/`](ccar-p/)
+
+- 126 câu hỏi từng câu, 4 dạng: single-choice (69), multi-select 2 đáp án (48), Yes/No theo từng statement (6), ghép nhóm/matching (3).
+- Chủ đề: Claude Code config scopes &amp; least privilege, kiến trúc (workflow/agent/RAG/MCP), retrieval &amp; chunking, cost/latency optimization, security &amp; guardrails, compliance (HIPAA/GDPR), evaluation/testing/HITL, documentation theo audience, discovery.
+- Lọc theo Set hoặc theo dạng câu (trắc nghiệm/đúng-sai/ghép nhóm), theo trạng thái (chưa làm/làm sai/đã đánh dấu).
+- Cheat sheet tổng hợp theo chủ đề (không có domain weight chính thức — dump không kèm blueprint): [`ccar-p/cheatsheet.html`](ccar-p/cheatsheet.html)
+
 ## Cách dùng
 
 Mở trực tiếp `index.html` bằng trình duyệt — không cần cài đặt, không cần server. Chọn chứng chỉ muốn luyện, trang sẽ dẫn vào app riêng của chứng chỉ đó.
@@ -57,12 +64,15 @@ Nếu deploy qua GitHub Pages: bật Pages ở nhánh chứa `index.html`, trang
 | `ccar-f/explanations.json` | Giải thích gốc dạng JSON — sửa ở đây rồi chạy `node build.mjs` |
 | `ccar-f/build.mjs` | Script tái sinh `question-data.js`, `explanations-data.js`, và toàn bộ `full-exams/*.html` từ 2 file JSON trên |
 | `ccar-f/full-exams/` | 13 đề lẻ CCAR-F tự chứa: 7 lượt 30 câu, 1 đề mock 60 câu, 5 đề theo domain |
+| `ccar-p/index.html` | App luyện đề CCAR-P (126 câu, nhúng trực tiếp — không tách data file vì số câu còn nhỏ) |
+| `ccar-p/cheatsheet.html` | Cheat sheet CCAR-P |
 
 ## Nguồn dữ liệu
 
 - **SAA-C03**: câu hỏi tổng hợp từ các bộ đề luyện thi SAA-C03 cộng đồng, đã qua xử lý: sửa lỗi OCR/transcription (text dính chữ, policy JSON bị thiếu do là ảnh trong PDF gốc), đối chiếu và sửa lại các đáp án sai so với phân tích kỹ thuật AWS, bổ sung giải thích.
 - **CCAO-F**: câu hỏi tổng hợp từ nguồn luyện thi cộng đồng (chỉ có câu hỏi + đáp án, không kèm đáp án chính thức) — đáp án đúng và giải thích do AI suy luận dựa trên nội dung chính thức của chứng chỉ, nên đối chiếu lại nếu có kết quả chính thức.
 - **CCAR-F**: nội dung học theo chương tự biên soạn bám theo blueprint CCAR-F; câu hỏi luyện đề gộp/khử trùng lặp từ 6 bộ đề luyện tập cộng đồng, tự phân loại theo domain — là câu hỏi mô phỏng tự biên soạn, không phải đề thi thật.
+- **CCAR-P**: câu hỏi tổng hợp từ dump cộng đồng (AI-generated, kèm watermark ký tự ẩn trong văn bản gốc) — đáp án &amp; giải thích không phải từ Anthropic, không kèm blueprint/domain weight chính thức; cheat sheet được gom theo chủ đề lặp lại nhiều nhất trong chính bộ câu hỏi thay vì theo domain weight. Nên đối chiếu lại nếu phát hiện câu sai.
 
 Đây là tài liệu tự luyện tập cá nhân — không thay thế việc ôn tập bằng tài liệu chính thức của từng chứng chỉ.
 

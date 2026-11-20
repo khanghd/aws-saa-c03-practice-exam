@@ -947,7 +947,7 @@
       "id": "4.7",
       "domain": 3,
       "type": 1,
-      "q": "You must decide where two things live: (1) the team's universal coding standards that should shape every session, and (2) a multi-step release-notes workflow used a few times per month. What is the correct placement?",
+      "q": "You must decide where two things live:<br>1) the team's universal coding standards that should shape every session;<br>2) a multi-step release-notes workflow used a few times per month.<br>What is the correct placement?",
       "opts": {
         "A": "Both as skills in .claude/skills/, so each loads only when its context is relevant to the session at hand",
         "B": "Standards in CLAUDE.md, always loaded; the release-notes workflow as a skill in .claude/skills/, invoked on demand",
@@ -1718,7 +1718,7 @@
       "id": 27,
       "domain": 4,
       "origin": "Set 1 · Câu 27",
-      "q": "Your schema includes a skills: string[] field. Production monitoring reveals three consistency issues: (1) compound phrases like \"Python and SQL\" are sometimes kept as one entry, sometimes split; (2) implied but unstated skills occasionally appear in extractions; (3) similar documents produce wildly different array lengths (5-10 vs 40+ entries). Your prompt currently says \"Extract all skills mentioned.\"<br><br>What's the most effective improvement?",
+      "q": "Your schema includes a skills: string[] field. Production monitoring reveals three consistency issues:<br>1) compound phrases like \"Python and SQL\" are sometimes kept as one entry, sometimes split;<br>2) implied but unstated skills occasionally appear in extractions;<br>3) similar documents produce wildly different array lengths (5-10 vs 40+ entries).<br>Your prompt currently says \"Extract all skills mentioned.\"<br><br>What's the most effective improvement?",
       "opts": {
         "A": "Enrich the schema to {skill: string, confidence: float, source_quote: string[]} to capture extraction metadata.",
         "B": "Add constraints: \"Extract 10-20 skills maximum, one skill per entry, only explicitly named skills.\"",
@@ -2759,7 +2759,7 @@
       "id": 96,
       "domain": 4,
       "origin": "Set 2 · Câu 97",
-      "q": "Your conversational assistant frequently generates multiple clarifying questions when users make ambiguous requests. When a user asks \"Can you help me with the report?\", the assistant responds: \"I'd be happy to help! Could you tell me: 1) Which report? 2) What kind of help—drafting, reviewing, or formatting? 3) What's your deadline?\" User analytics show a 40% conversation abandonment rate after these multi-question responses.<br><br>What's the most effective way to reduce friction while appropriately handling ambiguity?",
+      "q": "Your conversational assistant frequently generates multiple clarifying questions when users make ambiguous requests. When a user asks \"Can you help me with the report?\", the assistant responds: \"I'd be happy to help! Could you tell me:<br>1) Which report?<br>2) What kind of help—drafting, reviewing, or formatting?<br>3) What's your deadline?\"<br>User analytics show a 40% conversation abandonment rate after these multi-question responses.<br><br>What's the most effective way to reduce friction while appropriately handling ambiguity?",
       "opts": {
         "A": "Modify the system prompt to instruct the assistant to make reasonable assumptions from available context, state those assumptions explicitly, and offer to adjust if the interpretation is wrong.",
         "B": "Add a preprocessing step using a smaller model to classify request ambiguity on a 1-5 scale, routing high-ambiguity requests to a clarification dialog and low-ambiguity requests directly to the assistant.",
@@ -3005,7 +3005,7 @@
       "id": 112,
       "domain": 4,
       "origin": "Set 2 · Câu 113",
-      "q": "Your document extraction tool uses ML models to extract invoice fields (vendor, amount, date). The models return confidence scores (0.0-1.0) for each extracted field. In production, you observe: (1) the agent proceeds with low-confidence extractions that are incorrect 23% of the time, and (2) the agent requests unnecessary human review for 31% of extractions that were actually correct.<br><br>How should you restructure the tool's output?",
+      "q": "Your document extraction tool uses ML models to extract invoice fields (vendor, amount, date). The models return confidence scores (0.0-1.0) for each extracted field. In production, you observe:<br>1) the agent proceeds with low-confidence extractions that are incorrect 23% of the time;<br>2) the agent requests unnecessary human review for 31% of extractions that were actually correct.<br><br>How should you restructure the tool's output?",
       "opts": {
         "A": "Return fields with confidence scores, plus a requires_review boolean computed using your tested confidence thresholds, along with a review_reasons array explaining which fields triggered review.",
         "B": "Return fields with their raw confidence scores and add detailed few-shot examples to your system prompt demonstrating how to interpret different confidence ranges and when to request human review.",
@@ -3082,7 +3082,7 @@
       "id": 117,
       "domain": 5,
       "origin": "Set 2 · Câu 118",
-      "q": "After a 40-minute session helping plan a dinner party, the conversation has grown to 78,000 tokens. The history includes: (1) the user mentioning a guest has a severe shellfish allergy, (2) measurements for scaling recipes to 8 servings, (3) the user's clarification that \"room temperature butter\" means 68°F in their kitchen, and (4) general back-and-forth about meal timing and presentation. You need to implement context management before the window limit is reached.<br><br>What approach best balances information preservation with token reduction?",
+      "q": "After a 40-minute session helping plan a dinner party, the conversation has grown to 78,000 tokens. The history includes:<br>1) the user mentioning a guest has a severe shellfish allergy;<br>2) measurements for scaling recipes to 8 servings;<br>3) the user's clarification that \"room temperature butter\" means 68°F in their kitchen;<br>4) general back-and-forth about meal timing and presentation.<br>You need to implement context management before the window limit is reached.<br><br>What approach best balances information preservation with token reduction?",
       "opts": {
         "A": "Extract critical structured data (allergies, serving counts, user-defined terms) into a compact reference section, summarize general discussion, and retain recent exchanges verbatim.",
         "B": "Store the full conversation externally and use semantic search to retrieve relevant portions for each turn, loading only matching segments into context.",
@@ -3130,7 +3130,7 @@
       "domain": 2,
       "scenario": 1,
       "origin": "Set 3 · Câu 121",
-      "q": "Your MCP server implements a check_availability tool that queries an external calendar API. During testing, you encounter three error conditions: (1) the tool is called with a malformed request, missing the required user_email parameter (2) the calendar API returns a 404 because the specified user doesn't exist in the calendar system (3) the calendar API returns a 503 because the service is temporarily unavailable.<br><br>How should each error be reported according to MCP's error handling design?",
+      "q": "Your MCP server implements a check_availability tool that queries an external calendar API. During testing, you encounter three error conditions:<br>1) the tool is called with a malformed request, missing the required user_email parameter;<br>2) the calendar API returns a 404 because the specified user doesn't exist in the calendar system;<br>3) the calendar API returns a 503 because the service is temporarily unavailable.<br><br>How should each error be reported according to MCP's error handling design?",
       "opts": {
         "A": "Report errors 1 and 2 as JSON-RPC protocol errors, report error 3 as a tool result with isError: true",
         "B": "Report all three as tool results with isError: true",
@@ -3480,7 +3480,7 @@
       "id": 143,
       "domain": 4,
       "origin": "Set 3 · Câu 145",
-      "q": "The system processes product reviews using tool use with a defined schema: rating (integer 1-5), pros (string array), cons (string array), and overall_sentiment (enum: positive, negative, mixed). Testing reveals two issues with brief or ambiguous reviews (~20% of the dataset): (1) for reviews like \"Great product!\", Claude fabricates specific pros and cons rather than indicating this information isn't explicitly stated, and (2) for sarcastic reviews like \"Well that was... interesting\", Claude picks sentiment arbitrarily since there's no option for ambiguous cases.<br><br>What schema modification best addresses both issues?",
+      "q": "The system processes product reviews using tool use with a defined schema: rating (integer 1-5), pros (string array), cons (string array), and overall_sentiment (enum: positive, negative, mixed). Testing reveals two issues with brief or ambiguous reviews (~20% of the dataset):<br>1) for reviews like \"Great product!\", Claude fabricates specific pros and cons rather than indicating this information isn't explicitly stated;<br>2) for sarcastic reviews like \"Well that was... interesting\", Claude picks sentiment arbitrarily since there's no option for ambiguous cases.<br><br>What schema modification best addresses both issues?",
       "opts": {
         "A": "Make pros and cons optional fields, and add \"neutral\" and \"unclear\" to the sentiment enum.",
         "B": "Add an extraction_confidence field (0.0-1.0) for each value, and filter outputs where any confidence falls below a threshold.",
@@ -3693,7 +3693,7 @@
       "id": 157,
       "domain": 1,
       "origin": "Set 3 · Câu 164",
-      "q": "The coordinator provides detailed step-by-step instructions to the web search subagent, specifying exact search queries, source priorities, and date filters. Production monitoring reveals three issues: (1) the subagent reports \"insufficient results\" rather than trying alternative approaches when pre-specified searches fail, (2) research quality drops for emerging topics that don't match expected patterns, and (3) the subagent rarely surfaces valuable tangential sources. What's the most effective way to improve subagent adaptability?",
+      "q": "The coordinator provides detailed step-by-step instructions to the web search subagent, specifying exact search queries, source priorities, and date filters. Production monitoring reveals three issues:<br>1) the subagent reports \"insufficient results\" rather than trying alternative approaches when pre-specified searches fail;<br>2) research quality drops for emerging topics that don't match expected patterns;<br>3) the subagent rarely surfaces valuable tangential sources.<br>What's the most effective way to improve subagent adaptability?",
       "opts": {
         "A": "Specify research goals and quality criteria (coverage breadth, source diversity, recency) rather than procedural steps, letting the subagent determine its search strategy.",
         "B": "Remove procedural details entirely, delegating with simple goals like \"research X thoroughly\" and relying on the subagent's general capabilities.",

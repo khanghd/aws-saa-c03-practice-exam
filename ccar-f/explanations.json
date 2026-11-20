@@ -3793,23 +3793,23 @@
     },
     "53": {
       "intro": "Kiểm tra chiến lược quản lý context khi một phiên hội thoại dài chứa nhiều vấn đề riêng biệt và đang tiệm cận giới hạn context.",
-      "requirementTranslation": "Khách hàng đã trao đổi ba vấn đề khác nhau trong cùng một phiên (refund, subscription, cập nhật thanh toán) và giờ hỏi lại về vấn đề đầu tiên khi hội thoại đã dài; cần chọn chiến lược giữ được khả năng trả lời đầy đủ cho mọi vấn đề mà không vượt giới hạn context.",
+      "requirementTranslation": "Khách hàng đã trao đổi ba vấn đề khác nhau trong cùng một phiên (refund, subscription, cập nhật thanh toán) và giờ hỏi lại về vấn đề đầu tiên khi hội thoại đã dài; cần chọn chiến lược giữ được khả năng trả lời đầy đủ, chính xác cho mọi vấn đề mà không vượt giới hạn context.",
       "keywords": [
-        "Narrative summarization",
+        "Structured context extraction",
         "Multi-topic conversation",
-        "Context compression",
+        "Compression vs. fidelity trade-off",
         "Active issue vs past issues"
       ],
       "optionAnalysis": [
         {
           "key": "A",
-          "correct": false,
-          "explanation": "Trích xuất dữ liệu có cấu trúc (order ID, số tiền, trạng thái) riêng biệt giữ được thông tin định lượng nhưng có thể mất đi sắc thái và diễn biến đầy đủ của cuộc trao đổi so với một bản tóm tắt tường thuật."
+          "correct": true,
+          "explanation": "Trích xuất dữ liệu có cấu trúc (order ID, số tiền, trạng thái) vào một lớp context riêng giữ nguyên fact chính xác cho mọi vấn đề, độc lập với việc phần hội thoại tự nhiên bị nén/xoá — nên khi khách hỏi lại refund ở turn 48, hệ thống vẫn có đúng số liệu để trả lời, không phụ thuộc vào việc narrative summary có giữ được chi tiết đó hay không."
         },
         {
           "key": "B",
-          "correct": true,
-          "explanation": "Tóm tắt các lượt trao đổi trước thành một mô tả tường thuật ngắn gọn, đồng thời chỉ giữ lịch sử tin nhắn đầy đủ cho vấn đề đang hoạt động hiện tại — cân bằng tốt giữa việc bảo toàn đủ ngữ cảnh của cả ba vấn đề và việc tiết kiệm không gian context khi gần chạm giới hạn."
+          "correct": false,
+          "explanation": "Tóm tắt tường thuật các lượt trao đổi trước nghe hợp lý nhưng có rủi ro làm trôi đúng những chi tiết định lượng quan trọng nhất (order ID, số tiền, trạng thái) trong quá trình nén — rủi ro này lộ rõ khi khách hỏi lại một fact cụ thể như refund, nơi 'gần đúng' là không đủ."
         },
         {
           "key": "C",
@@ -3822,7 +3822,7 @@
           "explanation": "Dựa vào việc gọi lại MCP tool khi khách nhắc đến vấn đề cũ không tái tạo được những gì đã trao đổi/giải thích trong hội thoại trước đó, chỉ lấy lại dữ liệu thô chứ không phải ngữ cảnh cuộc trò chuyện."
         }
       ],
-      "tip": "Với hội thoại dài chứa nhiều chủ đề, hãy tóm tắt tường thuật các phần đã xử lý xong và chỉ giữ chi tiết đầy đủ cho phần đang hoạt động — tránh cả việc cắt theo cửa sổ trượt cố định lẫn việc chỉ dựa vào tool để lấy lại ngữ cảnh."
+      "tip": "Khi hội thoại dài chứa nhiều vấn đề có dữ liệu định lượng cụ thể (order ID, số tiền, trạng thái), hãy tách các fact đó ra một lớp structured riêng thay vì chỉ dựa vào tóm tắt tường thuật — tóm tắt dễ làm trôi đúng chi tiết mà khách có thể hỏi lại bất cứ lúc nào. Tránh cả việc cắt theo cửa sổ trượt cố định lẫn việc chỉ dựa vào tool để lấy lại ngữ cảnh."
     },
     "54": {
       "intro": "Kiểm tra nguyên nhân kỹ thuật phổ biến khiến agent \"quên\" thông tin đã trao đổi ngay trong cùng một phiên xác minh nhiều bước.",
